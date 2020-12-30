@@ -21,6 +21,17 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('last_post_date')->nullable();
+            $table->timestamp('last_login')->nullable();
+            $table->unsignedBigInteger('balance');
+            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('tier_id');
+            $table->integer('fame');
+            $table->unsignedInteger('free_recipes_count');
+            $table->unsignedInteger('paid_recipes_count');
+
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('tier_id')->references('id')->on('tiers');
         });
     }
 
