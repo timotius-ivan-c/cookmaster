@@ -8,6 +8,38 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public function role()
+    {
+        return $this->hasOne(Role::class);
+    }
+    public function tier()
+    {
+        return $this->hasOne(Tier::class);
+    }
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
+    }
+    public function recipe()
+    {
+        return $this->belongsTo(Recipe::class);
+    }
+    public function review()
+    {
+        return $this->belongsTo(Review::class);
+    }
+    public function favoritedRecipe()
+    {
+        return $this->belongsTo(FavoritedRecipe::class);
+    }
+    public function following()
+    {
+        return $this->belongsTo(Following::class);
+    }
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
     use Notifiable;
 
     /**
