@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TiersSeeder extends Seeder
 {
@@ -11,6 +12,12 @@ class TiersSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('tiers')->insert([
+            ['name' => 'Bronze'],
+            ['name' => 'Silver'],
+            ['name' => 'Gold'],
+            ['name' => 'Platinum'],
+            ['name' => 'Diamond']
+        ]);
     }
 }
