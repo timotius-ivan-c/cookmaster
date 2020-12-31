@@ -13,7 +13,7 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('user')->insert([
+        DB::table('users')->insert([
            ['id' => 6, 'name' => 'Choi Soobin', 'email' => 'soobin@gmail.com', 'password' => Hash::make('csb0512'), 'balance' => 150000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
            ['id' => 7, 'name' => 'Kim Seokjin', 'email' => 'ksjin@gmail.com', 'password' => Hash::make('wwh921204'), 'balance' => 85000, 'role_id' => 1, 'tier_id' => 3, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
            ['id' => 8, 'name' => 'Kim Yong-sun', 'email' => 'solarsido@gmail.com', 'password' => Hash::make('mmm0611'), 'balance' => 33500, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
