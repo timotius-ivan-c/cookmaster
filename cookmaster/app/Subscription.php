@@ -8,11 +8,12 @@ class Subscription extends Model
 {
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
-    public function Transaction()
+
+    public function transaction()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(Transaction::class);
     }
     //
 }

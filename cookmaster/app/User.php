@@ -12,18 +12,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(Role::class);
     }
+
     public function tier()
     {
         return $this->hasOne(Tier::class);
     }
+
     public function subscription()
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->hasMany(Subscription::class);
     }
+
     public function recipe()
     {
-        return $this->belongsTo(Recipe::class);
+        return $this->hasMany(Recipe::class, 'author_id');
     }
+
     public function review()
     {
         return $this->belongsTo(Review::class);
