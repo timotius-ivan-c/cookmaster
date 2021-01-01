@@ -14,11 +14,16 @@ class UsersSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-           ['id' => 6, 'name' => 'Choi Soobin', 'email' => 'soobin@gmail.com', 'password' => Hash::make('csb0512'), 'balance' => 150000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
-           ['id' => 7, 'name' => 'Kim Seokjin', 'email' => 'ksjin@gmail.com', 'password' => Hash::make('wwh921204'), 'balance' => 85000, 'role_id' => 1, 'tier_id' => 3, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
-           ['id' => 8, 'name' => 'Kim Yong-sun', 'email' => 'solarsido@gmail.com', 'password' => Hash::make('mmm0611'), 'balance' => 33500, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
-           ['id' => 9, 'name' => 'Coltrane Maverick', 'email' => 'coltmav@gmail.com', 'password' => Hash::make('mavcol00'), 'balance' => 103000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
-           ['id' => 10, 'name' => 'William Poernomo', 'email' => 'willpoer@gmail.com', 'password' => Hash::make('butterpo12'), 'balance' => 590000, 'role_id' => 2, 'tier_id' => 5, 'fame' => 190, 'free_recipes_count' => 5, 'paid_recipes_count' =>0],
+            ['id' => 1, 'name' => 'Grace Davis', 'email' => 'graced@gmail.com', 'password' => Hash::make('grd0801'), 'balance' => 110000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 2, 'name' => 'Joseph Foley', 'email' => 'jfoley@gmail.com', 'password' => Hash::make('jof991'), 'balance' => 70000, 'role_id' => 1, 'tier_id' => 3, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 3, 'name' => 'Dale Carnage', 'email' => 'dcarnage@gmail.com', 'password' => Hash::make('dac1109'), 'balance' => 32000, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 4, 'name' => 'Carl Junior', 'email' => 'carljr@gmail.com', 'password' => Hash::make('cajr99'), 'balance' => 93000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 5, 'name' => 'Frank Conner', 'email' => 'frankconner@gmail.com', 'password' => Hash::make('fc12345'), 'balance' => 600000, 'role_id' => 2, 'tier_id' => 5, 'fame' => 180, 'free_recipes_count' => 5, 'paid_recipes_count' => 0],
+            ['id' => 6, 'name' => 'Choi Soobin', 'email' => 'soobin@gmail.com', 'password' => Hash::make('csb0512'), 'balance' => 150000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 7, 'name' => 'Kim Seokjin', 'email' => 'ksjin@gmail.com', 'password' => Hash::make('wwh921204'), 'balance' => 85000, 'role_id' => 1, 'tier_id' => 3, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 8, 'name' => 'Kim Yong-sun', 'email' => 'solarsido@gmail.com', 'password' => Hash::make('mmm0611'), 'balance' => 33500, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 9, 'name' => 'Coltrane Maverick', 'email' => 'coltmav@gmail.com', 'password' => Hash::make('mavcol00'), 'balance' => 103000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 10, 'name' => 'William Poernomo', 'email' => 'willpoer@gmail.com', 'password' => Hash::make('butterpo12'), 'balance' => 590000, 'role_id' => 2, 'tier_id' => 5, 'fame' => 190, 'free_recipes_count' => 5, 'paid_recipes_count' => 0],
         ]);
     }
 }
