@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use App\User;
+use App\Recipe;
 use App\Role;
 
 class UserController extends Controller
 {
     //
     public function view_profile($id){
-        $user = User::where('id', $id)->first();
-        return view('view_user_profile',['user'=>$user]);
+        $user = User::where('id', $id)->get();
+        return View::make('view_user_profile')->with('user', $user)->render();
     }
 
     public function view_top_chefs(){
