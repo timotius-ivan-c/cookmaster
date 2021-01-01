@@ -9,6 +9,6 @@ class RecipeDetailIngredient extends Model
     //
     public function recipe()
     {
-        return $this->hasOne(Recipe::class);
+        return $this->belongsTo(Recipe::class);
     }
 }

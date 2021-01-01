@@ -21,11 +21,11 @@ class Recipe extends Model
     }
     public function recipeDetailStep()
     {
-        return $this->belongsTo(RecipeDetailStep::class);
+        return $this->hasMany(RecipeDetailStep::class);
     }
     public function recipeDetailIngredient()
     {
-        return $this->belongsTo(RecipeDetailIngredient::class);
+        return $this->hasMany(RecipeDetailIngredient::class);
     }
 
 }
