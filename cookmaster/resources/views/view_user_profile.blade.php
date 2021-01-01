@@ -23,7 +23,31 @@
                             @forelse($usr->recipe as $recipe)
                                 <div class="card-body">{{ $recipe->name }}</div>
                             @empty
-
+                                <div class="card-body">{{ __('No recipe shared yet.') }}</div>
+                            @endforelse
+                        </div>
+                        <div>Subscriptions:</div>
+                        <div class="card">
+                            @forelse($usr->subscription as $sub)
+                                <div class="card-body">{{ $sub->start }}</div>
+                            @empty
+                                <div class="card-body">{{ __('No subscriptions yet.') }}</div>
+                            @endforelse
+                        </div>
+                        <div>People followed by {{ $usr->name }}:</div>
+                        <div class="card">
+                            @forelse($usr->following as $fol)
+                                <div class="card-body">{{ $fol->name }}</div>
+                            @empty
+                                <div class="card-body">{{ __('No followings yet.') }}</div>
+                            @endforelse
+                        </div>
+                        <div>People following {{ $usr->name }}:</div>
+                        <div class="card">
+                            @forelse($usr->followers as $fol)
+                                <div class="card-body">{{ $fol->name }}</div>
+                            @empty
+                                <div class="card-body">{{ __('No followers yet.') }}</div>
                             @endforelse
                         </div>
                     @endforeach
