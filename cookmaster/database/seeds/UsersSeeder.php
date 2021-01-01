@@ -24,6 +24,11 @@ class UsersSeeder extends Seeder
             ['id' => 8, 'name' => 'Kim Yong-sun', 'email' => 'solarsido@gmail.com', 'password' => Hash::make('mmm0611'), 'balance' => 33500, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
             ['id' => 9, 'name' => 'Coltrane Maverick', 'email' => 'coltmav@gmail.com', 'password' => Hash::make('mavcol00'), 'balance' => 103000, 'role_id' => 1, 'tier_id' => 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
             ['id' => 10, 'name' => 'William Poernomo', 'email' => 'willpoer@gmail.com', 'password' => Hash::make('butterpo12'), 'balance' => 590000, 'role_id' => 2, 'tier_id' => 5, 'fame' => 190, 'free_recipes_count' => 5, 'paid_recipes_count' => 0],
+            ['id' => 11, 'name' => 'Charles Lee', 'email' => 'charll@gmail.com', 'password' => Hash::make('asfdghjkl'), 'balance' => 100000, 'role_id' => 1, 'tier_id' => 1, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 12, 'name' => 'Vladmir Horowitz', 'email' => 'vhorowitz@gmail.com', 'password' => Hash::make('imacomposer'), 'balance' => 30000, 'role_id' => 1, 'tier_id' => 3, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 13, 'name' => 'Frederich Chopin', 'email' => 'chopinf@gmail.com', 'password' => Hash::make('propianist'), 'balance' => 1000000, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 14, 'name' => 'Perry Cooper', 'email' => 'cooper@gmail.com', 'password' => Hash::make('easypassword'), 'balance' => 200000, 'role_id' => 2, 'tier_id' => 5, 'fame' => 150, 'free_recipes_count' => 2, 'paid_recipes_count' => 0],
+            ['id' => 15, 'name' => 'Daniel Climber', 'email' => 'danielcl@gmail.com', 'password' => Hash::make('lovebread'), 'balance' => 550000, 'role_id' => 2, 'tier_id' => 3, 'fame' => 70, 'free_recipes_count' => 3, 'paid_recipes_count' => 0],
         ]);
     }
 }
