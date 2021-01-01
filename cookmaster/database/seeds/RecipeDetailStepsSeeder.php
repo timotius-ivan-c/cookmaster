@@ -73,6 +73,11 @@ class RecipeDetailStepsSeeder extends Seeder
             ['step_no' => 4, 'recipe_id' => 10, 'text' => 'Roll each scoop in between the palms of your hands to shape each one into a ball. Place them on a parchment paper lined sheet tray, then refrigerate the truffles for 15 minutes. This helps them firm up a little bit before dipping.', 'image' => 'Oreo_Truffles_4.jpg'],
             ['step_no' => 5, 'recipe_id' => 10, 'text' => 'Melt some chocolate and dip the truffles. You can also add sprinkles and other topping after dipping.', 'image' => 'Oreo_Truffles_5.jpg'],
             ['step_no' => 6, 'recipe_id' => 10, 'text' => 'Let the chocolate harden before enjoying, either at room temperature or by putting the truffles in the fridge for a quick method.', 'image' => 'Oreo_Truffles_6.jpg'],
+
+            ['step_no' => 1, 'recipe_id' => 11, 'text' => 'Blanch the pork belly with 3 slices of ginger. Bring to boil, simmer for 1 minute.', 'image' => 'Braised_Pork_Belly_1.jpg'],
+            ['step_no' => 2, 'recipe_id' => 11, 'text' => 'Add oil and rock sugar. Melt the sugar, add the pork belly with 3 slices of ginger, and white part of scallion. Turn up heat to medium. Stir and coat the pork belly with melted sugar.', 'image' => 'Braised_Pork_Belly_2.jpg'],
+            ['step_no' => 3, 'recipe_id' => 11, 'text' => 'Add Shaoxing wine, light soy sauce, dark soy sauce, cinnamon, star anise, bay leaves, dried chilli peppers, and water. Stir until everything is submerged. Bring to simmer over medium-low heat for 1 hour. Check periodically to make sure sauce doesn\'t dry up.', 'image' => 'Braised_Pork_Belly_3.jpg'],
+            ['step_no' => 4, 'recipe_id' => 11, 'text' => 'Once the pork is to your liking in terms of tenderness, turn up the heat to cook off any excess sauce, stirring constantly. The sauce will reduce to a glistening coating on the pork belly. Last, add in the remaining sugar and the green parts of the scallions. Stir quickly and serve.', 'image' => 'Braised_Pork_Belly_4.jpg'],
         ]);
     }
 }

@@ -24,6 +24,11 @@ class RecipesSeeder extends Seeder
             ['author_id' => 10, 'name' => 'Peanut Butter Cookies', 'image' => 'PB_Cookies.jpg', 'review_count' => 165, 'average_rating' => 4.85, 'publish_date' => Carbon::create(2020, 12, 30,  18, 27, 03, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 3],
             ['author_id' => 10, 'name' => 'Parmesan Crusted Chicken', 'image' => 'Parmesan_Chicken.jpg', 'review_count' => 18, 'average_rating' => 5.00, 'publish_date' => Carbon::create(2020, 10, 16,  8, 11, 12, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 3],
             ['author_id' => 10, 'name' => 'Oreo Truffles', 'image' => 'Oreo_Truffles.jpg', 'review_count' => 15, 'average_rating' => 4.88, 'publish_date' => Carbon::create(2019, 8, 15,  19, 32, 11, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 3],
+            ['author_id' => 14, 'name' => 'Red Braised Pork Belly', 'image' => 'Braised_Pork_Belly.jpg', 'review_count' => 10, 'average_rating' => 4.90, 'publish_date' => Carbon::create(2018, 1, 1,  23, 30, 03, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 2],
+            ['author_id' => 14, 'name' => '', 'image' => '', 'review_count' => 15, 'average_rating' => 4.88, 'publish_date' => Carbon::create(2019, 8, 15,  19, 32, 11, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 2],
+            ['author_id' => 15, 'name' => '', 'image' => '', 'review_count' => 15, 'average_rating' => 4.88, 'publish_date' => Carbon::create(2019, 8, 15,  19, 32, 11, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 2],
+            ['author_id' => 15, 'name' => '', 'image' => '', 'review_count' => 15, 'average_rating' => 4.88, 'publish_date' => Carbon::create(2019, 8, 15,  19, 32, 11, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 2],
+            ['author_id' => 15, 'name' => '', 'image' => '', 'review_count' => 15, 'average_rating' => 4.88, 'publish_date' => Carbon::create(2019, 8, 15,  19, 32, 11, 'Asia/Jakarta'), 'recipe_type' => 1, 'recipe_category_id' => 2],
         ]);
     }
 }
