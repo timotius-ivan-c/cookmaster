@@ -12,7 +12,7 @@ class Review extends Model
     }
     public function recipe()
     {
-        return $this->hasMany(Recipe::class);
+        return $this->belongsTo(Recipe::class);
     }
     //
 }

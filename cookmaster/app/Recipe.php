@@ -27,5 +27,9 @@ class Recipe extends Model
     {
         return $this->hasMany(RecipeDetailIngredient::class);
     }
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 
 }
