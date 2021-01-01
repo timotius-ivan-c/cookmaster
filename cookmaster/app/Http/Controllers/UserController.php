@@ -21,4 +21,44 @@ class UserController extends Controller
         $chefs = User::where('role_id', $role->id)->orderBy('fame','desc')->take(20)->get();
         return view('chef_leaderboard',['chefs'=>$chefs]);
     }
+
+    /***need to change view name */
+    public function view_top_members(){
+        $role = Role::where('name',"contributor")->first();
+        $contributors = User::where('role_id', $role->id)->orderBy('fame','desc')->take(20)->get();
+        return view('contributor_leaderboard',['contributors'=>$contributors]);
+    }
+    
+    public function edit_profile(){
+        $user = User::where('id', Auth()->user()->id)->get();
+        return view('edit_profile',['user'=>$user]);
+    }
+    
+    public function edited_profile(Request $request){
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+        ]);
+        if(Auth()->user()->email!=$request->email)
+        {
+            $this->validate($request, [
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            ]);
+            User::where('id', Auth()->user()->id)->update([
+                'email' => $request->email,
+            ]);
+        }
+        if(Auth()->user()->name!=$request->name)
+        {
+            $this->validate($request, [
+                'name' => ['required', 'string', 'max:255'],
+            ]);
+            User::where('id', Auth()->user()->id)->update([
+                'name' => $request->name,
+            ]);    
+        }
+        return redirect()->back();
+    }
+
+
 }
