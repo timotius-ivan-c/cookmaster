@@ -10,34 +10,34 @@ use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
-    public function view_recipe_category(RecipeCategory $category)
+    public function view_recipe_category($category)
     {
         $recipes = Recipe::where('recipe_category_id', $category->id)->get();
-        return view('View', ['recipes' => $recipes]);
+        return view('home', ['recipes' => $recipes]);
     }
 
-    public function search_by_ingredient(RecipeDetailIngredient $ingredient)
+    public function search_by_ingredient($ingredient)
     {
-        $recipes = Recipe::where('id', $ingredient->recipe_id)->get();
-        return view('View', ['recipes' => $recipes]);
+        $ingredients = RecipeDetailIngredient::where('name', 'like', "%$ingredient%")->first();
+        $recipes = Recipe::where('id', $ingredients->recipe_id)->get();
+        return view('home', ['recipes' => $recipes]);
     }
 
-    public function search_by_name(Request $request)
+    public function search_by_name($name)
     {
-        $name = $request->name;
         $recipes = Recipe::where('name', 'like', "%$name%")->get();
-        return view('View', ['recipes' => $recipes]);
+        return view('home', ['recipes' => $recipes]);
     }
 
     public function view_best_recipes()
     {
         // belum selesai
-        return view('View', ['recipes' => $recipes]);
+        return view('best_recipes', ['recipes' => $recipes]);
     }
 
     public function new_recipe()
     {
-        return view('View');
+        return view('add_recipe');
     }
 
     public function new_recipe(Request $request)
@@ -74,6 +74,6 @@ class RecipeController extends Controller
 
     public function view_recipe(Recipe $recipe)
     {
-        return view('View');
+        return view('view_recipe');
     }
 }
