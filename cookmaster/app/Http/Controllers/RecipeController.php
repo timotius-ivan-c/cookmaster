@@ -35,7 +35,7 @@ class RecipeController extends Controller
         return view('best_recipes', ['recipes' => $recipes]);
     }
 
-    public function new_recipe()
+    public function display_new_recipe_page()
     {
         return view('add_recipe');
     }
@@ -74,6 +74,6 @@ class RecipeController extends Controller
 
     public function view_recipe(Recipe $recipe)
     {
-        return view('view_recipe');
+        return view('view_recipe')->with('recipe', $recipe);
     }
 }

@@ -20,7 +20,7 @@ class User extends Authenticatable
 
     public function subscription()
     {
-        return $this->hasMany(Subscription::class);
+        return $this->hasMany(Subscription::class, 'member_id');
     }
 
     public function recipe()
@@ -30,20 +30,35 @@ class User extends Authenticatable
 
     public function review()
     {
-        return $this->belongsTo(Review::class);
+        return $this->hasMany(Review::class);
     }
     public function favoritedRecipe()
     {
         return $this->belongsTo(FavoritedRecipe::class);
     }
-    public function following()
-    {
-        return $this->belongsTo(Following::class);
+    // public function following()
+    // {
+    //     return $this->hasMany(Following::class, 'member_id');
+    // }
+
+    // A working User-to-User relationship for following and followers relation
+    // using intermediate table 'followings'
+    public function following() {
+        return $this->belongsToMany(User::class, 'followings', 'member_id', 'chef_id');
     }
+    public function followers() {
+        return $this->belongsToMany(User::class, 'followings', 'chef_id', 'member_id');
+    }
+
     public function transaction()
     {
         return $this->belongsTo(Transaction::class);
     }
+    public function following_list()
+    {
+        return $this->hasMany(Followings::class, 'chef_id');
+    }
+
     use Notifiable;
 
     /**
