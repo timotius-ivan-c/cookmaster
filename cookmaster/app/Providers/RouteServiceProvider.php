@@ -33,6 +33,8 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::model('recipe', \App\Recipe::class);
     }
 
     /**
