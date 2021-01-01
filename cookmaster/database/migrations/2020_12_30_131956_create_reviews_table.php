@@ -19,6 +19,7 @@ class CreateReviewsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->datetime('publish_date');
             $table->longText('review_text');
+            $table->integer('rating');
 
             $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->foreign('user_id')->references('id')->on('users');
