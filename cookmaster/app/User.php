@@ -30,7 +30,7 @@ class User extends Authenticatable
 
     public function review()
     {
-        return $this->belongsTo(Review::class);
+        return $this->hasMany(Review::class);
     }
     public function favoritedRecipe()
     {
