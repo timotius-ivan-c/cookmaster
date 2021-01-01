@@ -40,8 +40,13 @@
                         <div class="card mt-2">
                             <div class="card-header">{{ __('Reviews') }}</div>
                             @forelse($recipe->review as $review)
-                                <div class="card-body">{{ $review->rating }}</div>
-                                <div class="card-body">{{ $review->text }}</div>
+                                <div class="card-body">
+                                    <div class="card">
+                                        <div class="card-header"><strong>{{ $review->user->name }}</strong> <span class="float-right">Date: {{ $review->publish_date }}</span></div>
+                                        <div class="card-body pb-0">Rating: {{ $review->rating }}</div>
+                                        <div class="card-body">{{ $review->review_text }}</div>
+                                    </div>
+                                </div>
                             @empty
                                 <div class="card-body">{{ __('No reviews yet.') }}</div>
                             @endforelse
