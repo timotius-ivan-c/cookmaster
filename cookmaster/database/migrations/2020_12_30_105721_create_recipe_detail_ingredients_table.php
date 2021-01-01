@@ -18,6 +18,7 @@ class CreateRecipeDetailIngredientsTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('recipe_id');
             $table->string('name');
+            $table->string('amount');
             $table->string('notes');
 
             $table->foreign('recipe_id')->references('id')->on('recipes');
