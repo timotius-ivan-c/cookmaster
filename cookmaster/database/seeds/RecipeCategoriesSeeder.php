@@ -15,7 +15,9 @@ class RecipeCategoriesSeeder extends Seeder
         DB::table('recipe_categories')->insert([
             ['name' => 'Asian'],
             ['name' => 'Chinese'],
-            ['name' => 'Western']
+            ['name' => 'Western'],
+            ['name' => 'Indian'],
+            ['name' => 'Arabic'],
         ]);
     }
 }
