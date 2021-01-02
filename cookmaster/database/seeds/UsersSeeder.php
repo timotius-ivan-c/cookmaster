@@ -29,6 +29,11 @@ class UsersSeeder extends Seeder
             ['id' => 13, 'name' => 'Frederich Chopin', 'email' => 'chopinf@gmail.com', 'password' => Hash::make('propianist'), 'balance' => 1000000, 'role_id' => 1, 'tier_id' => 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
             ['id' => 14, 'name' => 'Perry Cooper', 'email' => 'cooper@gmail.com', 'password' => Hash::make('easypassword'), 'balance' => 200000, 'role_id' => 2, 'tier_id' => 5, 'fame' => 150, 'free_recipes_count' => 2, 'paid_recipes_count' => 0],
             ['id' => 15, 'name' => 'Daniel Climber', 'email' => 'danielcl@gmail.com', 'password' => Hash::make('lovebread'), 'balance' => 550000, 'role_id' => 2, 'tier_id' => 3, 'fame' => 70, 'free_recipes_count' => 3, 'paid_recipes_count' => 0],
+            ['id' => 16, 'name' => 'Jerry Michael', 'email' => 'jerry.michael@gmail.com', 'password' => Hash::make('jerry12345'), 'balance' => 350000, 'role_id' =>1, 'tier_id'=> 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 17, 'name' => 'Tom Harry', 'email' => 'tomharry001@gmail.com', 'password' => Hash::make('tharry01'), 'balance' => 125000, 'role_id' =>1, 'tier_id'=> 2, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 18, 'name' => 'Jack Smith', 'email' => 'jackSmith23@gmail.com', 'password' => Hash::make('jackSmith23'), 'balance' => 75000, 'role_id' =>1, 'tier_id'=> 1, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 19, 'name' => 'Lee dong-suk', 'email' => 'chefleedongsuk@gmail.com', 'password' => Hash::make('cookwithpassion'), 'balance' => 253000, 'role_id' =>3, 'tier_id'=> 4, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
+            ['id' => 20, 'name' => 'Han Ji-pyeong', 'email' => 'jipyeong@gmail.com', 'password' => Hash::make('teamhanjipyeong'), 'balance' => 85000, 'role_id' =>2, 'tier_id'=> 3, 'fame' => 0, 'free_recipes_count' => 0, 'paid_recipes_count' => 0],
         ]);
     }
 }
