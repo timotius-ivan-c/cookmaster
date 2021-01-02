@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use App\User;
 use App\Recipe;
 use App\Role;
+use App\Subscription;
 
 class UserController extends Controller
 {
@@ -58,6 +59,36 @@ class UserController extends Controller
             ]);    
         }
         return redirect()->back();
+    }
+
+    public function view_subscriptions(){
+        $user = User::where('id', Auth()->user()->id)->get();
+        $subscription = Subscription::Where('member_id',$user->id)->get();
+        return view('view_user_subscription',['subscription'=>$subscription]);
+    }
+
+    //later
+    public function follow(){
+
+    }
+
+    public function home(){
+        $user = User::find(Auth()->user()->id);
+        
+        //get following id
+        $following_id = $user->following()->get()->pluck('id');
+        $recipes = Recipe::whereIn('author_id',$following_id)->get();
+        
+        $member = Role::where('name',"member")->first();
+        $best_recipes = Recipe::orderBy('average_rating','desc')->take(3);
+        $hot_recipes = Recipe::orderBy('review_count','desc')->take(3);
+        if(Auth()->user()->role_id == $member->id){
+            return view('view_home',['recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
+        }
+        else{
+            $my_recipes = Recipe::where('author_id',Auth()->user()->id);
+            return view('view_home',['my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
+        }
     }
 
 
