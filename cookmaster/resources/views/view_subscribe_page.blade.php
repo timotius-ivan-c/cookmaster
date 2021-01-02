@@ -1,11 +1,15 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
     {{-- Data chef --}}
     {{$chef->id}}
     {{$chef->name}}
 
-    <form action='/subscribed' method='post'>
+    <form action='/subscribe' method='post'>
         {{csrf_field()}}
         <div class="form-group">
             <input type="hidden" name="id" value="{{$chef->id}}">
