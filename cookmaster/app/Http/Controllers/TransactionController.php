@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Subscription;
 use App\Tier;
 use App\Transaction;
 use App\User;
@@ -58,5 +59,11 @@ class TransactionController extends Controller
        ]);
         
         return redirect()->action([TransactionController::class,'view_transaction_history']);
+    }
+
+    public function view_subscribe_page(){
+        $subscriptions = Subscription::where('member_id', Auth::user()->id)->get();
+        
+        return view('view_subscribe_page', ['subscriptions' => $subscriptions]);
     }
 }
