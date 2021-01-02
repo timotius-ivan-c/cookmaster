@@ -23,13 +23,13 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->timestamp('last_post_date')->nullable();
             $table->timestamp('last_login')->nullable();
-            $table->unsignedBigInteger('balance');
-            $table->unsignedBigInteger('lifetime_topup');
-            $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('tier_id');
-            $table->integer('fame');
-            $table->unsignedInteger('free_recipes_count');
-            $table->unsignedInteger('paid_recipes_count');
+            $table->unsignedBigInteger('balance')->default(0);
+            $table->unsignedBigInteger('lifetime_topup')->default(0);
+            $table->unsignedBigInteger('role_id')->default(1);
+            $table->unsignedBigInteger('tier_id')->default(1);
+            $table->integer('fame')->default(0);
+            $table->unsignedInteger('free_recipes_count')->default(0);
+            $table->unsignedInteger('paid_recipes_count')->default(0);
 
             $table->foreign('role_id')->references('id')->on('roles');
             $table->foreign('tier_id')->references('id')->on('tiers');
