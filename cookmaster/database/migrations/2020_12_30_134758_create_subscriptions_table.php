@@ -19,7 +19,7 @@ class CreateSubscriptionsTable extends Migration
             $table->unsignedBigInteger('chef_id');
             $table->unsignedBigInteger('member_id');
             $table->datetime('start');
-            $table->datetime('duration');
+            $table->integer('duration');
             $table->datetime('end');
 
             $table->primary('transaction_id');
