@@ -66,4 +66,76 @@ class TransactionController extends Controller
         
         return view('view_subscribe_page', ['subscriptions' => $subscriptions]);
     }
+
+    public function pay_subscription(Request $request) {
+        $duration = $request->input('duration');
+        $id = $request->input('id');
+        $user_id = Auth::id();
+        
+        $subscribe_to = User::where('id',$id)->first();
+        $subscriber = User::find($user_id);
+
+        // verify that the user being subscribed to is either contributor or chef
+        if ($subscribe_to->role != 1) {
+            // if subscribing to contributor, cost=15000 per month
+            if($subscribe_to->role == 2) {
+                $amount = 15000 * $duration;
+                $is_enough_balance = ($subscriber->balance > $amount);
+            // if subscribing to chef, cost=30000 per month
+            } else {
+                $amount = 30000 * $duration;
+                $is_enough_balance = ($subscriber->balance > $amount);
+            }
+            
+            if ($is_enough_balance) {
+                $now = Carbon::now();
+                $new_transaction = new Transaction;
+                $new_transaction->recipient_id = $subscribe_to->id;
+                $new_transaction->sender_id = $subscriber;
+                $new_transaction->token = Str::random(10);
+                $new_transaction->amount = $amount;
+                $new_transaction->date = $now;
+                $new_transaction->message = "Subscribe to " + $subscribe_to->name
+                                        + ". Duration " + $duration + "months";
+                $new_transaction->transaction_type_id = 2;
+                $new_transaction->save();
+
+                $transaction_id = $new_transaction->id;
+
+                // default start and end datetimes is now and now+duration.
+                $start = $now;
+                $end = $now->addMonths($duration);
+
+                // check if user already have ongoing subs to the chef.
+                $active_subscription = Subscription::where(['chef_id'=>$id,
+                                                            'member_id'=>$user_id])
+                                                        ->orderBy('date','desc')
+                                                        ->first();
+                if(!empty($active_subscription)) {
+                    if($active_subscription->end > $now) {
+                        $start = $active_subscription->end;
+                        $end = Carbon::parse($active_subscription->end)->addMonths($duration);
+                    }
+                }
+
+                $new_sub = new Subscription;
+                $new_sub->transaction_id = $transaction_id;
+                $new_sub->chef_id = $id;
+                $new_sub->member_id = $user_id;
+                $new_sub->start = $start;
+                $new_sub->duration = $duration;
+                $new_sub->end = $end;
+
+                $new_sub->save();
+            }
+
+            if (!empty($new_sub->id)) {
+                return redirect('home')->with('success', "Subscription started!");
+            }
+
+        } else {
+            return Redirect::back()->with('error', "The user you are subscribing to is not contributor or chef.")
+        }
+        
+    }
 }
