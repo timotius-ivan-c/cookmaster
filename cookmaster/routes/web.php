@@ -28,3 +28,4 @@ Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
 Route::get('/transaction-history', 'TransactionController@view_transaction_history');
 Route::get('/top-up', 'TransactionController@view_topup_page');
 Route::post('/top-up', 'TransactionController@topup');
+Route::get('/subscribed', 'TransactionController@view_subscribe_page');
