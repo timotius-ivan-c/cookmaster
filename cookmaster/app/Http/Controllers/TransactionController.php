@@ -77,9 +77,9 @@ class TransactionController extends Controller
         $subscriber = User::find($user_id);
 
         // verify that the user being subscribed to is either contributor or chef
-        if ($subscribe_to->role != 1) {
+        if ($subscribe_to->role_id != 1) {
             // if subscribing to contributor, cost=15000 per month
-            if($subscribe_to->role == 2) {
+            if($subscribe_to->role_id == 2) {
                 $amount = 15000 * $duration;
                 $is_enough_balance = ($subscriber->balance > $amount);
             // if subscribing to chef, cost=30000 per month
@@ -92,31 +92,39 @@ class TransactionController extends Controller
                 $now = Carbon::now();
                 $new_transaction = new Transaction;
                 $new_transaction->recipient_id = $subscribe_to->id;
-                $new_transaction->sender_id = $subscriber;
+                $new_transaction->sender_id = $subscriber->id;
                 $new_transaction->token = Str::random(10);
                 $new_transaction->amount = $amount;
                 $new_transaction->date = $now;
-                $new_transaction->message = "Subscribe to " + $subscribe_to->name
-                                        + ". Duration " + $duration + "months";
+                $new_transaction->message = "Subscribe to ".$subscribe_to->name.". Duration ".$duration."months";
                 $new_transaction->transaction_type_id = 2;
                 $new_transaction->save();
 
                 $transaction_id = $new_transaction->id;
 
-                // default start and end datetimes is now and now+duration.
-                $start = $now;
-                $end = $now->addMonths($duration);
+                $subscriber->balance = $subscriber->balance - $amount;
+                $subscribe_to->balance = $subscribe_to->balance + $amount;
+
+                $subscriber->save();
+                $subscribe_to->save();
 
                 // check if user already have ongoing subs to the chef.
-                $active_subscription = Subscription::where(['chef_id'=>$id,
-                                                            'member_id'=>$user_id])
-                                                        ->orderBy('date','desc')
+                $active_subscription = Subscription::where('chef_id', $id)
+                                                        ->where('member_id', $user_id)
+                                                        ->orderBy('end','desc')
                                                         ->first();
-                if(!empty($active_subscription)) {
+                $start;
+                $end;
+
+                if($active_subscription) {
                     if($active_subscription->end > $now) {
                         $start = $active_subscription->end;
                         $end = Carbon::parse($active_subscription->end)->addMonths($duration);
                     }
+                } else {
+                     // default start and end datetimes is now and now+duration.
+                    $start = $now;
+                    $end = $now->addMonths($duration);
                 }
 
                 $new_sub = new Subscription;
@@ -128,14 +136,23 @@ class TransactionController extends Controller
                 $new_sub->end = $end;
 
                 $new_sub->save();
+                
+                if ($active_subscription) {
+                    return redirect()->action([TransactionController::class,'view_transaction_history'])
+                        ->with('success', "Subscription extended!");
+                }
+                
+                return redirect()->action([TransactionController::class,'view_transaction_history'])
+                    ->with('success', "Subscription started!");
+                
+            } else {
+                return redirect()->back()->with('error', "Not enough balance. Please top up!");
             }
 
-            if (!empty($new_sub->id)) {
-                return redirect('home')->with('success', "Subscription started!");
-            }
+            
 
         } else {
-            return Redirect::back()->with('error', "The user you are subscribing to is not contributor or chef.")
+            return redirect()->back()->with('error', "The user you are subscribing to is not contributor or chef.");
         }
         
     }
