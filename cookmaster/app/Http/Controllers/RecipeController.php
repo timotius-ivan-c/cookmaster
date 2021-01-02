@@ -6,6 +6,8 @@ use App\Recipe;
 use App\RecipeCategory;
 use App\RecipeDetailIngredient;
 use App\RecipeDetailStep;
+use App\Role;
+use App\User;
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
@@ -31,8 +33,16 @@ class RecipeController extends Controller
 
     public function view_best_recipes()
     {
-        // belum selesai
-        return view('best_recipes', ['recipes' => $recipes]);
+        $member = Role::where('name', "member")->first();
+
+        if (Auth()->user()->role_id == $member->id) {
+            $best_recipes = Recipe::orderBy('average_rating', 'desc')->get();
+            $hot_recipes = Recipe::orderBy('review_count', 'desc')->get();
+            return view('best_recipes', ['hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes]);
+        } else {
+            $recipes = Recipe::where('author_id', Auth()->user()->id);
+            return view('best_recipes', ['recipes' => $recipes]);
+        }
     }
 
     public function display_new_recipe_page()
