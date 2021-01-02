@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use App\User;
 use App\Recipe;
 use App\Role;
+use App\Transaction;
 use App\Subscription;
 
 class UserController extends Controller
@@ -87,7 +88,8 @@ class UserController extends Controller
         }
         else{
             $my_recipes = Recipe::where('author_id',Auth()->user()->id);
-            return view('view_home',['my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
+            $earnings = Transaction::where('recipient_id',Auth()->user()->id)->where('transaction_type_id',2)->sum('amount');
+            return view('view_home',['my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes,'earnings'=>$earnings]);
         }
     }
 
