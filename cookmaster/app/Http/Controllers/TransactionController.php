@@ -61,9 +61,10 @@ class TransactionController extends Controller
         return redirect()->action([TransactionController::class,'view_transaction_history']);
     }
 
-    public function view_subscribe_page(){
-        $subscriptions = Subscription::where('member_id', Auth::user()->id)->get();
+    public function view_subscribe_page(User $user){
         
-        return view('view_subscribe_page', ['subscriptions' => $subscriptions]);
+        $chef = User::where('id', $user->id)->first();
+        
+        return view('view_subscribe_page', ['chef' => $chef]);
     }
 }
