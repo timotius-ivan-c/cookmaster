@@ -13,6 +13,7 @@ class TiersSeeder extends Seeder
     public function run()
     {
         DB::table('tiers')->insert([
+            ['name' => 'Classic'], 
             ['name' => 'Bronze'],
             ['name' => 'Silver'],
             ['name' => 'Gold'],

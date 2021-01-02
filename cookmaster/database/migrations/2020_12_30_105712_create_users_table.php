@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('last_post_date')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->unsignedBigInteger('balance');
+            $table->unsignedBigInteger('lifetime_topup');
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('tier_id');
             $table->integer('fame');
