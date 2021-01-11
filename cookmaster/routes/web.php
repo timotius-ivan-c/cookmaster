@@ -26,6 +26,7 @@ Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
 
 // Recipe Controller
 Route::get('/recipe/category/{category:name}', 'RecipeController@view_recipe_category');
+Route::get('/recipe/ingredient/{ingredient:name}', 'RecipeController@search_by_ingredient');
 
 // Transaction Controller
 Route::get('/transaction-history', 'TransactionController@view_transaction_history');
