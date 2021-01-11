@@ -14,7 +14,9 @@ class RecipeController extends Controller
 {
     public function view_recipe_category($category)
     {
-        $recipes = Recipe::where('recipe_category_id', $category->id)->get();
+        $recipes = Recipe::with(['recipeCategory' => function ($query) use($category) {
+            $query->where('name', $category);
+        }])->get();
         return view('home', ['recipes' => $recipes]);
     }
 
