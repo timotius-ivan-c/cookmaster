@@ -24,6 +24,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile/{id}', ['uses' => 'UserController@view_profile', 'as' => 'profile.view'])->name('view_profile');
 Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
 
+// Recipe Controller
+Route::get('/recipe/category/{category:name}', 'RecipeController@view_recipe_category');
+
 // Transaction Controller
 Route::get('/transaction-history', 'TransactionController@view_transaction_history');
 Route::get('/top-up', 'TransactionController@view_topup_page');
