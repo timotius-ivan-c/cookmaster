@@ -24,7 +24,11 @@ class RecipeController extends Controller
             $subscribed_chefs = DB::table('users')->select('id')
                 ->whereRaw("id in (SELECT chef_id FROM subscriptions WHERE member_id=".$member->id." AND end > '".Carbon::now()."')")->get();
     
-            $subscribed_recipes = Recipe::where('recipe_type', '=', 2)->whereIn('author_id', $subscribed_chefs->pluck('id'))
+            $subscribed_recipes = Recipe::where('recipe_type', '=', 2)
+                ->where(['recipe_category_id' => function ($query) use ($category) { 
+                    $query->select('id')->from('recipe_categories')->where('name', $category)->get();
+                }])
+                ->whereIn('author_id', $subscribed_chefs->pluck('id'))
                 ->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
         }
 
