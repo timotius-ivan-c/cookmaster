@@ -29,8 +29,8 @@ class RecipeController extends Controller
 
     public function search_by_name($name)
     {
-        $recipes = Recipe::where('name', 'like', "%$name%")->get();
-        return view('home', ['recipes' => $recipes]);
+        $recipes = Recipe::where('name', 'like', "%".$name."%")->get();
+        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=>'name', 'query'=>$name]);
     }
 
     public function view_best_recipes()
