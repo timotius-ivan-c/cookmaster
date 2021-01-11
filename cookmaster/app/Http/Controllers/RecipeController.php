@@ -8,16 +8,31 @@ use App\RecipeDetailIngredient;
 use App\RecipeDetailStep;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RecipeController extends Controller
 {
     public function view_recipe_category($category)
     {
-        $recipes = Recipe::with(['recipeCategory' => function ($query) use ($category) {
-            $query->where('name', $category);
-        }])->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
-        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter' => 'category', 'query' => $category]);
+        $member = Auth::user();
+        $subscribed_recipes = [];
+        
+        if ($member) {
+            $subscribed_chefs = DB::table('users')->select('id')
+                ->whereRaw("id in (SELECT chef_id FROM subscriptions WHERE member_id=".$member->id." AND end > '".Carbon::now()."')")->get();
+    
+            $subscribed_recipes = Recipe::where('recipe_type', '=', 2)->whereIn('author_id', $subscribed_chefs->pluck('id'))
+                ->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
+        }
+
+        $recipes = Recipe::where(['recipe_category_id' => function ($query) use ($category) { 
+            $query->select('id')->from('recipe_categories')->where('name', $category)->get();
+        }])->where('recipe_type', '=', '1')->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
+
+        return view('view_filtered_recipes', ['recipes_paid'=>$subscribed_recipes, 'recipes' => $recipes, 'filter' => 'category', 'query' => $category]);
     }
 
     public function search_by_ingredient($ingredient)
@@ -29,7 +44,7 @@ class RecipeController extends Controller
 
     public function search_by_name($name)
     {
-        $recipes = Recipe::where('name', 'like', "%".$name."%")->get();
+        $recipes = Recipe::where('name', 'like', "%$name%")->get();
         return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=>'name', 'query'=>$name]);
     }
 
