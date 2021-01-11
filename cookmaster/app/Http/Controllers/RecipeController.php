@@ -16,15 +16,15 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::with(['recipeCategory' => function ($query) use($category) {
             $query->where('name', $category);
-        }])->get();
-        return view('home', ['recipes' => $recipes]);
+        }])->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
+        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=> 'category', 'query'=> $category]);
     }
 
     public function search_by_ingredient($ingredient)
     {
         $ingredients = RecipeDetailIngredient::where('name', 'like', "%$ingredient%")->first();
         $recipes = Recipe::where('id', $ingredients->recipe_id)->get();
-        return view('home', ['recipes' => $recipes]);
+        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=> 'ingredient', 'query'=> $ingredient]);
     }
 
     public function search_by_name($name)
