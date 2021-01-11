@@ -17,7 +17,7 @@ class Recipe extends Model
     }
     public function recipeCategory()
     {
-        return $this->hasOne(RecipeCategory::class);
+        return $this->hasOne(RecipeCategory::class, 'id', 'recipe_category_id');
     }
     public function recipeDetailStep()
     {
