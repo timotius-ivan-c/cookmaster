@@ -106,7 +106,9 @@
                         </li>
                         {{-- show extra buttons if the user is a member --}}
                         @if(\Auth::user()->role_id == 1)
-                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href=''">Cart</button>
+                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/subscribe/{user:id}'">Subscription</button>
+                        @elseif(\Auth::user()->role_id==2||\Auth::user()->role_id==3)
+                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/'">Earnings</button>
                         @endif
                     @endguest
                 </ul>
