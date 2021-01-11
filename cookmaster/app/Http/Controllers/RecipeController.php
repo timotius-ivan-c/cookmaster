@@ -14,17 +14,17 @@ class RecipeController extends Controller
 {
     public function view_recipe_category($category)
     {
-        $recipes = Recipe::with(['recipeCategory' => function ($query) use($category) {
+        $recipes = Recipe::with(['recipeCategory' => function ($query) use ($category) {
             $query->where('name', $category);
         }])->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
-        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=> 'category', 'query'=> $category]);
+        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter' => 'category', 'query' => $category]);
     }
 
     public function search_by_ingredient($ingredient)
     {
         $ingredients = RecipeDetailIngredient::where('name', 'like', "%$ingredient%")->first();
         $recipes = Recipe::where('id', $ingredients->recipe_id)->get();
-        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=> 'ingredient', 'query'=> $ingredient]);
+        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter' => 'ingredient', 'query' => $ingredient]);
     }
 
     public function search_by_name($name)
@@ -56,36 +56,41 @@ class RecipeController extends Controller
     {
         $image_path = $request->file('image')->store('images', 'public');
 
-        // Recipe::create([
-        //     'author_id'=> ,
-        //     'name' => $request->name,
-        //     'image' => $image_path,
-        //     'review_count' => '0',
-        //     'average_rating' => '0',
-        //     'publish_date' => ,
-        //     'recipe_type' => ,
-        //     'recipe_category_id' => ,
-        // ]);
+        Recipe::create([
+            'author_id' => Auth()->user()->id,
+            'name' => $request->name,
+            'image' => $image_path,
+            'review_count' => '0',
+            'average_rating' => '0',
+            'publish_date' => date("Y/m/d/H/i/s"),
+            'recipe_type' => $request->type,
+            'recipe_category_id' => $request->category,
+        ]);
 
         $recipe = Recipe::last();
 
-        // RecipeDetailStep::create([
-        //     'recipe_id' => $recipe,
-        //     'text' => ,
-        //     'image' => ,
-        // ]);
+        RecipeDetailStep::create([
+            'recipe_id' => $recipe->id,
+            'text' => $request->text,
+            'image' => $image_path,
+        ]);
 
-        // RecipeDetailIngredient::create([
-        //     'recipe_id' => $recipe,
-        //     'name' => ,
-        //     'notes' => ,
-        // ]);
+        RecipeDetailIngredient::create([
+            'recipe_id' => $recipe,
+            'name' => $request->ingredient_name,
+            'amount' => $request->amount,
+            'notes' => $request->notes,
+        ]);
 
         return redirect()->back();
     }
 
     public function view_recipe(Recipe $recipe)
     {
-        return view('view_recipe')->with('recipe', $recipe);
+        if ($recipe->recipe_type == 1) {
+            return view('view_recipe')->with('recipe', $recipe);
+        } else {
+            return redirect()->back();
+        }
     }
 }
