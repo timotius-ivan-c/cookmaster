@@ -59,7 +59,7 @@ class RecipeController extends Controller
         }
         
         
-        $recipes = Recipe::whereIn('id', $ingredients->pluck('recipe_id'))->get();
+        $recipes = Recipe::where('recipe_type', 1)->whereIn('id', $ingredients->pluck('recipe_id'))->get();
         return view('view_filtered_recipes', ['recipes_paid' => $subscribed_recipes, 'recipes' => $recipes, 'filter' => 'ingredient', 'query' => $ingredient]);
     }
 
