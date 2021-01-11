@@ -107,7 +107,6 @@
                         {{-- show extra buttons if the user is a member --}}
                         @if(\Auth::user()->role_id == 1)
                             <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href=''">Cart</button>
-                            <button type="button" class="btn btn-primary" onclick="window.location.href=''">History</button>
                         @endif
                     @endguest
                 </ul>
