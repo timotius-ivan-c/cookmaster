@@ -65,8 +65,21 @@ class RecipeController extends Controller
 
     public function search_by_name($name)
     {
-        $recipes = Recipe::where('name', 'like', "%$name%")->get();
-        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter'=>'name', 'query'=>$name]);
+        $member = Auth::user();
+        $subscribed_recipes = [];
+        
+        if ($member) {
+            $subscribed_chefs = DB::table('users')->select('id')
+                ->whereRaw("id in (SELECT chef_id FROM subscriptions WHERE member_id=".$member->id." AND end > '".Carbon::now()."')")->get();
+    
+            $subscribed_recipes = Recipe::where('recipe_type', '=', 2)
+                ->where('name', 'like', "%$name%")
+                ->whereIn('author_id', $subscribed_chefs->pluck('id'))
+                ->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
+        }
+
+        $recipes = Recipe::where('recipe_type', 1)->where('name', 'like', "%$name%")->get();
+        return view('view_filtered_recipes', ['recipes_paid' => $subscribed_recipes, 'recipes' => $recipes, 'filter'=>'name', 'query'=>$name]);
     }
 
     public function view_best_recipes()
