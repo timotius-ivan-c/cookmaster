@@ -41,9 +41,26 @@ class RecipeController extends Controller
 
     public function search_by_ingredient($ingredient)
     {
-        $ingredients = RecipeDetailIngredient::where('name', 'like', "%$ingredient%")->first();
-        $recipes = Recipe::where('id', $ingredients->recipe_id)->get();
-        return view('view_filtered_recipes', ['recipes' => $recipes, 'filter' => 'ingredient', 'query' => $ingredient]);
+        $member = Auth::user();
+        $subscribed_recipes = [];
+
+        $ingredients = RecipeDetailIngredient::where('name', 'like', "%$ingredient%")->with('Recipe')->get();
+        
+        if ($member) {
+            $subscribed_chefs = DB::table('users')->select('id')
+                ->whereRaw("id in (SELECT chef_id FROM subscriptions WHERE member_id=".$member->id." AND end > '".Carbon::now()."')")->get();
+    
+            $subscribed_recipes = Recipe::where('recipe_type', '=', 2)
+                ->whereIn('id', function ($query) use ($ingredient) {
+                    $query->select('recipe_id')->from('recipe_detail_ingredients')->where('name', 'like', "%$ingredient%")->get()->pluck('recipe_id');
+                })
+                ->whereIn('author_id', $subscribed_chefs->pluck('id'))
+                ->with('RecipeDetailIngredient')->with('RecipeDetailStep')->with('user')->get();
+        }
+        
+        
+        $recipes = Recipe::whereIn('id', $ingredients->pluck('recipe_id'))->get();
+        return view('view_filtered_recipes', ['recipes_paid' => $subscribed_recipes, 'recipes' => $recipes, 'filter' => 'ingredient', 'query' => $ingredient]);
     }
 
     public function search_by_name($name)
