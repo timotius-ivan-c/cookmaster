@@ -5,6 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+            <div class="alert-success" id="follow_msg"></div>
                 <div class="card-header">{{ __('Profile') }}</div>
 
                 <div class="card-body">
@@ -57,8 +58,12 @@
     </div>
 </div>
 
-    <input type="hidden" class = "user_id" name="user_id" value="{{$user[0]->id}}"> 
-    <button type="button" class=" btn-success btn-sm searchButton" id="follow" >follow</button>
+    <input type="hidden" class = "user_id" name="user_id" value="{{$user[0]->id}}">
+    @if(count($following)==0)
+    <button type="button" class=" btn-success btn-sm searchButton" id="follow" >Follow</button>
+    @else
+    <button type="button" class=" btn-danger btn-sm searchButton" id="follow" >Unfollow</button>
+    @endif
     <div class="writeinfo"></div> 
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -75,8 +80,16 @@
                     data: {_token: CSRF_TOKEN, message:$(".user_id").val()},
                     dataType: 'JSON',
                     /* remind that 'data' is the response of the AjaxController */
-                    success: function (data) { 
-                        $(".writeinfo").append(data.msg); 
+                    success: function (data) {
+                        if ($("#follow").text() == 'Follow') {
+                            $("#follow").html('Unfollow');
+                            $("#follow").addClass("btn-danger").removeClass("btn-success");
+                            $("#follow_msg").html("Followed!");
+                        } else {
+                            $("#follow").html('Follow');
+                            $("#follow").addClass("btn-success").removeClass("btn-danger");
+                            $("#follow_msg").html("Unfollowed!");
+                        }
                     }
                 }); 
             });
