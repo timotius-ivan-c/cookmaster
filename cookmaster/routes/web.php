@@ -20,6 +20,25 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::group(['middleware' => 'registered_user'], function() {
+    // Transaction Controller
+    Route::get('/transaction-history', 'TransactionController@view_transaction_history');
+    Route::get('/top-up', 'TransactionController@view_topup_page');
+    Route::post('/top-up', 'TransactionController@topup');
+    Route::get('/subscribe/{user:id}', 'TransactionController@view_subscribe_page')->name('subscribe');
+    Route::post('/subscribe', 'TransactionController@pay_subscription');
+
+    // User Controller
+    Route::get('/test-follow/{id}','UserController@test_follow');
+    Route::post('/follow','UserController@follow');
+});
+
+Route::group(['middleware' => 'contributor_and_chef'], function(){
+
+    // Recipe Controller 
+    Route::get('/new-recipe', 'RecipeController@new_recipe');
+}); 
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile/{id}', ['uses' => 'UserController@view_profile', 'as' => 'profile.view'])->name('view_profile');
 Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
@@ -30,15 +49,6 @@ Route::get('/recipe/ingredient/{ingredient}', 'RecipeController@search_by_ingred
 Route::get('/recipe/name/{name}', 'RecipeController@search_by_name');
 Route::get('/recipe/best-recipe', 'RecipeController@view_best_recipes');
 Route::get('/recipe/view-recipe/{master_recipes:id}', 'RecipeController@view_recipe');
-Route::get('/new-recipe', 'RecipeController@new_recipe');
 
-// Transaction Controller
-Route::get('/transaction-history', 'TransactionController@view_transaction_history');
-Route::get('/top-up', 'TransactionController@view_topup_page');
-Route::post('/top-up', 'TransactionController@topup');
-Route::get('/subscribe/{user:id}', 'TransactionController@view_subscribe_page')->name('subscribe');
-Route::post('/subscribe', 'TransactionController@pay_subscription');
 
-// User Controller
-Route::get('/test-follow/{id}','UserController@test_follow');
-Route::post('/follow','UserController@follow');
+
