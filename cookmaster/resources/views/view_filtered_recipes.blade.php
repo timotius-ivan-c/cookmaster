@@ -14,29 +14,68 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    
+                    @if (Auth::check())
+                    <div class="card mb-5">
+                        <div class="card-header bg-warning">Paid Recipes from Your Subscriptions</div>
+                        @forelse($recipes_paid as $recipe)
+                        <div class="card m-2">
+                            <div class="card-header">
+                                <div>Title: {{ $recipe->name }}</div>
+                                <div>Author: {{ $recipe->user->name }}</div>
+                            </div>
+                            <div class="card-body">Ingredients:</div>
+                            <div class="card">
+                                @forelse($recipe->recipeDetailIngredient as $ingredient)
+                                    <div class="card-body">{{ $ingredient->amount }} {{ $ingredient->name }} @if(!empty($ingredient->notes)) ({{ $ingredient->notes }}) @endif</div>
+                                @empty
+                                    <div class="card-body">{{ __('No ingredient added yet.') }}</div>
+                                @endforelse
+                            </div>
+                            <div class="card-body">Steps:</div>
+                            <div class="card">
+                                @forelse($recipe->recipeDetailStep as $step)
+                                    <div class="card-body">{{ $step->step_no }}. {{ $step->text }}</div>
+                                @empty
+                                    <div class="card-body">{{ __('No steps added yet.') }}</div>
+                                @endforelse
+                            </div>
+                        </div>
+                        @empty
+                            <div class="card">{{ __('No results') }}</div>
+                        @endforelse
+                    </div>
+                    @endif
 
-                    @forelse($recipes as $recipe)
-                        <div>Title: {{ $recipe->name }}</div>
-                        <div>Author: {{ $recipe->user->name }}</div>
-                        <div>Ingredients:</div>
-                        <div class="card">
-                            @forelse($recipe->recipeDetailIngredient as $ingredient)
-                                <div class="card-body">{{ $ingredient->amount }} {{ $ingredient->name }} @if(!empty($ingredient->notes)) ({{ $ingredient->notes }}) @endif</div>
-                            @empty
-                                <div class="card-body">{{ __('No ingredient added yet.') }}</div>
-                            @endforelse
+                    <div class="card">
+                        <div class="card-header bg-danger">Free Recipes</div>
+                        @forelse($recipes as $recipe)
+                        <div class="card m-2">
+                            <div class="card-header">
+                                <div>Title: {{ $recipe->name }}</div>
+                                <div>Author: {{ $recipe->user->name }}</div>
+                            </div>
+                            <div class="card-body">Ingredients:</div>
+                            <div class="card">
+                                @forelse($recipe->recipeDetailIngredient as $ingredient)
+                                    <div class="card-body">{{ $ingredient->amount }} {{ $ingredient->name }} @if(!empty($ingredient->notes)) ({{ $ingredient->notes }}) @endif</div>
+                                @empty
+                                    <div class="card-body">{{ __('No ingredient added yet.') }}</div>
+                                @endforelse
+                            </div>
+                            <div class="card-body">Steps:</div>
+                            <div class="card">
+                                @forelse($recipe->recipeDetailStep as $step)
+                                    <div class="card-body">{{ $step->step_no }}. {{ $step->text }}</div>
+                                @empty
+                                    <div class="card-body">{{ __('No steps added yet.') }}</div>
+                                @endforelse
+                            </div>
                         </div>
-                        <div>Steps:</div>
-                        <div class="card">
-                            @forelse($recipe->recipeDetailStep as $step)
-                                <div class="card-body">{{ $step->step_no }}. {{ $step->text }}</div>
-                            @empty
-                                <div class="card-body">{{ __('No steps added yet.') }}</div>
-                            @endforelse
-                        </div>
-                    @empty
-                        <div class="card">{{ __('No results') }}</div>
-                    @endforelse
+                        @empty
+                            <div class="card">{{ __('No results') }}</div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
