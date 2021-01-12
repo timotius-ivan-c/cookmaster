@@ -74,15 +74,15 @@ class UserController extends Controller
     }
 
     public function view_subscriptions(){
-        $user = User::where('id', Auth()->user()->id)->get();
+        $user = Auth::user();
 
         if (!$user) {
-            return back(404);
+            return redirect('login');
         }
 
-        $subscription = Subscription::Where('member_id',$user[0]->id)->get();
+        $subscription = Subscription::where('member_id',$user->id)->with('chef')->with('recipe')->where('end', '>', Carbon::now())->where('start', '<', Carbon::now())->get();
         // dd($subscription);
-        return view('view_user_subscription',['subscription'=>$subscription]);
+        return view('view_user_subscription', ['subscriptions'=>$subscription]);
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////later
@@ -182,7 +182,7 @@ class UserController extends Controller
         else{
             $my_recipes = Recipe::where('author_id',Auth()->user()->id);
             $earnings = Transaction::where('recipient_id',Auth()->user()->id)->where('transaction_type_id',2)->sum('amount');
-            return view('view_home',['my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes,'earnings'=>$earnings]);
+            return view('welcome',['my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes,'earnings'=>$earnings])->render();
         }
     }
 
