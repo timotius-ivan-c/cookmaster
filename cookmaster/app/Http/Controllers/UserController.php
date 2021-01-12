@@ -32,14 +32,14 @@ class UserController extends Controller
     public function view_top_chefs(){
         $role = Role::where('name',"chef")->first();
         $chefs = User::where('role_id', $role->id)->orderBy('fame','desc')->take(20)->get();
-        return view('chef_leaderboard',['chefs'=>$chefs]);
+        return view('leaderboard',['users'=>$chefs,'type'=>'chef']);
     }
 
     /***need to change view name */
     public function view_top_members(){
         $role = Role::where('name',"contributor")->first();
         $contributors = User::where('role_id', $role->id)->orderBy('fame','desc')->take(20)->get();
-        return view('contributor_leaderboard',['contributors'=>$contributors]);
+        return view('leaderboard',['users'=>$contributors,'type'=>'contributor']);
     }
     
     public function edit_profile(){
