@@ -28,6 +28,9 @@ Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
 Route::get('/recipe/category/{category}', 'RecipeController@view_recipe_category');
 Route::get('/recipe/ingredient/{ingredient}', 'RecipeController@search_by_ingredient');
 Route::get('/recipe/name/{name}', 'RecipeController@search_by_name');
+Route::get('/recipe/best-recipe', 'RecipeController@view_best_recipes');
+Route::get('/recipe/view-recipe/{master_recipes:id}', 'RecipeController@view_recipe');
+Route::get('/new-recipe', 'RecipeController@new_recipe');
 
 // Transaction Controller
 Route::get('/transaction-history', 'TransactionController@view_transaction_history');
