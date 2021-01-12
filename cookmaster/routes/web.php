@@ -36,7 +36,7 @@ Route::get('/new-recipe', 'RecipeController@new_recipe');
 Route::get('/transaction-history', 'TransactionController@view_transaction_history');
 Route::get('/top-up', 'TransactionController@view_topup_page');
 Route::post('/top-up', 'TransactionController@topup');
-Route::get('/subscribe/{user:id}', 'TransactionController@view_subscribe_page');
+Route::get('/subscribe/{user:id}', 'TransactionController@view_subscribe_page')->name('subscribe');
 Route::post('/subscribe', 'TransactionController@pay_subscription');
 
 // User Controller
