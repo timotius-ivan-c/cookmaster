@@ -36,7 +36,7 @@ class UserController extends Controller
     }
 
     /***need to change view name */
-    public function view_top_members(){
+    public function view_top_contributors(){
         $role = Role::where('name',"contributor")->first();
         $contributors = User::where('role_id', $role->id)->orderBy('fame','desc')->take(20)->get();
         return view('leaderboard',['users'=>$contributors,'type'=>'contributor']);
@@ -80,7 +80,8 @@ class UserController extends Controller
             return back(404);
         }
 
-        $subscription = Subscription::Where('member_id',$user->id)->get();
+        $subscription = Subscription::Where('member_id',$user[0]->id)->get();
+        // dd($subscription);
         return view('view_user_subscription',['subscription'=>$subscription]);
     }
 
