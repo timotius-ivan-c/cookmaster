@@ -10,6 +10,8 @@ use App\Role;
 use App\Transaction;
 use App\Subscription;
 use App\Following;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -73,29 +75,69 @@ class UserController extends Controller
 ///////////////////////////////////////////////////////////////////////////////////////later
     public function follow(Request $request ){
         // dd($request);
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out-> writeln($request->input('message'));
         
-        $response = array(
-            'status' => 'success',
-            'msg' => $request->message,
-        );
-        $member_id = Auth()->user()->id;
-        
+        $member_id = Auth::user()->id;
+        $success = false;
+
         $chef_id = $request->input('message');
         // print_r($chef_id);
         // die();
-        DB::table('followings')->insert([
-            ['chef_id' => $chef_id,
-            'member_id' => $member_id,]
-        ]);
-        // return view('test_follow');
+        // DB::table('followings')->insert([
+            //     ['chef_id' => $chef_id,
+            //     'member_id' => $member_id,
+            //     'created_at' => Carbon::now()]
+            // ]);
+        $exist = (sizeof(DB::table('followings')->where(['member_id'=>$member_id, 'chef_id'=>$chef_id])->get()) > 0);
+        
+        if ($exist) {
+            try {
+                //code...
+                $following = Following::where(['member_id'=>$member_id, 'chef_id'=>$chef_id])->delete();
+                if ($following > 0) $success = true;
+            } catch (\Throwable $th) {
+                $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+                $out-> writeln($th);
+                throw $th;
+                $success = false;
+            }
+        } else {
+            try {
+                //code...
+                $newFollowing = new Following();
+                $newFollowing->chef_id = $chef_id;
+                $newFollowing->member_id = $member_id;
+                $newFollowing->subscribed_since = Carbon::now();
+                $newFollowing->save();
+                $success = true;
+            } catch (\Throwable $th) {
+                $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+                $out-> writeln($th);
+                throw $th;
+                $success = false;
+            }
+        }
+        
+        if ($success) {
+            $response = array(
+                'status' => 'success',
+                'msg' => $request->input('message'),
+            );
+        } else {
+            $response = array(
+                'status' => 'fail',
+                'msg' => $request->input('message'),
+            );
+        }
+
         return response()->json($response); 
 
     }
     public function test_follow($id){
-        $user = User::where('id', $id)->get();
-        return View::make('test_follow')->with('user', $user)->render();
+        $chef = User::where('id', $id)->get();
+        $member = Auth::user();
+
+        $following = Following::where(['member_id'=>$member->id, 'chef_id'=>$chef->first()->id])->get();
+        return View::make('test_follow')->with(['user'=>$chef, 'following'=>$following])->render();
     }
 /////////////////////////////////////////////////////////////////////////////////////////////
     public function home(){
