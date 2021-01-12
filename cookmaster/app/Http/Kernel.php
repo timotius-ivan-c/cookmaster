@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ContributorChefMiddleware;
+use App\Http\Middleware\RegisteredUserMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -62,5 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'registered_user' => RegisteredUserMiddleware::class,
+        'contributor_and_chef' => ContributorChefMiddleware::class
     ];
 }
