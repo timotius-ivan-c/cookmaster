@@ -38,10 +38,7 @@ Route::get('/top-up', 'TransactionController@view_topup_page');
 Route::post('/top-up', 'TransactionController@topup');
 Route::get('/subscribe/{user:id}', 'TransactionController@view_subscribe_page');
 Route::post('/subscribe', 'TransactionController@pay_subscription');
-<<<<<<< HEAD
 
 // User Controller
 Route::get('/test-follow/{id}','UserController@test_follow');
 Route::post('/follow','UserController@follow');
-=======
->>>>>>> e3023533f042de9f258c48639530b6a633d84abd
