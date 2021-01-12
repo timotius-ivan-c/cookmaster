@@ -10,5 +10,10 @@ class Following extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    protected $table = 'followings';
+    protected $fillable = [
+        'member_id', 'chef_id',
+    ];
     //
 }

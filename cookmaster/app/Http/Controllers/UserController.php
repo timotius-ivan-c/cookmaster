@@ -9,6 +9,8 @@ use App\Recipe;
 use App\Role;
 use App\Transaction;
 use App\Subscription;
+use App\Following;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -68,11 +70,34 @@ class UserController extends Controller
         return view('view_user_subscription',['subscription'=>$subscription]);
     }
 
-    //later
-    public function follow(){
+///////////////////////////////////////////////////////////////////////////////////////later
+    public function follow(Request $request ){
+        // dd($request);
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out-> writeln($request->input('message'));
+        
+        $response = array(
+            'status' => 'success',
+            'msg' => $request->message,
+        );
+        $member_id = Auth()->user()->id;
+        
+        $chef_id = $request->input('message');
+        // print_r($chef_id);
+        // die();
+        DB::table('followings')->insert([
+            ['chef_id' => $chef_id,
+            'member_id' => $member_id,]
+        ]);
+        // return view('test_follow');
+        return response()->json($response); 
 
     }
-
+    public function test_follow($id){
+        $user = User::where('id', $id)->get();
+        return View::make('test_follow')->with('user', $user)->render();
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////
     public function home(){
         $user = User::find(Auth()->user()->id);
         
