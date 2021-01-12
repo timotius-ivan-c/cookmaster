@@ -18,8 +18,15 @@ class UserController extends Controller
 {
     //
     public function view_profile($id){
-        $user = User::where('id', $id)->get();
-        return View::make('view_user_profile')->with('user', $user)->render();
+        $chef = User::where('id', $id)->get();
+        $member = Auth::user();
+
+        $following = [];
+        
+        if ($member) {
+            $following = Following::where(['member_id'=>$member->id, 'chef_id'=>$chef->first()->id])->get();
+        }
+        return View::make('view_user_profile')->with(['user'=>$chef, 'following'=>$following])->render();
     }
 
     public function view_top_chefs(){
@@ -68,6 +75,11 @@ class UserController extends Controller
 
     public function view_subscriptions(){
         $user = User::where('id', Auth()->user()->id)->get();
+
+        if (!$user) {
+            return back(404);
+        }
+
         $subscription = Subscription::Where('member_id',$user->id)->get();
         return view('view_user_subscription',['subscription'=>$subscription]);
     }
@@ -75,9 +87,21 @@ class UserController extends Controller
 ///////////////////////////////////////////////////////////////////////////////////////later
     public function follow(Request $request ){
         // dd($request);
-        
+        $member = Auth::user();
+
+        if (!$member) {
+            $response = array(
+                'status' => 'fail',
+                'msg' => $request->input('message'),
+            );
+            return response()->json($response);
+        }
+
         $member_id = Auth::user()->id;
         $success = false;
+
+        $following = [];
+        
 
         $chef_id = $request->input('message');
         // print_r($chef_id);
@@ -129,9 +153,9 @@ class UserController extends Controller
             );
         }
 
-        return response()->json($response); 
-
+        return response()->json($response);
     }
+
     public function test_follow($id){
         $chef = User::where('id', $id)->get();
         $member = Auth::user();
@@ -140,6 +164,7 @@ class UserController extends Controller
         return View::make('test_follow')->with(['user'=>$chef, 'following'=>$following])->render();
     }
 /////////////////////////////////////////////////////////////////////////////////////////////
+
     public function home(){
         $user = User::find(Auth()->user()->id);
         
