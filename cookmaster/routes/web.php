@@ -39,7 +39,7 @@ Route::group(['middleware' => 'contributor_and_chef'], function(){
     Route::get('/new-recipe', 'RecipeController@new_recipe');
 }); 
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile/{id}', ['uses' => 'UserController@view_profile', 'as' => 'profile.view'])->name('view_profile');
 Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
 
@@ -49,6 +49,16 @@ Route::get('/recipe/ingredient/{ingredient}', 'RecipeController@search_by_ingred
 Route::get('/recipe/name/{name}', 'RecipeController@search_by_name');
 Route::get('/recipe/best-recipe', 'RecipeController@view_best_recipes');
 Route::get('/recipe/view-recipe/{master_recipes:id}', 'RecipeController@view_recipe');
+
+
+// User Controller
+Route::get('/top-chefs','UserController@view_top_chefs');
+Route::get('/top-members','UserController@view_top_members');
+Route::get('/edit-profile','UserController@edit_profile');
+Route::post('/edit-profile','UserController@edited_profile');
+Route::get('/subscriptions','UserController@view_subscriptions');
+Route::post('/follow','UserController@follow');
+Route::get('/home','UserController@home');
 
 
 
