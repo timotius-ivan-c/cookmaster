@@ -15,5 +15,10 @@ class Subscription extends Model
     {
         return $this->hasOne(Transaction::class);
     }
+
+    protected $table = 'subscriptions';
+    protected $fillable = [
+        'transactiond_id','member_id', 'chef_id','start','duration','end'
+    ];
     //
 }
