@@ -113,10 +113,10 @@ class TransactionController extends Controller
                                                         ->where('member_id', $user_id)
                                                         ->orderBy('end','desc')
                                                         ->first();
-                $start;
-                $end;
+                $start = Carbon::now();
+                $end = Carbon::now()->addMonths($duration);
 
-                if($active_subscription) {
+                if(!empty($active_subscription)) {
                     if($active_subscription->end > $now) {
                         $start = $active_subscription->end;
                         $end = Carbon::parse($active_subscription->end)->addMonths($duration);
@@ -124,7 +124,7 @@ class TransactionController extends Controller
                 } else {
                      // default start and end datetimes is now and now+duration.
                     $start = $now;
-                    $end = $now->addMonths($duration);
+                    $end = Carbon::now()->addMonths($duration);
                 }
 
                 $new_sub = new Subscription;
