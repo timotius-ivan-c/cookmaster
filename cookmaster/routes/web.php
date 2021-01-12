@@ -53,12 +53,13 @@ Route::get('/recipe/view-recipe/{master_recipes:id}', 'RecipeController@view_rec
 
 // User Controller
 Route::get('/top-chefs','UserController@view_top_chefs');
-Route::get('/top-members','UserController@view_top_members');
+Route::get('/top-contributors','UserController@view_top_contributors');
 Route::get('/edit-profile','UserController@edit_profile');
 Route::post('/edit-profile','UserController@edited_profile');
 Route::get('/subscriptions','UserController@view_subscriptions');
 Route::post('/follow','UserController@follow');
 Route::get('/home','UserController@home');
+
 
 
 
