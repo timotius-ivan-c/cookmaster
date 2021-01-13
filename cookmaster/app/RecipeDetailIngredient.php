@@ -13,6 +13,6 @@ class RecipeDetailIngredient extends Model
     }
     protected $table = 'recipe_detail_ingredients';
     protected $fillable = [
-        'name', 'notes',
+        'name', 'amount', 'notes',
     ];
 }
