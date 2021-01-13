@@ -176,6 +176,7 @@ class UserController extends Controller
         $member = Role::where('name',"member")->first();
         $best_recipes = Recipe::orderBy('average_rating','desc')->take(3);
         $hot_recipes = Recipe::orderBy('review_count','desc')->take(3);
+        
         if(Auth()->user()->role_id == $member->id){
             return view('view_home',['recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
         }

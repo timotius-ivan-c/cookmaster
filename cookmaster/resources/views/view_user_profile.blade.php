@@ -17,7 +17,7 @@
 
                     @foreach($user as $usr)
                     <div class="card">
-                        <divc class="card-body row">
+                        <div class="card-body row">
                             <div class="col-md-8">
                                 <div>Name: {{ $usr->name }}</div>
                                 <div>Free recipes: {{ $usr->free_recipes_count }}</div>
