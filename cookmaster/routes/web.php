@@ -48,7 +48,7 @@ Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
 Route::get('/recipe/category/{category}', 'RecipeController@view_recipe_category');
 Route::get('/recipe/ingredient/{ingredient}', 'RecipeController@search_by_ingredient');
 Route::get('/recipe/name/{name}', 'RecipeController@search_by_name');
-Route::get('/recipe/view-recipe/{master_recipes:id}', 'RecipeController@view_recipe');
+Route::get('/recipe/view-recipe/{recipe:id}', 'RecipeController@view_recipe');
 
 
 // User Controller
