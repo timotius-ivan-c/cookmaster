@@ -36,7 +36,8 @@ Route::group(['middleware' => 'registered_user'], function () {
 Route::group(['middleware' => 'contributor_and_chef'], function () {
 
     // Recipe Controller 
-    Route::get('/new-recipe', 'RecipeController@new_recipe');
+    Route::get('/new-recipe', 'RecipeController@display_new_recipe_page');
+    Route::post('/new-recipe', 'RecipeController@new_recipe')->name('recipe.add');
 });
 
 // Route::get('/home', 'HomeController@index')->name('home');
