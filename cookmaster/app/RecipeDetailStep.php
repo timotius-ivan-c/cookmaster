@@ -11,4 +11,8 @@ class RecipeDetailStep extends Model
     {
         return $this->belongsTo(Recipe::class);
     }
+    protected $table = 'recipe_detail_steps';
+    protected $fillable = [
+        'recipe_id', 'text', 'image',
+    ];
 }
