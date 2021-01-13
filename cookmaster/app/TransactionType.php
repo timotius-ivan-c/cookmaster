@@ -10,5 +10,9 @@ class TransactionType extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
+    protected $table = 'transaction_types';
+    protected $fillable = [
+        'name',
+    ];
     //
 }
