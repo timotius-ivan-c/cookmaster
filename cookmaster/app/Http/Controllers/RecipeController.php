@@ -143,23 +143,30 @@ class RecipeController extends Controller
         $member = Auth::user();
         $subscribed_chefs = [];
 
-        // Untuk cek apakah user merupakan pembuat resep
-        $author = 0;
-        if ($member->id == $recipe->author_id) {
-            $author = 1;
-        }
-
-
-        if ($recipe->recipe_type == 1) {
-            return view('view_recipe')->with('recipe', $recipe)->with('author', $author);
-        } else {
-            // Mengecek apakah user subscribe chef nya
-            $subscribed_chefs = DB::table('subscriptions')->select('chef_id')
-                ->whereRaw("chef_id in (SELECT chef_id FROM subscriptions WHERE member_id=" . $member->id . " AND end > '" . Carbon::now() . " AND chef_id=" . $recipe->author_id . "')")->first();
-            if ($subscribed_chefs != null) {
-                return view('view_recipe')->with('recipe', $recipe)->with('author', $author);
+        
+        
+        if ($member == null) {
+            if ($recipe->recipe_type == 1) {
+                return view('view_recipe')->with('recipe', $recipe)->with('is_author', false);
             }
-            return redirect()->back();
+        } else {
+            // Untuk cek apakah user merupakan pembuat resep
+            $is_author = false;
+            if ($member->id == $recipe->author_id) {
+                $is_author = true;
+            } else {
+                // User bukan pembuat resep:
+                // Cek apakah user subscribe ke chef nya
+                $subscribed_chefs = DB::table('subscriptions')->select('chef_id')
+                    ->whereRaw("chef_id in (SELECT chef_id FROM subscriptions WHERE member_id=" . $member->id . " AND end > '" . Carbon::now() . " AND chef_id=" . $recipe->author_id . "')")
+                    ->first();
+                if ($subscribed_chefs != null) {
+                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', $is_author);
+                }
+            }
+            
+            // dd("yoo");
         }
+        return redirect('/login')->with('error', "You are not subscribed to this chef! Please login and purchase subscription from the chef.");
     }
 }
