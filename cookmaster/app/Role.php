@@ -10,5 +10,6 @@ class Role extends Model
     {
         return $this->belongsTo(User::class, "role_id");
     }
+    protected $table = 'roles';
     //
 }
