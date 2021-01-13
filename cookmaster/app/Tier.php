@@ -10,5 +10,9 @@ class Tier extends Model
     {
         return $this->belongsTo(User::class);
     }
+    protected $table = 'tiers';
+    protected $fillable = [
+        'name',
+    ];
     //
 }
