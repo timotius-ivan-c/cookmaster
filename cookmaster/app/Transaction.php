@@ -14,5 +14,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Subscription::class);
     }
+    protected $table = 'transactions';
+    protected $fillable = [
+        'recipient_id', 'sender_id', 'amount','message','transaction_type_id',
+    ];
     //
 }
