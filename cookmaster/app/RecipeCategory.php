@@ -11,4 +11,6 @@ class RecipeCategory extends Model
     {
         return $this->belongsTo(Recipe::class);
     }
+    protected $table = 'recipe_categories';
+
 }
