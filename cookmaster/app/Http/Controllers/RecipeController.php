@@ -102,40 +102,92 @@ class RecipeController extends Controller
 
     public function display_new_recipe_page()
     {
-        return view('add_recipe');
+        // step=0 -> the View will display form fields to input recipe Name and Image.
+        $categories = RecipeCategory::all();
+        return view('add_recipe')->with('step', 0)->with('categories', $categories);
     }
 
     public function new_recipe(Request $request)
     {
-        $image_path = $request->file('image')->store('images', 'public');
+        // Step 0: input recipe name, image, type (1=free, 2=paid), and category_id
+        //      Data inside $request: name, image, type, category
+        //      Data returned to the View: Recipe $recipe (the Eloquent for the newly created recipe), $step=1
+        // Step 1: input recipe_detail_ingredients
+        //      Data inside $request: recipe_id, name, amount, notes
+        //      Data returned to the View: recipe_id, $step
+        // Step 2: input recipe_detail_steps
+        //      Data inside $request: step_no, recipe_id, text, image
+        //      Data returned to the View: recipe (with eloquent relation to recipe_detail_ingredients and recipe_detail_steps)
+        // Kalo ada data $request->is_next, artinya mau lanjut ke step selanjutnya.
+        $step = $request->step;
+        
+        $next = $request->is_next;
+        if ($next != null) {
+            if ($step == 3) {
+                // User already finished adding Recipe info, Detail_ingredients, and Detail_stps
+                return redirect("/recipe/view/$request->recipe_id");
+            } elseif ($step > 0) {
+                $recipe = Recipe::find('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient');
+                return redirect()->back()->with('recipe', $recipe)->with('step', ($step + 1));
+            }
+        } else {
+            if ($step == 0) {
+                // $image_path = $request->file('image')->store('images', 'public');
+                $new_recipe = new Recipe();
+                $new_recipe->author_id = Auth()->user()->id;
+                $new_recipe->name = $request->name;
+                $new_recipe->image = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563";
+                $new_recipe->review_count = 0;
+                $new_recipe->average_rating = 0;
+                $new_recipe->publish_date = Carbon::now();
+                $new_recipe->recipe_type = $request->type;
+                $new_recipe->recipe_category_id = $request->category;
+                $new_recipe->save();
+                return view('add_recipe')->with('recipe', $new_recipe)->with('step', 1);
+            } else {
+                if ($step == 1) {
+                    $new_ingredient = new RecipeDetailIngredient();
+                    $new_ingredient->recipe_id = $request->recipe_id;
+                    $new_ingredient->name = $request->name;
+                    $new_ingredient->amount = $request->amount;
+                    $new_ingredient->notes = $request->notes;
+                    $new_ingredient->save();
+                    $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+                    $recipe->refresh();
+                    return view('add_recipe')->with('recipe', $recipe)->with('step', 1);
+                } elseif ($step == 2)  {
 
-        Recipe::create([
-            'author_id' => Auth()->user()->id,
-            'name' => $request->name,
-            'image' => $image_path,
-            'review_count' => '0',
-            'average_rating' => '0',
-            'publish_date' => date("Y/m/d/H/i/s"),
-            'recipe_type' => $request->type,
-            'recipe_category_id' => $request->category,
-        ]);
+                }
+            }
+        }
+        
+        // Recipe::create([
+        //     'author_id' => Auth()->user()->id,
+        //     'name' => $request->name,
+        //     'image' => $image_path,
+        //     'review_count' => '0',
+        //     'average_rating' => '0',
+        //     'publish_date' => date("Y/m/d/H/i/s"),
+        //     'recipe_type' => $request->type,
+        //     'recipe_category_id' => $request->category,
+        // ]);
 
-        $recipe = Recipe::last();
+        // $recipe = Recipe::last();
 
-        RecipeDetailStep::create([
-            'recipe_id' => $recipe->id,
-            'text' => $request->text,
-            'image' => $image_path,
-        ]);
+        // RecipeDetailStep::create([
+        //     'recipe_id' => $recipe->id,
+        //     'text' => $request->text,
+        //     'image' => $image_path,
+        // ]);
 
-        RecipeDetailIngredient::create([
-            'recipe_id' => $recipe,
-            'name' => $request->ingredient_name,
-            'amount' => $request->amount,
-            'notes' => $request->notes,
-        ]);
+        // RecipeDetailIngredient::create([
+        //     'recipe_id' => $recipe,
+        //     'name' => $request->ingredient_name,
+        //     'amount' => $request->amount,
+        //     'notes' => $request->notes,
+        // ]);
 
-        return redirect()->back();
+        // return redirect()->back();
     }
 
     public function view_recipe(Recipe $recipe)
