@@ -11,4 +11,8 @@ class RecipeDetailIngredient extends Model
     {
         return $this->belongsTo(Recipe::class);
     }
+    protected $table = 'recipe_detail_ingredients';
+    protected $fillable = [
+        'name', 'notes',
+    ];
 }
