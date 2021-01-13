@@ -15,4 +15,8 @@ class FavoritedRecipe extends Model
     {
         return $this->hasMany(Recipe::class);
     }
+    protected $table = 'favorited_recipes';
+    protected $fillable = [
+        'user_id', 'recipe_id',
+    ];
 }
