@@ -31,5 +31,8 @@ class Recipe extends Model
     {
         return $this->hasMany(Review::class);
     }
-
+    protected $table = 'recipes';
+    protected $fillable = [
+        'author_id', 'name', 'image','recipe_type','recipe_category_id'
+    ];
 }
