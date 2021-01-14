@@ -38,6 +38,8 @@ Route::group(['middleware' => 'contributor_and_chef'], function () {
     // Recipe Controller 
     Route::get('/new-recipe', 'RecipeController@display_new_recipe_page');
     Route::post('/new-recipe', 'RecipeController@new_recipe')->name('recipe.add');
+    Route::get('/edit-recipe/{recipe_id}', 'RecipeController@edit_recipe');
+    Route::post('/edit-recipe', 'RecipeController@commit_edit_recipe');
 });
 
 // Route::get('/home', 'HomeController@index')->name('home');
