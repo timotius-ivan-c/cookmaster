@@ -62,3 +62,4 @@ Route::post('/edit-profile', 'UserController@edited_profile');
 Route::get('/subscriptions', 'UserController@view_subscriptions');
 Route::post('/follow', 'UserController@follow');
 Route::get('/home', 'UserController@home');
+Route::get('/earning/{id}','UserController@earnings');
