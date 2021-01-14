@@ -89,6 +89,7 @@
                 Steps:
             </div>
             @forelse($recipe->recipeDetailStep as $step)
+                <img src="{{asset('storage/'.$step->image)}}"/>
                 <div class="card-body">{{ $step->step_no }}. {{ $step->text }}</div>
             @empty
             @endforelse
@@ -97,6 +98,9 @@
                 {{csrf_field()}}
                 <input type="hidden" name="step" id="step" value="2">
                 <input type="hidden" name="recipe_id" id="recipe_id" value="{{$recipe->id}}">
+                <br><img id="image_show" src="">
+                <br><label for="upload-file" class="browse-label">Step Image</label>
+                <input type="file" class="form-control-file" id="upload-file" name="image" onchange="readURL(this)">
                 <label for="text">{{ count($recipe->recipeDetailStep)+1 }}. </label>
                 <input type="text" name="text" id="text">
                 

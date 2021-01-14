@@ -157,12 +157,13 @@ class RecipeController extends Controller
                     $recipe->refresh();
                     return view('add_recipe')->with('recipe', $recipe)->with('step', 1);
                 } elseif ($step == 2)  {
+                    $image_path = $request->file('image')->store('images', 'public');
                     $new_step = new RecipeDetailStep();
                     $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
                     $new_step->step_no = count($existing_steps) + 1;
                     $new_step->recipe_id = $request->recipe_id;
                     $new_step->text = $request->text;
-                    $new_step->image = "zzz";
+                    $new_step->image = $image_path;
                     $new_step->save();
                     $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
                     $recipe->refresh();
