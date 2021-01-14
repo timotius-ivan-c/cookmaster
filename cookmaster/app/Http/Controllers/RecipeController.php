@@ -132,12 +132,11 @@ class RecipeController extends Controller
             }
         } else {
             if ($step == 0) {
-                $image_path = $request->file('image')->store('images', 'public');
+                // $image_path = $request->file('image')->store('images', 'public');
                 $new_recipe = new Recipe();
                 $new_recipe->author_id = Auth()->user()->id;
                 $new_recipe->name = $request->name;
-                // $new_recipe->image = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563";
-                $new_recipe->image = $image_path;
+                $new_recipe->image = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563";
                 $new_recipe->review_count = 0;
                 $new_recipe->average_rating = 0;
                 $new_recipe->publish_date = Carbon::now();
@@ -157,13 +156,12 @@ class RecipeController extends Controller
                     $recipe->refresh();
                     return view('add_recipe')->with('recipe', $recipe)->with('step', 1);
                 } elseif ($step == 2)  {
-                    $image_path = $request->file('image')->store('images', 'public');
                     $new_step = new RecipeDetailStep();
                     $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
                     $new_step->step_no = count($existing_steps) + 1;
                     $new_step->recipe_id = $request->recipe_id;
                     $new_step->text = $request->text;
-                    $new_step->image = $image_path;
+                    $new_step->image = "zzz";
                     $new_step->save();
                     $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
                     $recipe->refresh();
