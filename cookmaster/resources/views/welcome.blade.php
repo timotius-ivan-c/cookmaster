@@ -35,8 +35,8 @@
             margin-bottom: 20px;
         }
         img{
-            height: 300px;
-            width: 300px;
+            height: 200px;
+            width: 200px;
             margin: auto;
         }
         @media screen and (max-width: 800px) {
@@ -132,66 +132,71 @@
         @guest
         @else   
             {{--Additional button for contributor and chefs --}}
-            @if(\Auth::user()->role_id!=1)
+            @if(\Auth::user()->role_id==2||\Auth::user()->role_id==3)
             <br>
             <div class="container adm-btns">
                 <button type="button" class="btn btn-primary" onclick="window.location.href=">Add New Recipe</button>
             </div>
             <br>
+            <div class="container">
             <div class="row">
-                <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Earnings page--}} ;" style="width: 20rem;">
-                    <div class="card-body">Report:<br>
+                <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Earnings page--}} ;" style="width: 40rem;">
+                    <div class="card-body"><h5><strong>Report:</strong></h5><br>
                         <p class="card-text">
-                            Balance : Rp {{--balance user chef/contributor--}}<br>
-                            Subscribers : {{--jumlah subs--}}<br>
+                            Balance : <br>Rp {{$user->balance}}<br>
+                            <br>
+                            Earnings : <br>Rp {{$earnings}}<br>
+                            <br>
+                            Subscribers :<br> {{$total_subscriber}}<br>
+                            
                         </p>
                     </div>
                 </div>
-                <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Latest recipe page--}} ;" style="width: 20rem;">
-                    {{-- <img class="card-image-top" src="{{asset('storage/'.$product->image)}}"> gambar image resep yang paling baru--}}
-                    <div class="card-body"><strong>{{--recipe name--}}</strong></div>
-                    <a href="{{--view recipe details--}}" style="text-decoration: none;">
+                <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
+                    <div class="card-body"><h5><strong>Latest Recipe:</strong></h5></div>
+                    <img class="card-image-top" src="{{asset('asset/'.$my_recipes->first()->image)}}"> 
                     <div class="card-body">   
-                        <p class="card-text">
-                            {{--recipe details--}}
-                        </p>
+                    <div class="card-title"><strong>{{$my_recipes->first()->name}}</strong></div>
+                    <div class="card-text">        
+                        Average rating  : <br>
+                            {{$my_recipes->first()->average_rating}} / 5.00 <br> from {{$my_recipes->first()->review_count}} people <br><br>
                         <div class="container adm-btns">
                             <button type="button" class="btn btn-primary" onclick="window.location.href=">Edit Recipe</button>
                         </div>
                     </div>
-                    </a>
-                    </div>
                 </div>
+            </div>
             </div>
             @elseif(\Auth::user()->role_id==1)
             
             @endif
         @endguest
-        <div class ="row">
-        NextCopy
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..." class="d-block w-100" alt="...">
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </a>
-        </div>
-        </div>
-        
+        <br>
+        <br>
+        <div class="container">
+            <h5>Best Recipes: </h5>
+            <br>
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img class="d-block w-200" src="{{asset('asset/'.$best_recipes[0]->image)}}" alt="{{$best_recipes[0]->name}}">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-200" src="{{asset('asset/'.$best_recipes[1]->image)}}" alt="{{$best_recipes[1]->name}}">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-200" src="{{asset('asset/'.$best_recipes[2]->image)}}" alt="{{$best_recipes[2]->name}}">
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>        
     </div>
 </body>
 </html>
