@@ -174,8 +174,8 @@ class UserController extends Controller
         $recipes = Recipe::whereIn('author_id',$following_id)->get();
         
         $member = Role::where('name',"member")->first();
-        $best_recipes = Recipe::orderBy('average_rating','desc')->take(3);
-        $hot_recipes = Recipe::orderBy('review_count','desc')->take(3);
+        $best_recipes = Recipe::orderBy('average_rating','desc')->take(3)->get();
+        $hot_recipes = Recipe::orderBy('review_count','desc')->take(3)->get();
 
         if(Auth()->user()->role_id == $member->id){
             return view('view_home',['user'=>$user,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
