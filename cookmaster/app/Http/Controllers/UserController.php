@@ -187,5 +187,11 @@ class UserController extends Controller
         }
     }
 
+    public function earnings($id){
+        $subscription = Subscription::where('chef_id',$id);
+        $total_earnings = Transaction::where('recipient_id',$id)->where('transaction_type_id',2)->sum('amount');
+        return view('earning',['subscription'=>$subscription,'total_earnings'=>$total_earnings]);
+    }
+
 
 }
