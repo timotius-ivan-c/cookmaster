@@ -132,11 +132,12 @@ class RecipeController extends Controller
             }
         } else {
             if ($step == 0) {
-                // $image_path = $request->file('image')->store('images', 'public');
+                $image_path = $request->file('image')->store('images', 'public');
                 $new_recipe = new Recipe();
                 $new_recipe->author_id = Auth()->user()->id;
                 $new_recipe->name = $request->name;
-                $new_recipe->image = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563";
+                // $new_recipe->image = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563";
+                $new_recipe->image = $image_path;
                 $new_recipe->review_count = 0;
                 $new_recipe->average_rating = 0;
                 $new_recipe->publish_date = Carbon::now();
