@@ -38,6 +38,9 @@
             width: 300px;
             margin: auto;
         }
+        #image_show[src=""] {
+            display: none;
+        }
         @media screen and (max-width: 800px) {
             .card{
                 margin: auto;
@@ -51,6 +54,21 @@
             }
         }
     </style>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image_show')
+                        .attr('src', e.target.result)
+                        .height(200);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </head>
 <body>
     {{-- nav class from app.blade.php + search bar--}}
