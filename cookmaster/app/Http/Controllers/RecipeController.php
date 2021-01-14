@@ -116,19 +116,19 @@ class RecipeController extends Controller
         //      Data inside $request: recipe_id, name, amount, notes
         //      Data returned to the View: recipe_id, $step
         // Step 2: input recipe_detail_steps
-        //      Data inside $request: step_no, recipe_id, text, image
+        //      Data inside $request: recipe_id, text, image
         //      Data returned to the View: recipe (with eloquent relation to recipe_detail_ingredients and recipe_detail_steps)
         // Kalo ada data $request->is_next, artinya mau lanjut ke step selanjutnya.
         $step = $request->step;
         
         $next = $request->is_next;
         if ($next != null) {
-            if ($step == 3) {
+            if ($step == 2) {
                 // User already finished adding Recipe info, Detail_ingredients, and Detail_stps
-                return redirect("/recipe/view/$request->recipe_id");
-            } elseif ($step > 0) {
-                $recipe = Recipe::find('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient');
-                return redirect()->back()->with('recipe', $recipe)->with('step', ($step + 1));
+                return redirect("/recipe/view-recipe/$request->recipe_id");
+            } elseif ($step == 1) {
+                $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+                return view('add_recipe')->with('recipe', $recipe)->with('step', ($step + 1));
             }
         } else {
             if ($step == 0) {
@@ -156,7 +156,16 @@ class RecipeController extends Controller
                     $recipe->refresh();
                     return view('add_recipe')->with('recipe', $recipe)->with('step', 1);
                 } elseif ($step == 2)  {
-
+                    $new_step = new RecipeDetailStep();
+                    $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
+                    $new_step->step_no = count($existing_steps) + 1;
+                    $new_step->recipe_id = $request->recipe_id;
+                    $new_step->text = $request->text;
+                    $new_step->image = "zzz";
+                    $new_step->save();
+                    $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+                    $recipe->refresh();
+                    return view('add_recipe')->with('recipe', $recipe)->with('step', 2);
                 }
             }
         }
@@ -205,7 +214,7 @@ class RecipeController extends Controller
             // Untuk cek apakah user merupakan pembuat resep
             $is_author = false;
             if ($member->id == $recipe->author_id) {
-                $is_author = true;
+                return view('view_recipe')->with('recipe', $recipe)->with('is_author', true);
             } else {
                 // User bukan pembuat resep:
                 // Cek apakah user subscribe ke chef nya
@@ -213,7 +222,7 @@ class RecipeController extends Controller
                     ->whereRaw("chef_id in (SELECT chef_id FROM subscriptions WHERE member_id=" . $member->id . " AND end > '" . Carbon::now() . " AND chef_id=" . $recipe->author_id . "')")
                     ->first();
                 if ($subscribed_chefs != null) {
-                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', $is_author);
+                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', false);
                 }
             }
             
