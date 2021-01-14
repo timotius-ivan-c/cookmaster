@@ -64,9 +64,15 @@ class TransactionController extends Controller
 
     public function view_subscribe_page(User $user){
         
-        $chef = User::where('id', $user->id)->first();
-        
-        return view('view_subscribe_page', ['chef' => $chef]);
+        // check if user is chef
+        $target_user = User::where('id', $user->id)->first();
+        if($target_user->role_id == 1){
+            return redirect()->back()->with('message', "This user is neither a contributor nor a chef!"); 
+        } else {
+            $chef = User::where('id', $user->id)->first();
+                    
+            return view('view_subscribe_page', ['chef' => $chef]);
+        }
     }
 
     public function pay_subscription(Request $request) {
@@ -97,7 +103,7 @@ class TransactionController extends Controller
                 $new_transaction->token = Str::random(10);
                 $new_transaction->amount = $amount;
                 $new_transaction->date = $now;
-                $new_transaction->message = "Subscribe to ".$subscribe_to->name.". Duration ".$duration."months";
+                $new_transaction->message = "Subscribe to ".$subscribe_to->name.". Duration ".$duration." month(s)";
                 $new_transaction->transaction_type_id = 2;
                 $new_transaction->save();
 
