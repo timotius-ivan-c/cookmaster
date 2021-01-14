@@ -234,23 +234,71 @@ class RecipeController extends Controller
 
     public function edit_recipe($recipe_id) {
         $user = Auth::user();
-        $recipe = Recipe::find($recipe_id)->with('recipeDetailIngredient')->with('recipeDetaiStep');
-
-        if ($recipe->author_id == $user->id) {
-            return view('edit_recipe')->with('recipe', $recipe);
+        $recipe = Recipe::where('id', $recipe_id)->with('recipeDetailIngredient')->with('recipeDetailStep')->get();
+        if ($recipe->first()->author_id == $user->id) {
+            $recipe_categories = RecipeCategory::all();
+            return view('edit_recipe')->with('recipe', $recipe->first())->with('categories', $recipe_categories);
         } else {
-            return redirect('home')->with('error', 'You are not the author and can\'t edit this recipe!')
+            return redirect('home')->with('error', 'You are not the author and can\'t edit this recipe!');
         }
     }
 
     public function commit_edit_recipe(Request $request) {
         $user = Auth::user();
-        $recipe = Recipe::find($request->recipe_id);
+        $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailIngredient')->with('recipeDetailStep')->first();
+        $recipe_categories = RecipeCategory::all();
 
         $field_to_edit = $request->edit;
+        $field_to_delete = $request->delete;
 
-        if ($field_to_edit == 'recipe') {
-            $recipe->
+        if ($field_to_edit != null) {
+            if ($field_to_edit == 'recipe') {
+                // $image_path = $request->file('image')->store('images', 'public');
+                $image_path = "dummy_path";
+                $recipe->name = $request->name;
+                $recipe->image = $image_path;
+                $recipe->recipe_type = $request->recipe_type;
+                $recipe->recipe_category_id = $request->category;
+                $recipe->save();
+                $recipe->refresh();
+                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+            } elseif ($field_to_edit == 'ingredient') {
+                $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
+                $ingredient->name = $request->name;
+                $ingredient->amount = $request->amount;
+                $ingredient->notes = $request->notes;
+                $ingredient->save();
+                $recipe->refresh();
+                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+            } elseif ($field_to_edit == 'step') {
+                $step = RecipeDetailStep::find(['recipe_id' => $request->recipe_id, 'step_no' => $request->step_no]);
+                $step->text = $request->text;
+                $step->image = $request->image;
+                $step->save();
+                $recipe->refresh();
+                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+            }
+        } elseif ($field_to_delete != null) {
+            if ($field_to_delete == 'recipe') {
+                $recipe->delete();
+                return view('home')->with('success', 'Your recipe has been deleted!');
+            } elseif ($field_to_delete == 'ingredient') {
+                $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
+                $ingredient->delete();
+                $recipe->refresh();
+                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient deleted!');
+            } elseif ($field_to_delete == 'step') {
+                $steps_to_edit = RecipeDetailStep::where('recipe_id', $request->recipe_id);
+                $step_count = count($steps_to_edit);
+                $steps_to_edit[$request->step_no]->delete();
+                for ($i=$request->step_no; $i < $step_count; $i++) { 
+                    # code...
+                    $steps_to_edit[$i]->step_no = $i - 1;
+                    $steps_to_edit[$i]->save();
+                }
+                $recipe->refresh();
+                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+            }
         }
     }
 }
