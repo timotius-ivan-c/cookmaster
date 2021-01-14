@@ -14,6 +14,14 @@
         <!-- inputan image nya blm gw buat -->
         <!-- ############################# -->
 
+        <br><img id="image_show" src="">
+        <div class="form-group">
+            <label for="upload-file" class="browse-label">Recipe Image</label>
+            <div class="">
+                <input type="file" class="form-control-file x" id="upload-file" name="image" onchange="readURL(this)">
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="type">Recipe Type</label>
             <select name="type" id="type">
