@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Type\Integer;
 
 class TransactionController extends Controller
 {
@@ -54,7 +55,7 @@ class TransactionController extends Controller
            'token' => Str::random(10),
            'amount' => $request->amount,
            'date' => Carbon::now(new \DateTimeZone('Asia/Jakarta')), 
-           'message' => $request->message,
+           'message' => "Added ".strval($request->amount)." to ".Auth::user()->name."'s balance",
            'transaction_type_id' => 1
        ]);
         

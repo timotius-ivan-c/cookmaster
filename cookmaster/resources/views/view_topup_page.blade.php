@@ -15,8 +15,6 @@
             <input type="hidden" name="id" value="{{$data->user_id}}">
             <label for="amount">Amount:</label>
             <input type="text" name="amount" class="form-control" id="amount" placeholder="Enter amount">
-            <label for="message">Message:</label>
-            <input type="text" name="message" class="form-control" id="message" placeholder="Enter message">
             @if($errors->any())
                         <div class="errors">{{ implode('', $errors->get('amount'))}}</div>
             @endif
