@@ -178,12 +178,13 @@ class UserController extends Controller
         $hot_recipes = Recipe::orderBy('review_count','desc')->take(3);
 
         if(Auth()->user()->role_id == $member->id){
-            return view('view_home',['recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
+            return view('view_home',['user'=>$user,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
         }
         else{
             $my_recipes = Recipe::where('author_id',Auth()->user()->id);
             $earnings = Transaction::where('recipient_id',Auth()->user()->id)->where('transaction_type_id',2)->sum('amount');
-            return view('welcome',['my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes,'earnings'=>$earnings])->render();
+            $total_subscriber = Subscription::where('member_id',Auth()->user()->id)->count(); 
+            return view('welcome',['user'=>$user,'my_recipes'=>$my_recipes,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes,'earnings'=>$earnings,'total_subscriber'=>$total_subscriber])->render();
         }
     }
 
