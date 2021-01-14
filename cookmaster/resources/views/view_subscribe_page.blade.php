@@ -9,6 +9,12 @@
     {{$chef->id}}
     {{$chef->name}}
 
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
+
     <form action='/subscribe' method='post'>
         {{csrf_field()}}
         <div class="form-group">
@@ -23,10 +29,6 @@
                 <option value=12>12 months</option>
                 <option value=24>24 months</option>
             </select>
-
-            <label for="message">Message:</label>
-            <input type="text" name="message" class="form-control" id="message" placeholder="Enter message">
-            
             @if($errors->any())
                 <div class="errors">{{ implode('', $errors->get('duration'))}}</div>
             @endif
