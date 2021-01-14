@@ -19,7 +19,7 @@ class CreateRecipeDetailIngredientsTable extends Migration
             $table->unsignedBigInteger('recipe_id');
             $table->string('name');
             $table->string('amount');
-            $table->string('notes');
+            $table->string('notes')->nullable(true);
 
             $table->foreign('recipe_id')->references('id')->on('recipes');
         });
