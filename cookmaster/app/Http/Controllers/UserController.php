@@ -167,20 +167,24 @@ class UserController extends Controller
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     public function home(){
-        $user = User::find(Auth()->user()->id);
         
-        //get following id
-        $following_id = $user->following()->get()->pluck('id');
-        $recipes = Recipe::whereIn('author_id',$following_id)->get();
-        
-        $member = Role::where('name',"member")->first();
+        // $member = Role::where('name',"member")->first();
         $best_recipes = Recipe::orderBy('average_rating','desc')->take(3)->get();
         $hot_recipes = Recipe::orderBy('review_count','desc')->take(3)->get();
 
-        if(Auth()->user()->role_id == $member->id){
-            return view('view_home',['user'=>$user,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
-        }
-        else{
+        if(Auth::guest()){
+            return view('welcome', ['hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]); 
+        } else if(Auth::user()->role_id == 1){
+            $user = User::find(Auth()->user()->id);
+            //get following id
+            $following_id = $user->following()->get()->pluck('id');
+            $recipes = Recipe::whereIn('author_id',$following_id)->get();
+            return view('welcome',['user'=>$user,'recipes'=>$recipes, 'hot_recipes'=>$hot_recipes,'best_recipes'=>$best_recipes]);
+        } else if(Auth::user()->role_id == 2 || Auth::user()->role_id == 3){
+            $user = User::find(Auth()->user()->id);
+            //get following id
+            $following_id = $user->following()->get()->pluck('id');
+            $recipes = Recipe::whereIn('author_id',$following_id)->get();
             $my_recipes = Recipe::where('author_id',Auth()->user()->id);
             $earnings = Transaction::where('recipient_id',Auth()->user()->id)->where('transaction_type_id',2)->sum('amount');
             $total_subscriber = Subscription::where('member_id',Auth()->user()->id)->count(); 
