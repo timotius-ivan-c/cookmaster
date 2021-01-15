@@ -126,7 +126,7 @@
                 <a class="nav-link" href="/guest-chef">GUEST CHEF</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">COMMUNITY</a>
+                <a class="nav-link" href="/community">COMMUNITY</a>
             </li>
         </div>
         @guest
