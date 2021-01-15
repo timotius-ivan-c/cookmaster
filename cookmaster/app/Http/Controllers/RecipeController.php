@@ -204,28 +204,27 @@ class RecipeController extends Controller
 
     public function view_recipe(Recipe $recipe)
     {
-        $member = Auth::user();
+        $user = Auth::user();
         $subscribed_chefs = [];
 
-        
-        
-        if ($member == null) {
+        if ($user == null) {
             if ($recipe->recipe_type == 1) {
                 return view('view_recipe')->with('recipe', $recipe)->with('is_author', false);
             }
         } else {
-            // Untuk cek apakah user merupakan pembuat resep
-            $is_author = false;
-            if ($member->id == $recipe->author_id) {
-                return view('view_recipe')->with('recipe', $recipe)->with('is_author', true);
+            $my_review = Review::where('recipe_id', $recipe->id)->where('user_id', $user->id)->get();
+            
+            // Cek apakah user merupakan pembuat resep
+            if ($user->id == $recipe->author_id) {
+                return view('view_recipe')->with('recipe', $recipe)->with('is_author', true)->with('my_review', $my_review);
             } else {
                 // User bukan pembuat resep:
                 // Cek apakah user subscribe ke chef nya
                 $subscribed_chefs = DB::table('subscriptions')->select('chef_id')
-                    ->whereRaw("chef_id in (SELECT chef_id FROM subscriptions WHERE member_id=" . $member->id . " AND end > '" . Carbon::now() . " AND chef_id=" . $recipe->author_id . "')")
+                    ->whereRaw("chef_id in (SELECT chef_id FROM subscriptions WHERE member_id=" . $user->id . " AND end > '" . Carbon::now() . " AND chef_id=" . $recipe->author_id . "')")
                     ->first();
                 if ($subscribed_chefs != null) {
-                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', false);
+                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', false)->with('review')->with('my_review', $my_review);
                 }
             }
             
