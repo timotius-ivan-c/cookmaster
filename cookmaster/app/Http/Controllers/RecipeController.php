@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class RecipeController extends Controller
 {
@@ -250,18 +251,21 @@ class RecipeController extends Controller
 
         $field_to_edit = $request->edit;
         $field_to_delete = $request->delete;
+        $field_to_add = $request->add;
 
         if ($field_to_edit != null) {
             if ($field_to_edit == 'recipe') {
-                // $image_path = $request->file('image')->store('images', 'public');
-                $image_path = "dummy_path";
                 $recipe->name = $request->name;
-                $recipe->image = $image_path;
+                if ($request->file('image')) {
+                    $image_path = $request->file('image')->store('images', 'public');
+                    $recipe->image = $image_path;
+                }
                 $recipe->recipe_type = $request->recipe_type;
                 $recipe->recipe_category_id = $request->category;
                 $recipe->save();
                 $recipe->refresh();
-                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('success', 'Your edit has been saved!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'ingredient') {
                 $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
                 $ingredient->name = $request->name;
@@ -269,35 +273,72 @@ class RecipeController extends Controller
                 $ingredient->notes = $request->notes;
                 $ingredient->save();
                 $recipe->refresh();
-                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('success', 'Your edit has been saved!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'step') {
-                $step = RecipeDetailStep::find(['recipe_id' => $request->recipe_id, 'step_no' => $request->step_no]);
+                $step = RecipeDetailStep::find($request->step_id);
                 $step->text = $request->text;
-                $step->image = $request->image;
+                if ($request->file('image')) {
+                    $image_path = $request->file('image')->store('images', 'public');
+                    $step->image = $request->image;
+                }
                 $step->save();
                 $recipe->refresh();
-                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('success', 'Your edit has been saved!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             }
         } elseif ($field_to_delete != null) {
             if ($field_to_delete == 'recipe') {
                 $recipe->delete();
-                return view('home')->with('success', 'Your recipe has been deleted!');
+                Session::flash('success', 'Your recipe has been deleted!');
+                return redirect()->intended('home')->with('success', 'Your recipe has been deleted!');
             } elseif ($field_to_delete == 'ingredient') {
                 $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
                 $ingredient->delete();
                 $recipe->refresh();
-                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient deleted!');
+                Session::flash('success', 'Ingredient deleted!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient deleted!');
             } elseif ($field_to_delete == 'step') {
                 $steps_to_edit = RecipeDetailStep::where('recipe_id', $request->recipe_id);
-                $step_count = count($steps_to_edit);
-                $steps_to_edit[$request->step_no]->delete();
-                for ($i=$request->step_no; $i < $step_count; $i++) { 
-                    # code...
-                    $steps_to_edit[$i]->step_no = $i - 1;
-                    $steps_to_edit[$i]->save();
+                $step_count = count($steps_to_edit->get());
+                $steps_to_edit->where('id', $request->step_id)->delete();
+                for ($i=$request->step_no; $i < $step_count; $i++) {
+                    $steps_to_edit = RecipeDetailStep::where('recipe_id', $request->recipe_id)->where('step_no', $i + 1);
+                    // $steps_to_edit->refresh();
+                    $step = $steps_to_edit->first();
+                    $step->step_no = $i;
+                    $step->save();
                 }
                 $recipe->refresh();
-                return view('edit_recipe')->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('success', 'Step deleted!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+            }
+        } elseif ($field_to_add != null) {
+            if ($field_to_add == 'ingredient') {
+                $new_ingredient = new RecipeDetailIngredient();
+                $new_ingredient->recipe_id = $request->recipe_id;
+                $new_ingredient->name = $request->name;
+                $new_ingredient->amount = $request->amount;
+                $new_ingredient->notes = $request->notes;
+                $new_ingredient->save();
+                $recipe->refresh();
+                Session::flash('success', 'Ingredient added!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient saved!');
+            } elseif ($field_to_add == 'step') {
+                $new_step = new RecipeDetailStep();
+                $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
+                $new_step->step_no = count($existing_steps) + 1;
+                $new_step->recipe_id = $request->recipe_id;
+                $new_step->text = $request->text;
+                if ($request->file('image')) {
+                    $image_path = $request->file('image')->store('images', 'public');
+                    $new_step->image = $image_path;
+                }
+                $new_step->save();
+                $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+                $recipe->refresh();
+                Session::flash('success', 'New step added!');
+                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'New step saved!');
             }
         }
     }
