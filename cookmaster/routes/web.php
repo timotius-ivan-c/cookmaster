@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,10 @@ Route::group(['middleware' => 'registered_user'], function () {
     // User Controller
     Route::get('/test-follow/{id}', 'UserController@test_follow');
     Route::post('/follow', 'UserController@follow');
+
+    // Recipe Controller
+    Route::post('/add-review', 'RecipeController@add_review');
+    Route::post('/delete-review', 'RecipeController@delete_review');
 });
 
 Route::group(['middleware' => 'contributor_and_chef'], function () {
