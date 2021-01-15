@@ -6,6 +6,7 @@ use App\Recipe;
 use App\RecipeCategory;
 use App\RecipeDetailIngredient;
 use App\RecipeDetailStep;
+use App\Review;
 use App\Role;
 use App\User;
 use Carbon\Carbon;
@@ -340,6 +341,45 @@ class RecipeController extends Controller
                 Session::flash('success', 'New step added!');
                 return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'New step saved!');
             }
+        }
+    }
+
+    public function add_review(Request $request) {
+        $user_id = $request->user_id;
+        $login_user = Auth::user();
+        if ($user_id == $login_user->id) {
+            $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+            $new_review = new Review();
+            $new_review->review_text = $request->review_text;
+            $new_review->rating = $request->rating;
+            $new_review->recipe_id = $request->recipe_id;
+            $new_review->user_id = $user_id;
+            $new_review->publish_date = Carbon::now();
+            $new_review->save();
+            
+            $author = User::where('id', $recipe->author_id)->first();
+            $fame_addition = ($request->rating - 2)*10;
+            $author->fame = $author->fame + $fame_addition;
+            $author->save();
+            
+            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('success', 'Reveiew saved! Thank you for your feedback!');
+        }
+    }
+
+    public function delete_review(Request $request) {
+        $user_id = $request->user_id;
+        $login_user = Auth::user();
+        if ($user_id == $login_user->id) {
+            $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+            $review = Review::where('recipe_id', $request->recipe_id)->where('user_id', $user_id)->first();
+            
+            $author = User::where('id', $recipe->author_id)->first();
+            $fame_deduction = ($review->rating - 2)*10;
+            $author->fame = $author->fame - $fame_deduction;
+            $author->save();
+            $review->delete();
+            
+            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('success', 'Reveiew saved! Thank you for your feedback!');
         }
     }
 }
