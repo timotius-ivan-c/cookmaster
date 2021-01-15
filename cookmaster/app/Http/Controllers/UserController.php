@@ -198,5 +198,10 @@ class UserController extends Controller
         return view('earning',['subscription'=>$subscription,'total_earnings'=>$total_earnings]);
     }
 
-
+    public function view_guest_chef(){
+        // featured chef based on highest average rating
+        $recipe = Recipe::orderBy('average_rating','desc')->limit(1)->get(); 
+        $author = User::where('id', $recipe[0]->author_id)->get();
+        return view('guest_chef', ['recipe' => $recipe[0], 'author' => $author[0]]); 
+    }
 }
