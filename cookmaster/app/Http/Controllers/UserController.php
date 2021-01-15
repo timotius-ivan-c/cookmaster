@@ -202,11 +202,13 @@ class UserController extends Controller
         // featured chef based on highest average rating
         $recipe = Recipe::orderBy('average_rating','desc')->limit(1)->get(); 
         $author = User::where('id', $recipe[0]->author_id)->get();
+
         return view('guest_chef', ['recipe' => $recipe[0], 'author' => $author[0]]); 
     }
 
     public function view_community(){
-        $recipes = Recipe::inRandomOrder()->limit(9)->get(); 
+        $recipes = Recipe::where('recipe_type', 1)->inRandomOrder()->limit(9)->get(); 
+
         return view('community', ['recipes' => $recipes]);
     }
 }
