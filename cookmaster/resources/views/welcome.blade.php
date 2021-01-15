@@ -123,7 +123,7 @@
                 <a class="nav-link" href="">FEATURED</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">GUESTCHEF</a>
+                <a class="nav-link" href="">GUEST CHEF</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="">COMMUNITY</a>
