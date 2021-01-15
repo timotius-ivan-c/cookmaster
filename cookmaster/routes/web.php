@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
@@ -44,6 +44,7 @@ Route::group(['middleware' => 'contributor_and_chef'], function () {
 
 // Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile/{id}', ['uses' => 'UserController@view_profile', 'as' => 'profile.view'])->name('view_profile');
+Route::get('/guest-chef', 'UserController@view_guest_chef'); 
 
 // Recipe Controller
 Route::get('/recipe/best-recipe', 'RecipeController@view_best_recipes');
@@ -62,4 +63,5 @@ Route::post('/edit-profile', 'UserController@edited_profile');
 Route::get('/subscriptions', 'UserController@view_subscriptions');
 Route::post('/follow', 'UserController@follow');
 Route::get('/home', 'UserController@home');
+Route::get('/', 'UserController@home'); 
 Route::get('/earning/{id}','UserController@earnings');
