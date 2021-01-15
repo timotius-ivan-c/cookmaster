@@ -14,7 +14,7 @@ class CreateRecipeDetailStepsTable extends Migration
     public function up()
     {
         Schema::create('recipe_detail_steps', function (Blueprint $table) {
-            // $table->id();
+            $table->id();
             $table->unsignedBigInteger('step_no');
             $table->timestamps();
             $table->unsignedBigInteger('recipe_id');
@@ -22,7 +22,7 @@ class CreateRecipeDetailStepsTable extends Migration
             $table->string('image');
 
             $table->foreign('recipe_id')->references('id')->on('recipes');
-            $table->primary(['step_no', 'recipe_id']);
+            // $table->primary(['step_no', 'recipe_id']);
         });
     }
 
