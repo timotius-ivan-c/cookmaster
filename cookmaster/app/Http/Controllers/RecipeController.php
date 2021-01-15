@@ -144,31 +144,32 @@ class RecipeController extends Controller
                 $new_recipe->recipe_type = $request->type;
                 $new_recipe->recipe_category_id = $request->category;
                 $new_recipe->save();
-                return view('add_recipe')->with('recipe', $new_recipe)->with('step', 1);
-            } else {
-                if ($step == 1) {
-                    $new_ingredient = new RecipeDetailIngredient();
-                    $new_ingredient->recipe_id = $request->recipe_id;
-                    $new_ingredient->name = $request->name;
-                    $new_ingredient->amount = $request->amount;
-                    $new_ingredient->notes = $request->notes;
-                    $new_ingredient->save();
-                    $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
-                    $recipe->refresh();
-                    return view('add_recipe')->with('recipe', $recipe)->with('step', 1);
-                } elseif ($step == 2)  {
-                    $image_path = $request->file('image')->store('images', 'public');
-                    $new_step = new RecipeDetailStep();
-                    $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
-                    $new_step->step_no = count($existing_steps) + 1;
-                    $new_step->recipe_id = $request->recipe_id;
-                    $new_step->text = $request->text;
-                    $new_step->image = $image_path;
-                    $new_step->save();
-                    $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
-                    $recipe->refresh();
-                    return view('add_recipe')->with('recipe', $recipe)->with('step', 2);
-                }
+                // return view('add_recipe')->with('recipe', $new_recipe)->with('step', 1);
+                return redirect()->intended("edit-recipe/$new_recipe->id");
+            // } else {
+            //     if ($step == 1) {
+            //         $new_ingredient = new RecipeDetailIngredient();
+            //         $new_ingredient->recipe_id = $request->recipe_id;
+            //         $new_ingredient->name = $request->name;
+            //         $new_ingredient->amount = $request->amount;
+            //         $new_ingredient->notes = $request->notes;
+            //         $new_ingredient->save();
+            //         $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+            //         $recipe->refresh();
+            //         return view('add_recipe')->with('recipe', $recipe)->with('step', 1);
+            //     } elseif ($step == 2)  {
+            //         $image_path = $request->file('image')->store('images', 'public');
+            //         $new_step = new RecipeDetailStep();
+            //         $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
+            //         $new_step->step_no = count($existing_steps) + 1;
+            //         $new_step->recipe_id = $request->recipe_id;
+            //         $new_step->text = $request->text;
+            //         $new_step->image = $image_path;
+            //         $new_step->save();
+            //         $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
+            //         $recipe->refresh();
+            //         return view('add_recipe')->with('recipe', $recipe)->with('step', 2);
+            //     }
             }
         }
         
