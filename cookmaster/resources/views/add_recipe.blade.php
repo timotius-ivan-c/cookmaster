@@ -43,7 +43,8 @@
 
         <button type="submit" class="btn btn-primary">Next >></button>
     </form>
-    @else
+    @endif
+    {{-- @else
         <div class="card-body">
             Name: {{ $recipe->name}}
         </div>
@@ -116,6 +117,6 @@
             </form>
         </div>
         @endif
-    @endif
+    @endif --}}
 </div>
 @endsection
