@@ -12,7 +12,7 @@ class Review extends Model
     }
     public function recipe()
     {
-        return $this->belongsTo(Recipe::class);
+        return $this->belongsTo(Recipe::class, 'recipe_id', 'id');
     }
     protected $table = 'reviews';
     protected $fillable = [
