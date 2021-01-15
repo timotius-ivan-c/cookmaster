@@ -41,6 +41,9 @@
         #image_show[src=""] {
             display: none;
         }
+        .img-grid{
+            margin: 5px;
+        }
         @media screen and (max-width: 800px) {
             .card{
                 margin: auto;
