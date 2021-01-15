@@ -29,7 +29,7 @@ class Recipe extends Model
     }
     public function review()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class, 'recipe_id', 'id')->orderBy('publish_date', 'desc');
     }
     protected $table = 'recipes';
     protected $fillable = [
