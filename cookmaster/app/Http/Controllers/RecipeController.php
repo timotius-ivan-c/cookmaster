@@ -133,7 +133,7 @@ class RecipeController extends Controller
             }
         } else {
             if ($step == 0) {
-                $image_path = $request->file('image')->store('images', 'public');
+                $image_path = $request->file('image')->store('recipes', 'public');
                 $new_recipe = new Recipe();
                 $new_recipe->author_id = Auth()->user()->id;
                 $new_recipe->name = $request->name;
