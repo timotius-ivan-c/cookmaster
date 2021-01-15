@@ -98,6 +98,7 @@
                             </div>
                             @endforelse
                             @forelse($recipe->review as $review)
+                                @if(!empty($my_review) && $review->user_id != $my_review->first()->user_id)
                                 <div class="card-body">
                                     <div class="card">
                                         <div class="card-header"><strong>{{ $review->user->name }}</strong> <span class="float-right">Date: {{ $review->publish_date }}</span></div>
@@ -105,6 +106,7 @@
                                         <div class="card-body">{{ $review->review_text }}</div>
                                     </div>
                                 </div>
+                                @endif
                             @empty
                                 <div class="card-body">{{ __('No reviews yet.') }}</div>
                             @endforelse
