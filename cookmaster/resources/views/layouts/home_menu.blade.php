@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 <div class="container" style="margin-bottom: 20px">
     <ul class="nav justify-content-center" style="background-color: #e3f2fd;">
         <li class="nav-item">
