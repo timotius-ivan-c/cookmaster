@@ -204,4 +204,9 @@ class UserController extends Controller
         $author = User::where('id', $recipe[0]->author_id)->get();
         return view('guest_chef', ['recipe' => $recipe[0], 'author' => $author[0]]); 
     }
+
+    public function view_community(){
+        $recipes = Recipe::inRandomOrder()->limit(9)->get(); 
+        return view('community', ['recipes' => $recipes]);
+    }
 }
