@@ -47,7 +47,6 @@ Route::get('/profile/{id}', ['uses' => 'UserController@view_profile', 'as' => 'p
 Route::get('/guest-chef', 'UserController@view_guest_chef'); 
 Route::get('/community', 'UserController@view_community');
 
-
 // Recipe Controller
 Route::get('/recipe/best-recipe', 'RecipeController@view_best_recipes');
 Route::get('/recipe/{recipe}', 'RecipeController@view_recipe');
