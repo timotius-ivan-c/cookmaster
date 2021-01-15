@@ -14,6 +14,7 @@ class CreateReviewsTable extends Migration
     public function up()
     {
         Schema::create('reviews', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('recipe_id');
             $table->unsignedBigInteger('user_id');
@@ -23,7 +24,7 @@ class CreateReviewsTable extends Migration
 
             $table->foreign('recipe_id')->references('id')->on('recipes');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->primary(['recipe_id', 'user_id']);
+            // $table->primary(['recipe_id', 'user_id']);
         });
     }
 
