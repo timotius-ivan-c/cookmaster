@@ -333,7 +333,7 @@ class RecipeController extends Controller
                 $step = RecipeDetailStep::find($request->step_id);
                 $step->text = $request->input('text');
                 if ($request->file('image')) {
-                    $image_path = $request->file('image')->store('images', 'public');
+                    $image_path = $request->file('image')->store('images/steps', 'public');
                     $step->image = $request->image;
                 }
                 $step->save();
