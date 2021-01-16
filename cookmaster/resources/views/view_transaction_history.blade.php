@@ -1,6 +1,11 @@
 @extends('layouts.app')
+@section('namapage')
+    class="background-1"
+@endsection
 @section('content')
-<div class="container">
+<div class="box-content">
+    <h5><center>Transaction History</center></h5>
+    <br>
     {{-- udah bekerja, tinggal formatting + sesuaiin apa aja yang mau ditampilkan--}}
     {{-- kalau mau dicoba pake seeding doang, login sbg soobin@gmail.com , password: csb0512--}}
     @if(session('success'))
@@ -8,7 +13,7 @@
     @endif
     <table class="table col-lg-12">
         <thead>
-            <tr>
+            <tr class="table-active">
                 <td>Transaction ID</td>
                 <td>Date</td>
                 <td>Token</td>
