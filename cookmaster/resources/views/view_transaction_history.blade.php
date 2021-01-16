@@ -9,17 +9,19 @@
     <table class="table col-lg-12">
         <thead>
             <tr>
-                <td>TransactionID</td>
-                <td>Amount</td>
+                <td>Transaction ID</td>
                 <td>Date</td>
-                <td>Transaction Description</td>
+                <td>Token</td>
+                <td>Amount</td>
+                <td>Description</td>
             </tr>
         </thead>
         @foreach($transactions as $transaction)
         <tr>
         <td>{{$transaction->id}}</td>
-        <td>{{$transaction->amount}}</td> 
         <td>{{$transaction->date}}</td> 
+        <td>{{$transaction->token}}</td>
+        <td>{{$transaction->amount}}</td> 
         <td>{{$transaction->message}}</td>
         </tr>   
     @endforeach
