@@ -1,8 +1,11 @@
 @extends('layouts.app')
+@section('namapage')
+    class="leaderboard"
+@endsection
 @section('content')
-
+<div class="box-content">
 @if($type=='chef')
-<h5>Top 20 Chef</h5>
+<h5><center>Top 20 Chef</center></h5>
     <table class="table">
         <thead>
             <tr>
@@ -37,7 +40,7 @@
             @endfor
     </table>
 @elseif($type=='contributor')
-<h5>Top 20 Contributor</h5>
+<h5><center>Top 20 Contributor</center></h5>
     <table class="table">
         <thead>
             <tr>
@@ -73,4 +76,5 @@
     </table>
 
 @endif
+</div>
 @endsection
