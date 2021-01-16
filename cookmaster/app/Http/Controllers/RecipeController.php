@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class RecipeController extends Controller
 {
@@ -247,15 +248,33 @@ class RecipeController extends Controller
 
     public function commit_edit_recipe(Request $request) {
         $user = Auth::user();
-        $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailIngredient')->with('recipeDetailStep')->first();
-        $recipe_categories = RecipeCategory::all();
+
+        $validate = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id|in:'.$user->id,
+            'recipe_id' => 'required|exists:recipes,id',
+        ]);
 
         $field_to_edit = $request->edit;
         $field_to_delete = $request->delete;
         $field_to_add = $request->add;
 
+        if ($validate->fails() || ($field_to_add==null && $field_to_delete==null && $field_to_edit==null)) {
+            return redirect()->back()->with('error', 'Invalid input. Please refresh the page');
+        }
+
+        $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailIngredient')->with('recipeDetailStep')->first();
+        $recipe_categories = RecipeCategory::all();
+
         if ($field_to_edit != null) {
             if ($field_to_edit == 'recipe') {
+                $validate = Validator::make($request->all(), [
+                    'name' => 'required',
+                    'recipe_type' => 'required|in:[1,2]',
+                    'category' => 'required|exists:recipe_categories,id',
+                ]);
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'edit_recipe');
+                }
                 $recipe->name = $request->name;
                 if ($request->file('image')) {
                     $image_path = $request->file('image')->store('images', 'public');
@@ -268,6 +287,13 @@ class RecipeController extends Controller
                 Session::flash('success', 'Your edit has been saved!');
                 return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'ingredient') {
+                $validate = Validator::make($request->all(), [
+                    'ingredient_id' => 'required|exists:recipe_detail_ingredients,id',
+                    'name' => 'required',
+                ]);
+                if ($validate->fails()) {
+                    return redirect("edit-recipe/$recipe->id/#ingredient")->withErrors($validate->errors())->with('error_type', 'edit_ingredient');
+                }
                 $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
                 $ingredient->name = $request->name;
                 $ingredient->amount = $request->amount;
@@ -277,8 +303,15 @@ class RecipeController extends Controller
                 Session::flash('success', 'Your edit has been saved!');
                 return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'step') {
+                $validate = Validator::make($request->all(), [
+                    'step_id' => 'required|exists:recipe_detail_steps,id',
+                    'text' => 'required',
+                ]);
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'edit_step');
+                }
                 $step = RecipeDetailStep::find($request->step_id);
-                $step->text = $request->text;
+                $step->text = $request->input('text');
                 if ($request->file('image')) {
                     $image_path = $request->file('image')->store('images', 'public');
                     $step->image = $request->image;
@@ -294,12 +327,25 @@ class RecipeController extends Controller
                 Session::flash('success', 'Your recipe has been deleted!');
                 return redirect()->intended('home')->with('success', 'Your recipe has been deleted!');
             } elseif ($field_to_delete == 'ingredient') {
+                $validate = Validator::make($request->all(), [
+                    'ingredient_id' => 'required|exists:recipe_detail_ingredients,id',
+                ]);
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'delete_ingredients');
+                }
                 $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
                 $ingredient->delete();
                 $recipe->refresh();
                 Session::flash('success', 'Ingredient deleted!');
                 return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient deleted!');
             } elseif ($field_to_delete == 'step') {
+                $validate = Validator::make($request->all(), [
+                    'step_id' => 'required|exists:recipe_detail_steps,id',
+                    'step_no' => 'required|max:'.count($recipe->recipeDetailStep),
+                ]);
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'delete_step');
+                }
                 $steps_to_edit = RecipeDetailStep::where('recipe_id', $request->recipe_id);
                 $step_count = count($steps_to_edit->get());
                 $steps_to_edit->where('id', $request->step_id)->delete();
@@ -316,6 +362,13 @@ class RecipeController extends Controller
             }
         } elseif ($field_to_add != null) {
             if ($field_to_add == 'ingredient') {
+                $validate = Validator::make($request->all(), [
+                    'name' => 'required',
+                ]);
+                if ($validate->fails()) {
+                    Session::flash('error_type', 'new_ingredient');
+                    return redirect()->intended("edit-recipe/$recipe->id#ingredient")->withErrors($validate->errors())->with('error_type', 'new_ingredient');
+                }
                 $new_ingredient = new RecipeDetailIngredient();
                 $new_ingredient->recipe_id = $request->recipe_id;
                 $new_ingredient->name = $request->name;
@@ -326,6 +379,12 @@ class RecipeController extends Controller
                 Session::flash('success', 'Ingredient added!');
                 return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient saved!');
             } elseif ($field_to_add == 'step') {
+                $validate = Validator::make($request->all(), [
+                    'text' => 'required|string',
+                ]);
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'new_step');
+                }
                 $new_step = new RecipeDetailStep();
                 $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
                 $new_step->step_no = count($existing_steps) + 1;
@@ -345,6 +404,29 @@ class RecipeController extends Controller
     }
 
     public function add_review(Request $request) {
+        $validate = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'recipe_id' => 'required|exists:recipes,id',
+            'review_text' => 'required|string|min:5|max:200',
+            'rating' => 'required|integer|min:1|max:5',
+        ],
+        [
+            'user_id.required' => 'Error. Please refresh the page.',
+            'user_id.exists' =>'User not found.',
+            'recipe_id.required' => 'Error. Please refresh the page.',
+            'recipe_id.exists' => 'Recipe not found.',
+            'review_text.required' => 'Please add your comment (min. 5 characters, max. 200).',
+            'review_text.min' => 'Please write at least 5 characters',
+            'review_text.max' => 'Please write no more than 200 characters.',
+            'rating.required' =>'Please choose the rating',
+            'rating.min' => 'Please choose a rating by clicking on the star',
+            'rating.max' => 'Please choose a rating by clicking on the star',
+        ]);
+        
+        if ($validate->fails()) {
+            return redirect()->back()->withErrors($validate->errors());
+        }
+
         $user_id = $request->user_id;
         $login_user = Auth::user();
         if ($user_id == $login_user->id) {
@@ -362,11 +444,26 @@ class RecipeController extends Controller
             $author->fame = $author->fame + $fame_addition;
             $author->save();
             
-            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('success', 'Reveiew saved! Thank you for your feedback!');
+            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('status', 'Reveiew saved! Thank you for your feedback!');
         }
     }
 
     public function delete_review(Request $request) {
+        $validate = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'recipe_id' => 'required|exists:recipes,id',
+        ],
+        [
+            'user_id.required' => 'Error. Please refresh the page.',
+            'user_id.exists' =>'User not found.',
+            'recipe_id.required' => 'Error. Please refresh the page.',
+            'recipe_id.exists' => 'Recipe not found.',
+        ]);
+        
+        if ($validate->fails()) {
+            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('delete_review_error', 'Failed to delete review.');
+        }
+
         $user_id = $request->user_id;
         $login_user = Auth::user();
         if ($user_id == $login_user->id) {
@@ -379,7 +476,7 @@ class RecipeController extends Controller
             $author->save();
             $review->delete();
             
-            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('success', 'Reveiew saved! Thank you for your feedback!');
+            return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('status', 'Reveiew deleted.');
         }
     }
 }
