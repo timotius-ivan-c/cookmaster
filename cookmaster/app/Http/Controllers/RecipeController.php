@@ -138,6 +138,17 @@ class RecipeController extends Controller
             }
         } else {
             if ($step == 0) {
+                $validate = Validator::make($request->all(), [
+                    'image' => 'required|mimes:jpg,png,jpeg,jfif,gif',
+                    'name' => 'required',
+                    'type' => 'required|min:1|max:2',
+                    'category' => 'required|exists:recipe_categories,id',
+                ]);
+
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors());
+                }
+
                 $image_path = $request->file('image')->store('recipes', 'public');
                 $new_recipe = new Recipe();
                 $new_recipe->author_id = Auth()->user()->id;
