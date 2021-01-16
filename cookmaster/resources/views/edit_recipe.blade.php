@@ -1,5 +1,9 @@
 @extends('layouts.app')
+@section('namapage')
+    class='background-2'
+@endsection
 @section('content')
+<div class="box-content-form">
 <div class="container">
     <div class="row">
         <div class="card">
@@ -157,5 +161,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
