@@ -1,6 +1,10 @@
 @extends('layouts.app')
+@section('namapage')
+    class="background-2"
+@endsection
 @section('content')
 <div class="container">
+    <div class="box-content-form">
     @if($step == 0)
     <!-- disini user mau masukin judul, foto, tipe, dan kategori resep -->
     <form method="post" action="/new-recipe" enctype="multipart/form-data">
@@ -123,5 +127,6 @@
         </div>
         @endif
     @endif --}}
+</div>
 </div>
 @endsection
