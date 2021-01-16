@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Type\Integer;
 
 class TransactionController extends Controller
@@ -76,6 +77,15 @@ class TransactionController extends Controller
     }
 
     public function pay_subscription(Request $request) {
+        $validate = Validator::make($request->all(), [
+            'id' => 'required|exists:users,id',
+            'duration' => ['required', Rule::in(1, 3, 6, 12, 24)],
+        ]);
+        
+        if ($validate->fails()) {
+            return redirect()->back(302, [], true)->withErrors($validate->errors());
+        }
+
         $duration = $request->input('duration');
         $id = $request->input('id');
         $user_id = Auth::id();
