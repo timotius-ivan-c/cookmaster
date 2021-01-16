@@ -44,6 +44,26 @@
         .img-grid{
             margin: 5px;
         }
+        .page-not-found{
+           background-image: url('{{asset('background/404.png')}}');
+           background-size: cover;
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           z-index: -1;
+        }
+        .err-404{
+            border-radius: 0;
+            padding: 15px;
+            font-family: "Verdana";
+            font-size: smaller;
+            letter-spacing: 1px;
+            position: relative;
+            left: 595px;
+            top: 290px;
+        }
         @media screen and (max-width: 800px) {
             .card{
                 margin: auto;
