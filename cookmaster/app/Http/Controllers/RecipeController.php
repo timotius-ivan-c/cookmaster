@@ -138,6 +138,17 @@ class RecipeController extends Controller
             }
         } else {
             if ($step == 0) {
+                $validate = Validator::make($request->all(), [
+                    'image' => 'required|mimes:jpg,png,jpeg,jfif,gif',
+                    'name' => 'required',
+                    'type' => 'required|min:1|max:2',
+                    'category' => 'required|exists:recipe_categories,id',
+                ]);
+
+                if ($validate->fails()) {
+                    return redirect()->back()->withErrors($validate->errors());
+                }
+
                 $image_path = $request->file('image')->store('recipes', 'public');
                 $new_recipe = new Recipe();
                 $new_recipe->author_id = Auth()->user()->id;
@@ -223,6 +234,10 @@ class RecipeController extends Controller
             if ($user->id == $recipe->author_id) {
                 return view('view_recipe')->with('recipe', $recipe)->with('is_author', true)->with('my_review', $my_review);
             } else {
+
+                if($recipe->recipe_type == 1){
+                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', false)->with('review')->with('my_review', $my_review);
+                }
                 // User bukan pembuat resep:
                 // Cek apakah user subscribe ke chef nya
                 $subscribed_chefs = DB::table('subscriptions')->select('chef_id')
@@ -396,7 +411,7 @@ class RecipeController extends Controller
                 $new_step->recipe_id = $request->recipe_id;
                 $new_step->text = $request->text;
                 if ($request->file('image')) {
-                    $image_path = $request->file('image')->store('images', 'public');
+                    $image_path = $request->file('image')->store('images/steps', 'public');
                     $new_step->image = $image_path;
                 }
                 $new_step->save();
