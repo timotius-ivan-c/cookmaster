@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('namapage')
+    class="background-3"
+@endsection
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
