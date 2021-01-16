@@ -22,7 +22,8 @@
     @forelse ($hot_recipes as $hot)
     <div class="row">
         <div class="card col-md-6 bg-light ml-8" onclick="window.location.href='/recipe/view-recipe/{{$hot->id}}'" style="width: 40rem;">
-            <img class="card-image-top" src="{{asset('asset/'.$hot->image)}}"> 
+            <br>
+            <img class="card-image-top" src="{{asset('storage/'.$hot->image)}}"> 
             <div class="card-body">   
                 <div class="card-title"><strong>{{$hot->name}}</strong></div>
                 <div class="card-text">        
@@ -43,7 +44,8 @@
     @forelse ($best_recipes as $best)
     <div class="row">
         <div class="card col-md-6 bg-light ml-8" onclick="window.location.href='/recipe/view-recipe/{{$best->id}}'" style="width: 40rem;">
-            <img class="card-image-top" src="{{asset('asset/'.$best->image)}}"> 
+            <br>
+            <img class="card-image-top" src="{{asset('storage/'.$best->image)}}"> 
             <div class="card-body">   
                 <div class="card-title"><strong>{{$best->name}}</strong></div>
                 <div class="card-text">        
