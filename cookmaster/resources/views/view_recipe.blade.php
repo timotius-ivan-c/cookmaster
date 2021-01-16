@@ -66,6 +66,13 @@
                             <div class="card-body">
                                 <div class="card">
                                     <div class="card-header">Write your review . . .</div>
+                                    @if($errors->any())
+                                        <div class="alert alert-warning">
+                                            @foreach($errors->all() as $err)
+                                            <div class="errors">{{ $err }}</div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                     <div class="card-body pb-0">
                                         <div class="col">
                                             <div class="well well-sm">
@@ -76,7 +83,7 @@
                                                 <div class="row" id="post-review-box" style="display:none;">
                                                     <div class="col-md-12">
                                                         <form accept-charset="UTF-8" action="/add-review/" method="post">
-                                                        @csrf
+                                                            @csrf
                                                             <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                                             <input id="ratings-hidden" name="rating" type="hidden"> 
                                                             <textarea class="form-control animated" cols="50" id="new-review" name="review_text" placeholder="Enter your review here..." rows="5"></textarea>
