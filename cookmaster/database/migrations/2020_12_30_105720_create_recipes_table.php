@@ -19,7 +19,7 @@ class CreateRecipesTable extends Migration
             $table->unsignedBigInteger('author_id');
             $table->string('name');
             $table->string('image');
-            $table->string('review_count');
+            $table->integer('review_count');
             $table->float('average_rating', 3, 2);
             $table->datetime('publish_date');
             $table->integer('recipe_type');
