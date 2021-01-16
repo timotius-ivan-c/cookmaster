@@ -10,6 +10,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>cook master</title>
     <style>
+        body{
+            background-size: cover;
+            background-repeat: repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .background-1{
+            background-image: url('{{asset('storage/background/bg-1.png')}}');'
+        }
         .pagination{
             margin-top: 10px;
             clear:left;
@@ -45,7 +58,7 @@
             margin: 5px;
         }
         .page-not-found{
-           background-image: url('{{asset('background/404.png')}}');
+           background-image: url('{{asset('storage/background/404.png')}}');
            background-size: cover;
            position: absolute;
            top: 0;
@@ -64,6 +77,24 @@
             left: 595px;
             top: 290px;
         }
+        .table{
+           width: 800px;
+           margin: auto;
+           border: 1px solid black;
+           opacity: 1;
+       }
+       .box-content{
+           background-color: white;
+           width: max-content;
+           height: auto;
+           margin: auto;
+           padding-top: 50px;
+           padding-left: 25px;
+           padding-right: 25px;
+           padding-bottom: 100px;
+           opacity: 0.98;
+
+       }
         @media screen and (max-width: 800px) {
             .card{
                 margin: auto;
@@ -91,7 +122,7 @@
         }
     </script>
 </head>
-<body>
+<body @yield('namapage')>
     {{-- nav class from app.blade.php + search bar--}}
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
