@@ -259,6 +259,7 @@ class RecipeController extends Controller
         $field_to_add = $request->add;
 
         if ($validate->fails() || ($field_to_add==null && $field_to_delete==null && $field_to_edit==null)) {
+            Session::flash('error', 'Invalid input. Please refresh the page');
             return redirect()->back()->with('error', 'Invalid input. Please refresh the page');
         }
 
@@ -269,11 +270,12 @@ class RecipeController extends Controller
             if ($field_to_edit == 'recipe') {
                 $validate = Validator::make($request->all(), [
                     'name' => 'required',
-                    'recipe_type' => 'required|in:[1,2]',
+                    'recipe_type' => 'required|min:1|max:2',
                     'category' => 'required|exists:recipe_categories,id',
                 ]);
                 if ($validate->fails()) {
-                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'edit_recipe');
+                    // Session::flash('error_type', 'edit_recipe');
+                    return redirect()->intended("edit-recipe/$recipe->id#recipe")->withErrors($validate->errors())->with('error_type', 'edit_recipe');
                 }
                 $recipe->name = $request->name;
                 if ($request->file('image')) {
@@ -284,8 +286,8 @@ class RecipeController extends Controller
                 $recipe->recipe_category_id = $request->category;
                 $recipe->save();
                 $recipe->refresh();
-                Session::flash('success', 'Your edit has been saved!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('recipe_success', 'Your changes have been saved!');
+                return redirect()->intended("edit-recipe/$recipe->id#recipe")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'ingredient') {
                 $validate = Validator::make($request->all(), [
                     'ingredient_id' => 'required|exists:recipe_detail_ingredients,id',
@@ -300,15 +302,15 @@ class RecipeController extends Controller
                 $ingredient->notes = $request->notes;
                 $ingredient->save();
                 $recipe->refresh();
-                Session::flash('success', 'Your edit has been saved!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('ingredient_success', 'Your edit has been saved!');
+                return redirect()->intended("edit-recipe/$recipe->id#ingredient")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'step') {
                 $validate = Validator::make($request->all(), [
                     'step_id' => 'required|exists:recipe_detail_steps,id',
                     'text' => 'required',
                 ]);
                 if ($validate->fails()) {
-                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'edit_step');
+                    return redirect("edit-recipe/$recipe->id/#step")->withErrors($validate->errors())->with('error_type', 'edit_step');
                 }
                 $step = RecipeDetailStep::find($request->step_id);
                 $step->text = $request->input('text');
@@ -318,8 +320,8 @@ class RecipeController extends Controller
                 }
                 $step->save();
                 $recipe->refresh();
-                Session::flash('success', 'Your edit has been saved!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('step_success', 'Your edit has been saved!');
+                return redirect()->intended("edit-recipe/$recipe->id#step")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             }
         } elseif ($field_to_delete != null) {
             if ($field_to_delete == 'recipe') {
@@ -336,8 +338,8 @@ class RecipeController extends Controller
                 $ingredient = RecipeDetailIngredient::find($request->ingredient_id);
                 $ingredient->delete();
                 $recipe->refresh();
-                Session::flash('success', 'Ingredient deleted!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient deleted!');
+                Session::flash('ingredient_success', 'Ingredient deleted!');
+                return redirect()->intended("edit-recipe/$recipe->id#ingredient")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient deleted!');
             } elseif ($field_to_delete == 'step') {
                 $validate = Validator::make($request->all(), [
                     'step_id' => 'required|exists:recipe_detail_steps,id',
@@ -357,8 +359,8 @@ class RecipeController extends Controller
                     $step->save();
                 }
                 $recipe->refresh();
-                Session::flash('success', 'Step deleted!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
+                Session::flash('step_success', 'Step deleted!');
+                return redirect()->intended("edit-recipe/$recipe->id#step")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             }
         } elseif ($field_to_add != null) {
             if ($field_to_add == 'ingredient') {
@@ -376,14 +378,14 @@ class RecipeController extends Controller
                 $new_ingredient->notes = $request->notes;
                 $new_ingredient->save();
                 $recipe->refresh();
-                Session::flash('success', 'Ingredient added!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient saved!');
+                Session::flash('ingredient_success', 'Ingredient added!');
+                return redirect()->intended("edit-recipe/$recipe->id#ingredient")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Ingredient saved!');
             } elseif ($field_to_add == 'step') {
                 $validate = Validator::make($request->all(), [
                     'text' => 'required|string',
                 ]);
                 if ($validate->fails()) {
-                    return redirect()->back()->withErrors($validate->errors())->with('error_type', 'new_step');
+                    return redirect()->intended("edit-recipe/$recipe->id#step")->withErrors($validate->errors())->with('error_type', 'new_step');
                 }
                 $new_step = new RecipeDetailStep();
                 $existing_steps = RecipeDetailStep::where('recipe_id', $request->recipe_id)->get();
@@ -397,8 +399,8 @@ class RecipeController extends Controller
                 $new_step->save();
                 $recipe = Recipe::where('id', $request->recipe_id)->with('recipeDetailStep')->with('recipeDetailIngredient')->first();
                 $recipe->refresh();
-                Session::flash('success', 'New step added!');
-                return redirect()->intended("edit-recipe/$recipe->id")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'New step saved!');
+                Session::flash('step_success', 'New step added!');
+                return redirect()->intended("edit-recipe/$recipe->id#step")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'New step saved!');
             }
         }
     }
