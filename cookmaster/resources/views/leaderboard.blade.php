@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('namapage')
-    class="leaderboard"
+    class="background-1"
 @endsection
 @section('content')
 <div class="box-content">
