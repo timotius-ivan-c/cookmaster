@@ -1,5 +1,9 @@
 @extends('layouts.app')
+@section('namapage')
+    class="background-1"
+@endsection
 @section('content')
+<div class="container">
 <div class="row">
     @foreach ($subscriptions as $subscription)
         <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//resep detail yang paling baru--}} ;" style="width: 20rem;">
@@ -18,5 +22,6 @@
         </div>
         
     @endforeach
+</div>
 </div>
 @endsection
