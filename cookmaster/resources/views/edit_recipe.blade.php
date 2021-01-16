@@ -17,7 +17,7 @@
                 @if($errors->any() && session('error_type')=='edit_recipe')
                     <div class="alert alert-danger">All recipe details must be filled.</div>
                 @endif
-                <div class="card-image"><img class="img-thumbnail" src="{{asset($recipe->image)}}" alt="recipe-img"></div>
+                <div class="card-image"><img class="img-thumbnail" src="{{asset('storage/'.$recipe->image)}}" alt="recipe-img"></div>
                 <form class="col-md-10" action="/edit-recipe/{{$recipe->id}}" method="post">
                     @csrf
                     <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
