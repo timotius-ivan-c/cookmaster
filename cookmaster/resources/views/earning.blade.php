@@ -1,10 +1,13 @@
 @extends('layouts.app')
-
+@section('namapage')
+    class="background-1"
+@endsection
 @section('content')
 <h1><strong>Financial Report:<br<br><strong></h1>
 <h5><br><br>Total Subscribers:<br>{{$subscription}} people</h5>
 <br>
 <br>
+<div class="box-content">
 @if (!$transaction_details->isEmpty())
     <h5>Transaction Details: <br><br></h5>
     <table class="table table-light table-hover table-striped col-lg-12">
@@ -29,4 +32,5 @@
     @else
     There is no transaction details!
 @endif
+</div>
 @endsection
