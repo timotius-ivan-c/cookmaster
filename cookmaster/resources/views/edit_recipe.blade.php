@@ -94,25 +94,27 @@
                 <div class="card-body">
                     @foreach($recipe->recipeDetailStep as $step)
                     <!-- form to edit each step -->
-                    <div class="row p-1">
+                    <div class="row p-1" style="vertical-align: middle;">
                         <div class="col-md-1">{{$step->step_no}}. </div>
-                        <form action="/edit-recipe/{{$recipe->id}}" method="post">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                            <input type="hidden" name="edit" value="step">
-                            <input type="hidden" name="step_id" value="{{$step->id}}">
-                            <input type="hidden" name="step_no" value="{{$step->step_no}}">
-                            <textarea cols="60" rows="3" class="col-md-12" type="text" name="text">{{$step->text}}</textarea>
-                            <button class="btn btn-success mr-1" type="submit" value="">Update</button>
-                        </form>
-                        <form action="/edit-recipe/{{$recipe->id}}" method="post">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                            <input type="hidden" name="delete" value="step">
-                            <input type="hidden" name="step_id" value="{{$step->id}}">
-                            <input type="hidden" name="step_no" value="{{$step->step_no}}">
-                            <button class="btn btn-danger" type="submit" name="recipe_id" value="{{$recipe->id}}">Delete</button>
-                        </form>
+                        <div style="display: inline-table;">
+                            <form action="/edit-recipe/{{$recipe->id}}" method="post" >
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                <input type="hidden" name="edit" value="step">
+                                <input type="hidden" name="step_id" value="{{$step->id}}">
+                                <input type="hidden" name="step_no" value="{{$step->step_no}}">
+                                <textarea cols="70" rows="5" class="col-md-12" name="text" value="{{$step->text}}" style="display: flexbox;">{{$step->text}}</textarea>
+                                <button class="btn btn-success mr-1 float-left" type="submit" name="recipe_id" value="{{$recipe->id}}">Update</button>
+                            </form>
+                            <form class="float-left" action="/edit-recipe/{{$recipe->id}}" method="post">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                <input type="hidden" name="delete" value="step">
+                                <input type="hidden" name="step_id" value="{{$step->id}}">
+                                <input type="hidden" name="step_no" value="{{$step->step_no}}">
+                                <button class="btn btn-danger" type="submit" name="recipe_id" value="{{$recipe->id}}">Delete</button>
+                            </form>
+                        </div>
                     </div>
                     @endforeach
                     <div class="row p-1">
