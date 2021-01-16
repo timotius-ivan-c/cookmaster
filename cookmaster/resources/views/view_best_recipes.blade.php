@@ -1,6 +1,9 @@
 @extends('layouts.app')
-
+@section('namapage')
+    class="background-4"
+@endsection
 @section('content')
+<div class="box-content">
 <div class="container">
     @if(empty($recipes))
     <div class="card">
@@ -21,7 +24,7 @@
     <div id="hot_recipes">
     @forelse ($hot_recipes as $hot)
     <div class="row">
-        <div class="card col-md-6 bg-light ml-8" onclick="window.location.href='/recipe/view-recipe/{{$hot->id}}'" style="width: 40rem;">
+        <div class="card-topup col-md-6 bg-light ml-8" onclick="window.location.href='/recipe/view-recipe/{{$hot->id}}'" style="width: 40rem;">
             <br>
             <img class="card-image-top" src="{{asset('storage/'.$hot->image)}}"> 
             <div class="card-body">   
@@ -43,7 +46,7 @@
     <div id="best_recipes">
     @forelse ($best_recipes as $best)
     <div class="row">
-        <div class="card col-md-6 bg-light ml-8" onclick="window.location.href='/recipe/view-recipe/{{$best->id}}'" style="width: 40rem;">
+        <div class="card-topup col-md-6 bg-light ml-8" onclick="window.location.href='/recipe/view-recipe/{{$best->id}}'" style="width: 40rem;">
             <br>
             <img class="card-image-top" src="{{asset('storage/'.$best->image)}}"> 
             <div class="card-body">   
@@ -64,7 +67,7 @@
 
     @forelse ($recipes as $recipe)
     <div class="row">
-        <div class="card col-md-6 bg-light ml-8" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
+        <div class="card-topup col-md-6 bg-light ml-8" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
             <img class="card-image-top" src="{{asset('storage/'.$recipe->image)}}"> 
             <div class="card-body">   
                 <div class="card-title"><strong>{{$recipe->name}}</strong></div>
@@ -81,7 +84,7 @@
             
     @endforelse
 </div>
-
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <script>
