@@ -11,6 +11,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>CookMaster</title>
     <style>
+        body{
+            background-image: url('{{asset('storage/background/bg-4.png')}}');
+            background-size: cover;
+            background-repeat: repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
         .pagination{
             margin-top: 10px;
             clear:left;
@@ -154,21 +165,45 @@
                 </div>
                 <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
                     <div class="card-body"><h5><strong>Latest Recipe:</strong></h5></div>
-                    <img class="card-image-top" src="{{asset('asset/'.$my_recipes->first()->image)}}"> 
+                    <img class="card-image-top" src="{{asset('storage/'.$my_recipes->first()->image)}}"> 
                     <div class="card-body">   
                     <div class="card-title"><strong>{{$my_recipes->first()->name}}</strong></div>
                     <div class="card-text">        
                         Average rating  : <br>
                             {{$my_recipes->first()->average_rating}} / 5.00 <br> from {{$my_recipes->first()->review_count}} people <br><br>
                         <div class="container adm-btns">
-                            <button type="button" class="btn btn-primary" onclick="window.location.href=">Edit Recipe</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='/edit-recipe/{{$my_recipes->first()->id}}">Edit Recipe</button>
                         </div>
                     </div>
                 </div>
             </div>
             </div>
             @elseif(\Auth::user()->role_id==1)
-            
+            <div class="row">
+                <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Earnings page--}} ;" style="width: 40rem;">
+                    <div class="card-body"><h5><strong>Report:</strong></h5><br>
+                        <p class="card-text">
+                            Balance : <br>Rp {{$user->balance}}<br>
+                            <br>
+                            Lifetime topup :<br> {{$user->lifetime_topup}}<br>
+                        </p>
+                    </div>
+                </div>
+                <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
+                    <div class="card-body"><h5><strong>Latest Recipe: </strong></h5></div>
+                    <img class="card-image-top" src="{{asset('storage/'.$recipes->first()->image)}}"> 
+                    <div class="card-body">   
+                    <div class="card-title"><strong>{{$recipes->name}}</strong></div>
+                    <div class="card-text">        
+                        Average rating  : <br>
+                            {{$recipes->average_rating}} / 5.00 <br> from {{$recipes->review_count}} people <br><br>
+                        <div class="container adm-btns">
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='/edit-recipe/{{$recipes->id}}">Edit Recipe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
             @endif
         @endguest
         <br>
@@ -179,13 +214,13 @@
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active">
-                    <img class="d-block w-200" src="{{asset('asset/'.$best_recipes[0]->image)}}" alt="{{$best_recipes[0]->name}}">
+                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[0]->image)}}" alt="{{$best_recipes[0]->name}}">
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block w-200" src="{{asset('asset/'.$best_recipes[1]->image)}}" alt="{{$best_recipes[1]->name}}">
+                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[1]->image)}}" alt="{{$best_recipes[1]->name}}">
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block w-200" src="{{asset('asset/'.$best_recipes[2]->image)}}" alt="{{$best_recipes[2]->name}}">
+                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[2]->image)}}" alt="{{$best_recipes[2]->name}}">
                   </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
