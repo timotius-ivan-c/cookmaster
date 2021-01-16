@@ -223,6 +223,10 @@ class RecipeController extends Controller
             if ($user->id == $recipe->author_id) {
                 return view('view_recipe')->with('recipe', $recipe)->with('is_author', true)->with('my_review', $my_review);
             } else {
+
+                if($recipe->recipe_type == 1){
+                    return view('view_recipe')->with('recipe', $recipe)->with('is_author', false)->with('review')->with('my_review', $my_review);
+                }
                 // User bukan pembuat resep:
                 // Cek apakah user subscribe ke chef nya
                 $subscribed_chefs = DB::table('subscriptions')->select('chef_id')
