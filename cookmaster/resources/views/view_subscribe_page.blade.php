@@ -1,11 +1,15 @@
 @extends('layouts.app')
+@section('namapage')
+    class="background-1"
+@endsection
 @section('content')
+<div class="box-content-topup">
 <div class="container">
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 card bg-light" style="width: 20rem;">
+        <div class="card-topup bg-light" style="width: 20rem;">
             <div class="card-body">
                 <h5 class="card-title">Chef Information</h5>
                 <p class="card-text">Name : <br>{{$chef->name}}</p>
@@ -21,7 +25,7 @@
         </div>
     @endif
 
-    <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 card bg-light" style="width: 20rem;">
+    <div class=" card-topup bg-light" style="width: 20rem;">
         <div class="card-body">
             <h5 class="card-title">SUBSCRIPTION FORM</h5>
         <form action='/subscribe' method='post'>
@@ -46,5 +50,6 @@
         </form>
         </div>
     </div>
+</div>
 </div>
 @endsection
