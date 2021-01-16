@@ -21,7 +21,16 @@
             z-index: -1;
         }
         .background-1{
-            background-image: url('{{asset('storage/background/bg-1.png')}}');'
+            background-image: url('{{asset('storage/background/bg-1.png')}}');
+        }
+        .background-2{
+            background-image: url('{{asset('storage/background/bg-2.png')}}');
+        }
+        .background-3{
+            background-image: url('{{asset('storage/background/bg-3.png')}}');
+        }
+        .background-4{
+            background-image: url('{{asset('storage/background/bg-4.png')}}');
         }
         .pagination{
             margin-top: 10px;
@@ -93,8 +102,32 @@
            padding-right: 25px;
            padding-bottom: 100px;
            opacity: 0.98;
-
        }
+       .box-content-form{
+           background-color: white;
+           width: 800px;
+           height: auto;
+           margin: auto;
+           padding-top: 50px;
+           padding-left: 25px;
+           padding-right: 25px;
+           padding-bottom: 100px;
+           opacity: 0.98;
+       }
+       .box-content-topup{
+           background-color: white;
+           width: 800px;
+           height: auto;
+           margin: auto;
+           padding-top: 50px;
+           padding-bottom: 100px;
+           opacity: 0.98;
+       }
+       .card-topup{
+           margin: auto;
+           width: 1200px;
+       }
+      
         @media screen and (max-width: 800px) {
             .card{
                 margin: auto;
@@ -107,6 +140,7 @@
                 margin-top: 5px;
             }
         }
+        
     </style>
     <script>
         function readURL(input) {
