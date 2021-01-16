@@ -3,14 +3,20 @@
 <div class="container">
     <div class="row">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" id="recipe">
                 Edit Recipe - {{$recipe->name}}
                 <button class="btn btn-primary float-right" onclick="window.location='/profile/{{Auth::user()->id}}'">Done</button>
             </div>
-            @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+            @if(session('recipe_success'))
+            <div class="alert alert-success">{{ session('recipe_success') }}</div>
             @endif
             <div class="card-body" style="width: 100%;">
+                @if($errors->any() && session('error_type')=='edit_recipe')
+                    <div class="alert alert-danger">All recipe details must be filled.</div>
+                @endif
                 <form class="col-md-10" action="/edit-recipe/{{$recipe->id}}" method="post">
                     @csrf
                     <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
@@ -45,10 +51,12 @@
                 <div class="card-header">Ingredients</div>
                 @if($errors->any() && session('error_type')=='new_ingredient')
                     <div class="alert alert-danger">Ingredient name must be filled.</div>
-                    {{$errors->all()}}
                 @endif
                 @if($errors->any() && session('error_type')=='edit_ingredient')
-                    <div class="alert alert-danger">Make sure ingredient name is not empty.</div>
+                    <div class="alert alert-danger">Can't update ingredient. Ingredient name must not be empty.</div>
+                @endif
+                @if(session('ingredient_success'))
+                    <div class="alert alert-success">{{ session('ingredient_success') }}</div>
                 @endif
                 <div class="card-body">
                     @foreach($recipe->recipeDetailIngredient as $ingredient)
@@ -90,8 +98,17 @@
             </div>
 
             <div class="card">
-                <div class="card-header">Steps</div>
+                <div class="card-header" id="step">Steps</div>
                 <div class="card-body">
+                    @if($errors->any() && session('error_type')=='edit_step')
+                        <div class="alert alert-danger">Can't update step. The step must be filled.</div>
+                    @endif
+                    @if($errors->any() && session('error_type')=='new_step')
+                        <div class="alert alert-danger">Can't add step. The step must be filled.</div>
+                    @endif
+                    @if(session('step_success'))
+                        <div class="alert alert-success">{{ session('step_success') }}</div>
+                    @endif
                     @foreach($recipe->recipeDetailStep as $step)
                     <!-- form to edit each step -->
                     <div class="row p-1" style="vertical-align: middle;">
