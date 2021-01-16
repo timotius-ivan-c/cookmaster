@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-        
+        @if(!empty($recipe))
             <div class="card">
                 <div class="card-header">
                     {{ $recipe->name }}
@@ -66,7 +66,7 @@
                             </div>
                             @empty
                             <div class="card-body">
-                                @if(Auth::check())
+                                @if(Auth::check() && $is_author==false)
                                 <div class="card">
                                     <div class="card-header">Write your review . . .</div>
                                     @if($errors->any())
@@ -124,8 +124,16 @@
                         </div>
                 </div>
             </div>
-        @if(empty($recipe))
-            <div class="alert alert-warning">{{ __('Recipe not found') }}</div>
+        @else
+        <div class="card">
+            <div class="alert alert-warning">{{ $error }}</div>
+            @if(!Auth::check())
+                <div class="alert alert-warning">We are sorry, this recipe is subscribers-only. Please <a href="/login">login</a> first to verify your credentials!</div>
+            @else
+                <div class="card-body">Click the button below to view subscription plans for this chef:</div>
+                <button class="btn btn-primary" onclick="window.location='/subscribe/{{$chef_id}}'">View Plans</button>
+            @endif
+        </div>
         @endif
         </div>
     </div>
