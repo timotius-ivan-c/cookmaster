@@ -42,11 +42,30 @@ class TransactionController extends Controller
             return redirect()->back()->withErrors($validate->errors());
        }
 
-       // Update balance
+       // Update balance and tier
        $user_balance = User::select('balance')->where('id', $request->id)->first();
+       $user_lifetime_topup = User::select('lifetime_topup')->where('id', $request->id)->first(); 
+       $curr_lifetime_topup = $user_lifetime_topup->lifetime_topup + $request->amount; 
+       $tier = null;
+
+       if($curr_lifetime_topup < 500000){
+           $tier = 1;
+       } else if($curr_lifetime_topup >= 500000 && $curr_lifetime_topup < 1000000){
+           $tier = 2; 
+       } else if($curr_lifetime_topup >= 1000000 && $curr_lifetime_topup < 2000000){
+           $tier = 3;
+       } else if ($curr_lifetime_topup >= 2000000 && $curr_lifetime_topup < 5000000){
+           $tier = 4;
+       } else if($curr_lifetime_topup >= 5000000 && $curr_lifetime_topup < 10000000){
+           $tier = 5;
+       } else if($curr_lifetime_topup >= 10000000){
+           $tier = 6; 
+       }
 
        User::where('id', $request->id)->update([
-           'balance' =>  $user_balance->balance + $request->amount
+           'balance' =>  $user_balance->balance + $request->amount,
+           'lifetime_topup' => $user_lifetime_topup->lifetime_topup + $request->amount,
+           'tier_id' => $tier
        ]);
 
        // Create new transaction
