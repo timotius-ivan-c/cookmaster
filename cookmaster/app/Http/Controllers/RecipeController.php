@@ -88,17 +88,20 @@ class RecipeController extends Controller
     public function view_best_recipes()
     {
         $member = Role::where('name', "member")->first();
-        $user_role = Auth()->user()->role_id;
+        $user = Auth::user();
+        if($user) {
+            $user_role = $user->role_id;
+        }
         $best_recipes = [];
         $hot_recipes = [];
         $recipes = [];
 
-        if ($user_role == $member->id) {
-            $best_recipes = Recipe::orderBy('average_rating', 'desc')->get();
-            $hot_recipes = Recipe::orderBy('review_count', 'desc')->get();
+        if ($user == null || $user_role == $member->id) {
+            $best_recipes = Recipe::orderBy('average_rating', 'desc')->skip(0)->take(10)->get();
+            $hot_recipes = Recipe::orderBy('review_count', 'desc')->orderBy('average_rating', 'desc')->skip(0)->take(10)->get();
         } else {
             $role = DB::table('users')->where('role_id', '=', $user_role)->get();
-            $recipes = Recipe::whereIn('author_id', $role->pluck('id'))->get();
+            $recipes = Recipe::where('author_id', $user->id)->orderBy('review_count', 'desc')->orderBy('average_rating', 'desc')->get();
         }
         return view('view_best_recipes', ['recipes' => $recipes, 'hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes]);
     }
@@ -211,7 +214,7 @@ class RecipeController extends Controller
 
         if ($user == null) {
             if ($recipe->recipe_type == 1) {
-                return view('view_recipe')->with('recipe', $recipe)->with('is_author', false);
+                return view('view_recipe')->with('recipe', $recipe)->with('is_author', false)->with('my_review', []);
             }
         } else {
             $my_review = Review::where('recipe_id', $recipe->id)->where('user_id', $user->id)->get();
