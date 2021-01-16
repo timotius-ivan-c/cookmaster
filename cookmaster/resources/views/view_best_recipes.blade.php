@@ -65,7 +65,7 @@
     @forelse ($recipes as $recipe)
     <div class="row">
         <div class="card col-md-6 bg-light ml-8" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
-            <img class="card-image-top" src="{{asset('asset/'.$recipe->image)}}"> 
+            <img class="card-image-top" src="{{asset('storage/'.$recipe->image)}}"> 
             <div class="card-body">   
                 <div class="card-title"><strong>{{$recipe->name}}</strong></div>
                 <div class="card-text">        
