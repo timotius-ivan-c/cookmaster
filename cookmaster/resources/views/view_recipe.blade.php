@@ -66,6 +66,7 @@
                             </div>
                             @empty
                             <div class="card-body">
+                                @if(Auth::check())
                                 <div class="card">
                                     <div class="card-header">Write your review . . .</div>
                                     @if($errors->any())
@@ -104,6 +105,7 @@
                                             </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             @endforelse
                             @forelse($recipe->review as $review)
@@ -144,8 +146,10 @@
     }
 </style>
 
-<link href="//netdna.bootstrapcdn.com/bootstrap/4.0.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/4.0.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+@if(Auth::check())
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -192,4 +196,5 @@
     });
     });
 </script>
+@endif
 @endsection
