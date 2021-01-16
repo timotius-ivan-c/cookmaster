@@ -235,7 +235,7 @@ class RecipeController extends Controller
             
             // dd("yoo");
         }
-        return redirect('/login')->with('error', "You are not subscribed to this chef! Please login and purchase subscription from the chef.");
+        return view('view_recipe')->with('error', "You are not subscribed to this chef! Please purchase subscription from the chef.")->with('chef_id', $recipe->author_id);
     }
 
     public function edit_recipe($recipe_id) {
