@@ -1,4 +1,7 @@
 @extends('layouts.home_menu')
+@section('namapage')
+    class="background-4"
+@endsection
 @section('content-home')
 
 <div class="container">
