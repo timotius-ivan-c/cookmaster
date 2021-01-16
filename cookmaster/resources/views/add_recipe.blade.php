@@ -2,17 +2,20 @@
 @section('content')
 <div class="container">
     @if($step == 0)
-    <!-- baru mau masukin judul, foto, tipe, dan kategori resep -->
+    <!-- disini user mau masukin judul, foto, tipe, dan kategori resep -->
     <form method="post" action="/new-recipe" enctype="multipart/form-data">
+        @if($errors->any())
+            <div class="alert alert-danger">
+                @foreach($errors->all() as $msg)
+                {{$msg}}<br>
+                @endforeach
+            </div>
+        @endif
         {{csrf_field()}}
         <div class="form-group">
             <label for="name">Recipe Name</label>
             <input type="text" class="form-control" id="pw" placeholder="Input recipe title . . ." name="name">
           </div>
-        
-        <!-- ############################# -->
-        <!-- inputan image nya blm gw buat -->
-        <!-- ############################# -->
 
         <br><img id="image_show" src="">
         <div class="form-group">
@@ -25,6 +28,7 @@
         <div class="form-group">
             <label for="type">Recipe Type</label>
             <select name="type" id="type">
+                <option value="">--- Choose ---</option>
                 <option value="1">Free Recipe</option>
                 <option value="2">Paid Recipe</option>
             </select>
@@ -33,6 +37,7 @@
         <div class="form-group">
             <label for="category">Recipe Category</label>
             <select name="category" id="category">
+                <option value="">--- Choose ---</option>
                 @foreach($categories as $category)
                 <option value="{{$category->id}}">{{ $category->name }}</option>
                 @endforeach
