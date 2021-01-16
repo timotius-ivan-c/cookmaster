@@ -7,10 +7,16 @@
         @if(!empty($recipe))
             <div class="card">
                 <div class="card-header">
-                    {{ $recipe->name }}
+                    <span class="col-md-">
+                        <strong class="h3">{{ $recipe->name }}</strong><br>
+                        Author: <a href="/profile/{{$recipe->user->id}}">{{ $recipe->user->name }}</a><br>
+                        Average Rating: <strong class="pr-2">{{ $recipe->average_rating}}</strong><br>
+                        Published: <strong>{{ substr($recipe->publish_date, 0, 10) }}</strong>
+                    </span>
                     @if($is_author)
-                    <button class="btn btn-primary float-right" onclick="window.location='/edit-recipe/{{$recipe->id}}'">Edit Recipe</button>
+                        <button class="btn btn-primary float-right" onclick="window.location='/edit-recipe/{{$recipe->id}}'">Edit Recipe</button>
                     @endif
+                    </span>
                 </div>
 
                 <div class="card-body">
@@ -22,6 +28,9 @@
                     @if(!empty($delete_review_error))
                         <div class="alert alert-warning">Error deleting your review. Please refresh the page and try again.</div>
                     @endif
+                    <div class="pb-4">
+                        <img class="img-thumbnail" src="{{asset('storage/'.$recipe->image)}}" alt="{{$recipe->name}}">
+                    </div>
                     <div class="card mb-2">
                         <div class="card-header">Ingredients</div>
                         @forelse($recipe->recipeDetailIngredient as $ingredient)
