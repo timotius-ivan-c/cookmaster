@@ -14,11 +14,13 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="alert alert-warning">{{ __('You are viewing recipe page!') }}</div>
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
+                    @endif
+                    @if(!empty($delete_review_error))
+                        <div class="alert alert-warning">Error deleting your review. Please refresh the page and try again.</div>
                     @endif
                     <div class="card mb-2">
                         <div class="card-header">Ingredients</div>
