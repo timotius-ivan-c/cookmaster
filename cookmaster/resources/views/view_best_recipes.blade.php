@@ -5,8 +5,8 @@
     @if(empty($recipes))
     <div class="card">
         <div class="card-header">
-            <button class="btn btn-primary active" id="filter-hot">Hot Recipes (Most Reviews)</button>
-            <button class="btn btn-primary" id="filter-best">Best Recipes (Highest Rating)</button>
+            <button class="btn btn-primary" id="filter-hot"><i class="fa fa-check" id="hot_check" aria-hidden="true"></i> Hot Recipes (Most Reviews)</button>
+            <button class="btn btn-outline-dark" id="filter-best"><i class="fa fa-check" id="best_check" aria-hidden="true"></i> Best Recipes (Highest Rating)</button>
         </div>
     </div>
     @else
@@ -38,7 +38,7 @@
         
     @endforelse
     </div>
-    
+
     <div id="best_recipes">
     @forelse ($best_recipes as $best)
     <div class="row">
@@ -81,20 +81,26 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 <script>
 $(document).ready(function(){
     $("#best_recipes").hide();
+    $("#best_check").hide();
     $("#filter-hot").click(function(){
-        $("#filter-hot").addClass("active");
-        $("#filter-best").removeClass("active");
+        $("#filter-hot").removeClass("btn-outline-dark").addClass("btn-primary");
+        $("#filter-best").removeClass("active").addClass("btn-outline-dark").removeClass("btn-primary");
         $('#hot_recipes').show();
+        $('#hot_check').show();
         $('#best_recipes').hide();
+        $('#best_check').hide();
     });
     $("#filter-best").click(function(){
-        $("#filter-hot").removeClass("active");
-        $("#filter-best").addClass("active");
+        $("#filter-hot").removeClass("active").addClass("btn-outline-dark").removeClass("btn-primary");
+        $("#filter-best").removeClass("btn-outline-dark").addClass("btn-primary");
         $('#hot_recipes').hide();
+        $('#hot_check').hide();
         $('#best_recipes').show();
+        $('#best_check').show();
     });
 });
 </script>
