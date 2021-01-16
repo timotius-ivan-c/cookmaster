@@ -36,7 +36,12 @@
                             <div class="card">
                                 <div class="card-body row">
                                     <div class="col-md-1">{{ $step->step_no }}.</div>
-                                    <div class="col-md-11">{{ $step->text }}</div>
+                                        @if($step->image)
+                                            <img class="card-image-top" src="{{asset('storage/recipes/'.$step->image)}}" alt="{{$step->image}}">
+                                        @endif
+                                    <div class="col-md-11">
+                                        {{ $step->text }}
+                                    </div>
                                 </div>
                             </div>
                         @empty
