@@ -1,9 +1,12 @@
 @extends('layouts.app')
+@section('namapage')
+    class="background-1"
+@endsection
 @section('content')
-
+<div class="box-content-topup">
 <div class="container">
     <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 card bg-light" style="width: 20rem;">
+        <div class="card-topup bg-light" style="width: 20rem;">
             <div class="card-body">
                 <h5 class="card-title">User Information</h5>
                 <p class="card-text">Name : <br> {{$data->username}}<br></p>
@@ -16,7 +19,7 @@
     <br>
     <br>
     <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 card bg-light" style="width: 20rem;">
+        <div class="card-topup bg-light" style="width: 20rem;">
             <div class="card-body">
                 <h5 class="card-title">TOP UP FORM</h5>
                 <form action='/top-up' method='post'>
@@ -36,5 +39,6 @@
     </div>
     
     
+</div>
 </div>
 @endsection
