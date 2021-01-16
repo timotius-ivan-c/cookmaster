@@ -28,6 +28,11 @@ class User extends Authenticatable
         return $this->hasMany(Recipe::class, 'author_id');
     }
 
+    public function paid_recipe()
+    {
+        return $this->hasMany(Recipe::class, 'author_id')->where('recipe_type', 2);
+    }
+
     public function review()
     {
         return $this->hasMany(Review::class);
