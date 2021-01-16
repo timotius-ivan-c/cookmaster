@@ -396,7 +396,7 @@ class RecipeController extends Controller
                 $new_step->recipe_id = $request->recipe_id;
                 $new_step->text = $request->text;
                 if ($request->file('image')) {
-                    $image_path = $request->file('image')->store('images', 'public');
+                    $image_path = $request->file('image')->store('images/steps', 'public');
                     $new_step->image = $image_path;
                 }
                 $new_step->save();
