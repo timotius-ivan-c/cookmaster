@@ -239,16 +239,16 @@
                     </div>
                 </div>
                 @if(!empty($my_recipes))
-                <div class="card col-md-3 bg-light ml-5" onclick="window.location.href='/recipe/view-recipe/{{$my_recipes->first()->id}}'" style="width: 40rem;">                    
+                <div class="card col-md-3 bg-light ml-5" onclick="window.location.href='/recipe/view-recipe/{{$my_recipes->id}}'" style="width: 40rem;">                    
                     <div class="card-body"><h5><strong>Latest Recipe:</strong></h5></div>
-                    <img class="card-image-top" src="{{asset('storage/'.$my_recipes->first()->image)}}"> 
+                    <img class="card-image-top" src="{{asset('storage/'.$my_recipes->image)}}"> 
                     <div class="card-body">   
-                    <div class="card-title"><strong>{{$my_recipes->first()->name}}</strong></div>
+                    <div class="card-title"><strong>{{$my_recipes->name}}</strong></div>
                     <div class="card-text">        
                         Average rating  : <br>
-                            {{$my_recipes->first()->average_rating}} / 5.00 <br> from {{$my_recipes->first()->review_count}} people <br><br>
+                            {{$my_recipes->average_rating}} / 5.00 <br> from {{$my_recipes->review_count}} people <br><br>
                         <div class="container adm-btns">
-                            <button type="button" class="btn btn-primary" id="edit_recipe" onclick="window.location='/edit-recipe/{{$my_recipes->first()->id}}'">Edit Recipe</button>
+                            <button type="button" class="btn btn-primary" id="edit_recipe" onclick="window.location='/edit-recipe/{{$my_recipes->id}}'">Edit Recipe</button>
                         </div>
                     </div>
                 </div>
