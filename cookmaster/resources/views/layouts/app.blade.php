@@ -154,6 +154,18 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                var choose = $("#choose").val();
+                var str = $("#search").val();
+                if(choose == 'recipe'){
+                    window.location = "/recipe/name/"+str;
+                } else{
+                    window.location = "/recipe/ingredient/"+str;
+                }
+                
+            })
+        });
     </script>
 </head>
 <body @yield('namapage')>
@@ -165,10 +177,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <form class="form-inline col-lg-8" action="/product/search" method="GET">
-                        <input class="form-control mr-sm-2 col-lg-6" type="text" placeholder="Search" id="search" name="search" aria-label="Search">
-                        <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                    <input class="form-control mr-sm-2 col-lg-6" type="text" placeholder="Search" id="search" name="search" aria-label="Search">
+                    <select name="choose" id="choose">
+                        <option value="recipe">Recipe</option>
+                        <option value="ingredient">Ingredient</option>
+                    </select>
+                    <button class="btn btn-primary my-2 my-sm-0" type="button" id="myBtn">Search</button>
                 </ul>
                 <ul class="navbar-nav mr-auto">
                     <a class="navbar-brand  text-center" href="{{ url('/') }}">
