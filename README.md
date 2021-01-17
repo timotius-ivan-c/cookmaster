@@ -1,15 +1,16 @@
 # cookmaster
 Webprog LEC project
 
-# How to run
-- Clone the repo, specify a folder for local repository.
-- <strong>Important: Don't forget to pull after cloning the Github repo to local repo!</strong>
-- Open Terminal under the local repository folder.
-- Type <code>composer install</code>
-- Run XAMPP, start Apache and MySQL.
-- Open phpmyadmin, create new database 'laravel_cookmaster'.
-- Create a new file <code>.env</code>, paste the content of <code>.env.example</code> into it.
-- Run <code>php artisan key:generate</code>
-- In <code>.env</code>, change the value DB_DATABASE to: <code>DB_DATABASE=laravel_cookmaster</code>
-- <code>php artisan migrate:fresh --seed</code>
-- <code>php artisan serve</code>
+# Cara menjalankan
+- Clone repository ini ke dalam folder di local repository.
+- Lakukan pull untuk jaga-jaga agar semua file sinkron.
+- Lakukan cd ke dalam folder cookmaster (<code>cd ./cookmaster/</code>)
+- Jalankan <code>composer install</code>
+- Jalankan XAMPP, start service Apache dan MySQL.
+- Buka phpmyadmin, buat database baru beernama 'laravel_cookmaster'.
+- Cari file <code>.env</code>. Jika belum ada, buat file baru .env dan paste isi dari <code>.env.example</code>.
+- Jalankan perintah <code>php artisan key:generate</code>
+- Di dalam file <code>.env</code>, ganti DB_DATABASE menjadi: <code>DB_DATABASE=laravel_cookmaster</code>
+- Lakukan migrate dan seeding dengan perintah <code>php artisan migrate:fresh --seed</code>
+- Menjalankan <code>php artisan storage:link</code>
+- Menjalankan <code>php artisan serve</code> untuk memulai web application.
