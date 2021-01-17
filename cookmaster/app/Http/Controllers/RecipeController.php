@@ -463,6 +463,11 @@ class RecipeController extends Controller
             $fame_addition = ($request->rating - 2)*10;
             $author->fame = $author->fame + $fame_addition;
             $author->save();
+
+            $recipe = Recipe::where('id', $request->recipe_id)->first();
+            $recipe->average_rating = (($recipe->average_rating * $recipe->review_count) + $request->rating) / ($recipe->review_count+1);
+            $recipe->review_count = $recipe->review_count + 1;
+            $recipe->save();
             
             return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('status', 'Reveiew saved! Thank you for your feedback!');
         }
@@ -494,8 +499,12 @@ class RecipeController extends Controller
             $fame_deduction = ($review->rating - 2)*10;
             $author->fame = $author->fame - $fame_deduction;
             $author->save();
-            $review->delete();
             
+            $recipe->average_rating = (($recipe->average_rating * $recipe->review_count) - $review->rating) / ($recipe->review_count-1);
+            $recipe->review_count = $recipe->review_count - 1;
+            $recipe->save();
+            
+            $review->delete();
             return redirect()->intended("recipe/view-recipe/$request->recipe_id")->with('status', 'Reveiew deleted.');
         }
     }
