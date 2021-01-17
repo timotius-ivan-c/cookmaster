@@ -11,6 +11,7 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    @if(!empty($transaction))
     <table class="table col-lg-12">
         <thead>
             <tr class="table-active">
@@ -28,8 +29,12 @@
         <td>{{$transaction->token}}</td>
         <td>{{$transaction->amount}}</td> 
         <td>{{$transaction->message}}</td>
-        </tr>   
+        </tr>
+          
     @endforeach
+    @else
+    <div class="card-body" style="width: 25rem;"><center>You don't have any transaction.</center></div>
+    @endif
     </table>
 </div>
 @endsection
