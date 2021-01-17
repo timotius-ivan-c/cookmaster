@@ -50,6 +50,13 @@
                     </div>
                     <button class="btn btn-sm btn-success float-right" type="submit" name="recipe_id" value="{{$recipe->id}}">Save Changes</button>
                 </form>
+                <form action="/edit-recipe/{{$recipe->id}}" method="post">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                    <input type="hidden" name="delete" value="recipe">
+
+                    <button class="btn btn-danger" type="submit" name="recipe_id" value="{{$recipe->id}}">Delete</button>
+                </form>
             </div>
 
             <div class="card" id="ingredient">
