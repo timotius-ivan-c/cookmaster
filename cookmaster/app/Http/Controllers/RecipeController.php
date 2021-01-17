@@ -160,6 +160,11 @@ class RecipeController extends Controller
                 $new_recipe->recipe_type = $request->type;
                 $new_recipe->recipe_category_id = $request->category;
                 $new_recipe->save();
+
+                $user = User::find(Auth::user()->id);
+                $user->free_recipes_count = count(Recipe::where('author_id', $user->id)->where('recipe_type', 1)->get());
+                $user->paid_recipes_count = count(Recipe::where('author_id', $user->id)->where('recipe_type', 2)->get());
+                $user->save();
                 // return view('add_recipe')->with('recipe', $new_recipe)->with('step', 1);
                 return redirect()->intended("edit-recipe/$new_recipe->id");
             // } else {
@@ -304,6 +309,10 @@ class RecipeController extends Controller
                 $recipe->recipe_category_id = $request->category;
                 $recipe->save();
                 $recipe->refresh();
+                $update_user = User::find(Auth::user()->id);
+                $update_user->free_recipes_count = count(Recipe::where('author_id', $update_user->id)->where('recipe_type', 1)->get());
+                $update_user->paid_recipes_count = count(Recipe::where('author_id', $update_user->id)->where('recipe_type', 2)->get());
+                $update_user->save();
                 Session::flash('recipe_success', 'Your changes have been saved!');
                 return redirect()->intended("edit-recipe/$recipe->id#recipe")->with('recipe', $recipe)->with('categories', $recipe_categories)->with('success', 'Your edit has been saved!');
             } elseif ($field_to_edit == 'ingredient') {
@@ -344,6 +353,10 @@ class RecipeController extends Controller
         } elseif ($field_to_delete != null) {
             if ($field_to_delete == 'recipe') {
                 $recipe->delete();
+                $update_user = User::find(Auth::user()->id);
+                $update_user->free_recipes_count = count(Recipe::where('author_id', $update_user->id)->where('recipe_type', 1)->get());
+                $update_user->paid_recipes_count = count(Recipe::where('author_id', $update_user->id)->where('recipe_type', 2)->get());
+                $update_user->save();
                 Session::flash('success', 'Your recipe has been deleted!');
                 return redirect()->intended('home')->with('success', 'Your recipe has been deleted!');
             } elseif ($field_to_delete == 'ingredient') {
