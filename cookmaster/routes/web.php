@@ -30,7 +30,6 @@ Route::group(['middleware' => 'registered_user'], function () {
     Route::post('/subscribe', 'TransactionController@pay_subscription');
     
     // User Controller
-    Route::get('/test-follow/{id}', 'UserController@test_follow');
     Route::post('/follow', 'UserController@follow');
     Route::post('/follow', 'UserController@follow');
     Route::get('/edit-profile', 'UserController@edit_profile');
@@ -54,7 +53,7 @@ Route::group(['middleware' => 'contributor_and_chef'], function () {
     Route::get('/earning','UserController@earnings');
 });
 
-// Route::get('/home', 'HomeController@index')->name('home');
+// User Controller
 Route::get('/profile/{id}', ['uses' => 'UserController@view_profile', 'as' => 'profile.view'])->name('view_profile');
 Route::get('/guest-chef', 'UserController@view_guest_chef'); 
 Route::get('/community', 'UserController@view_community');
