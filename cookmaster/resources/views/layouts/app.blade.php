@@ -233,9 +233,9 @@
                         </li>
                         {{-- show extra buttons if the user is a member --}}
                         @if(\Auth::user()->role_id == 1)
-                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/subscribe/{user:id}'">Subscription</button>
+                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/subscribe/{{Auth::user()->id}}'">Subscription</button>
                         @elseif(\Auth::user()->role_id==2||\Auth::user()->role_id==3)
-                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/earning/{user:id}'">Earnings</button>
+                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/earning'">Earnings</button>
                         @endif
                     @endguest
                 </ul>
