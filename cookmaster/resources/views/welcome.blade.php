@@ -132,6 +132,9 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/profile/{{Auth::user()->id}}">Profile</a>
+                                <a class="dropdown-item" href="/subscriptions">Your Subscriptions</a>
+                                <a class="dropdown-item" href="/transaction-history">Transaction History</a>
+                                <a class="dropdown-item" href="/top-up">Top Up</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
@@ -263,6 +266,8 @@
                                 Balance : <br>Rp. {{$user->balance}}<br>
                                 <br>
                                 Lifetime topup :<br>Rp. {{$user->lifetime_topup}}<br>
+                                <br>
+                                <button class="btn btn-primary" onclick="window.location='/top-up'">Top Up</button>
                             </p>
                     </div>
                 </div>
