@@ -195,7 +195,7 @@ class UserController extends Controller
             //get following id
             $following_id = $user->following()->get()->pluck('id');
             $recipes = Recipe::whereIn('author_id', $following_id)->get();
-            $my_recipes = Recipe::where('author_id', Auth()->user()->id);
+            $my_recipes = Recipe::where('author_id', Auth()->user()->id)->orderBy('publish_date', 'desc');
             $earnings = Transaction::where('recipient_id', Auth()->user()->id)->where('transaction_type_id', 2)->sum('amount');
             $total_subscriber = count(Subscription::where('chef_id', Auth()->user()->id)->get());
             return view('welcome', ['user' => $user, 'my_recipes' => $my_recipes, 'recipes' => $recipes, 'hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes, 'earnings' => $earnings, 'total_subscriber' => $total_subscriber])->render();
