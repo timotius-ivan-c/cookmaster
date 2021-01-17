@@ -90,8 +90,9 @@ class TransactionController extends Controller
             return redirect()->back()->with('message', "This user is neither a contributor nor a chef!"); 
         } else {
             $chef = User::where('id', $user->id)->first();
+            $member = User::where('id', Auth::user()->id)->first();
                     
-            return view('view_subscribe_page', ['chef' => $chef]);
+            return view('view_subscribe_page', ['chef' => $chef, 'member' => $member]);
         }
     }
 
