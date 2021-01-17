@@ -168,8 +168,10 @@
                 } else{
                     if(choose == 'recipe'){
                         window.location = "/recipe/name/"+str;
-                    } else{
+                    } else if(choose == 'ingredient'){
                         window.location = "/recipe/ingredient/"+str;
+                    } else if(choose == 'category'){
+                        window.location = "/recipe/category/"+str;
                     }
                 }
                 
@@ -190,6 +192,7 @@
                     <select name="choose" id="choose">
                         <option value="recipe">Recipe</option>
                         <option value="ingredient">Ingredient</option>
+                        <option value="category">Category</option>
                     </select>
                     <button class="btn btn-primary my-2 my-sm-0" type="button" id="myBtn">Search</button>
                 </ul>
