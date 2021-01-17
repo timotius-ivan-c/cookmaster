@@ -185,8 +185,11 @@ class UserController extends Controller
             $user = User::find(Auth()->user()->id);
             //get following id
             $following_id = $user->following()->get()->pluck('id');
-            $recipes = Recipe::whereIn('author_id', $following_id)->orderBy('publish_date', 'desc')->get();
-            return view('welcome', ['user' => $user, 'recipes' => $recipes, 'hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes]);
+            $active_subscriptions = Subscription::where('member_id', $user->id)->where('end', '>', Carbon::now())->get();
+            $chef_id = User::whereIn('id', $active_subscriptions->pluck('chef_id'))->get();
+            $recipes = Recipe::whereIn('author_id', $following_id)->orderBy('publish_date', 'desc')->where('recipe_type', 1)->take(5)->get();
+            $subscription_recipes = Recipe::whereIn('author_id', $chef_id->pluck('id'))->where('recipe_type', 2)->orderBy('publish_date', 'desc')->take(5)->get();
+            return view('welcome', ['user' => $user, 'recipes' => $recipes, 'hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes, 'subscriptions' => $subscription_recipes]);
         } else if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3) {
             $user = User::find(Auth()->user()->id);
             //get following id
@@ -194,13 +197,14 @@ class UserController extends Controller
             $recipes = Recipe::whereIn('author_id', $following_id)->get();
             $my_recipes = Recipe::where('author_id', Auth()->user()->id);
             $earnings = Transaction::where('recipient_id', Auth()->user()->id)->where('transaction_type_id', 2)->sum('amount');
-            $total_subscriber = Subscription::where('member_id', Auth()->user()->id)->count();
+            $total_subscriber = count(Subscription::where('chef_id', Auth()->user()->id)->get());
             return view('welcome', ['user' => $user, 'my_recipes' => $my_recipes, 'recipes' => $recipes, 'hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes, 'earnings' => $earnings, 'total_subscriber' => $total_subscriber])->render();
         }
     }
 
-    public function earnings($id)
+    public function earnings()
     {
+        $id = Auth::user()->id;
         $subscription = Subscription::where('chef_id', $id)->get();
         $count = count($subscription);
         $transactions = Transaction::where('recipient_id', $id)->where('transaction_type_id', 2); 
