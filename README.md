@@ -12,5 +12,7 @@ Webprog LEC project
 - Jalankan perintah <code>php artisan key:generate</code>
 - Di dalam file <code>.env</code>, ganti DB_DATABASE menjadi: <code>DB_DATABASE=laravel_cookmaster</code>
 - Lakukan migrate dan seeding dengan perintah <code>php artisan migrate:fresh --seed</code>
+- Hapus folder <code>storage</code> di dalam folder <code>public</code>
+- Menjalankan <code>php artisan config:clear</code>
 - Menjalankan <code>php artisan storage:link</code>
 - Menjalankan <code>php artisan serve</code> untuk memulai web application.
