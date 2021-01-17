@@ -21,7 +21,7 @@ class CreateRecipeDetailIngredientsTable extends Migration
             $table->string('amount')->nullable(true);
             $table->string('notes')->nullable(true);
 
-            $table->foreign('recipe_id')->references('id')->on('recipes');
+            $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
