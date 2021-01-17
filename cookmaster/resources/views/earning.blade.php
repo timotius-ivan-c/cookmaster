@@ -3,28 +3,45 @@
     class="background-1"
 @endsection
 @section('content')
-<h1><strong>Financial Report:<br<br><strong></h1>
-<h5><br><br>Total Subscribers:<br>{{$count}} people</h5>
-<br>
-<br>
+
 <div class="box-content">
+<h1><strong>Financial Report:<br<br><strong></h1>
+<h4><br><br><strong>Total Subscribers:</strong><br></h4>
+    <h5>    
+    @if (!empty($count))
+    {{$count}}
+    @else
+    0
+    @endif
+     people
+</h5>
+<h4><br><strong>Total Income:</strong><br></h4>
+    <h5>
+    @if (!empty($total_earnings))
+    Rp. {{$total_earnings}}
+    @else
+    Rp. 0
+    @endif
+    </h5>
+<br>
+<br>
 @if (!$transaction_details->isEmpty())
-    <h5>Transaction Details: <br><br></h5>
+    <h4><strong>Transaction Details: </strong><br><br></h4>
     <table class="table table-light table-hover table-striped col-lg-12">
         <thead>
-            <tr class="transaction-header table-primary">
-                <th colspan="2">Total Income:  {{$total_earnings}}</th>
-            </tr>
-        </thead> 
-        <tbody>
             <tr>
                 <td>TransactionID</td>
                 <td>Amount</td>
+                <td>Info</td>
             </tr>
+        </thead> 
+        <tbody>
+            
             @foreach ($transaction_details as $hello)
             <tr>
                 <td>{{$hello->id}}</td>
-                <td>{{$hello->amount}}</td>
+                <td>Rp. {{$hello->amount}}</td>
+                <td>{{$hello->message}}</td>
             </tr>
         </tbody>
         @endforeach
