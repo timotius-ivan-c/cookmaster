@@ -21,7 +21,7 @@ class CreateRecipeDetailStepsTable extends Migration
             $table->longText('text');
             $table->string('image');
 
-            $table->foreign('recipe_id')->references('id')->on('recipes');
+            $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade')->onUpdate('cascade');
             // $table->primary(['step_no', 'recipe_id']);
         });
     }
