@@ -238,7 +238,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card col-md-3 bg-light ml-5" onclick="window.location.href='/recipe/view-recipe/{{$my_recipes->first()->id}}'" style="width: 40rem;">
+                @if(!empty($my_recipes))
+                <div class="card col-md-3 bg-light ml-5" onclick="window.location.href='/recipe/view-recipe/{{$my_recipes->first()->id}}'" style="width: 40rem;">                    
                     <div class="card-body"><h5><strong>Latest Recipe:</strong></h5></div>
                     <img class="card-image-top" src="{{asset('storage/'.$my_recipes->first()->image)}}"> 
                     <div class="card-body">   
@@ -252,6 +253,13 @@
                     </div>
                 </div>
             </div>
+            @else
+            <div class="card col-md-3 bg-light ml-5">
+                <div class="card-body"><h5><strong>Latest Recipe:</strong></h5></div>
+                <div class="card-body"><center>You don't have any recipes.</center></div>
+            </div>
+            
+            @endif
             </div>
             @elseif(\Auth::user()->role_id==1)
             <br>
