@@ -158,10 +158,14 @@
             $("#myBtn").click(function(){
                 var choose = $("#choose").val();
                 var str = $("#search").val();
-                if(choose == 'recipe'){
-                    window.location = "/recipe/name/"+str;
+                if(str == ""){
+                    alert("Search is Empty");
                 } else{
-                    window.location = "/recipe/ingredient/"+str;
+                    if(choose == 'recipe'){
+                        window.location = "/recipe/name/"+str;
+                    } else{
+                        window.location = "/recipe/ingredient/"+str;
+                    }
                 }
                 
             })
