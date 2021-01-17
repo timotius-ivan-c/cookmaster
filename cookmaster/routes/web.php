@@ -28,10 +28,14 @@ Route::group(['middleware' => 'registered_user'], function () {
     Route::post('/top-up', 'TransactionController@topup');
     Route::get('/subscribe/{user:id}', 'TransactionController@view_subscribe_page')->name('subscribe');
     Route::post('/subscribe', 'TransactionController@pay_subscription');
-
+    
     // User Controller
     Route::get('/test-follow/{id}', 'UserController@test_follow');
     Route::post('/follow', 'UserController@follow');
+    Route::post('/follow', 'UserController@follow');
+    Route::get('/edit-profile', 'UserController@edit_profile');
+    Route::post('/edit-profile', 'UserController@edited_profile');
+    Route::get('/subscriptions', 'UserController@view_subscriptions');
 
     // Recipe Controller
     Route::post('/add-review', 'RecipeController@add_review');
@@ -67,9 +71,5 @@ Route::get('/recipe/view-recipe/{recipe:id}', 'RecipeController@view_recipe');
 // User Controller
 Route::get('/top-chefs', 'UserController@view_top_chefs');
 Route::get('/top-contributors', 'UserController@view_top_contributors');
-Route::get('/edit-profile', 'UserController@edit_profile');
-Route::post('/edit-profile', 'UserController@edited_profile');
-Route::get('/subscriptions', 'UserController@view_subscriptions');
-Route::post('/follow', 'UserController@follow');
 Route::get('/home', 'UserController@home');
 Route::get('/', 'UserController@home'); 
