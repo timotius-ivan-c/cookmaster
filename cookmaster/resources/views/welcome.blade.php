@@ -159,8 +159,7 @@
                 <a class="nav-link" href="/community">COMMUNITY</a>
             </li>
         </div>
-        @guest
-        @else   
+        @auth   
             {{--Additional button for contributor and chefs --}}
             @if(\Auth::user()->role_id==2||\Auth::user()->role_id==3)
             <br>
@@ -202,12 +201,13 @@
                 <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Earnings page--}} ;" style="width: 40rem;">
                     <div class="card-body"><h5><strong>Report:</strong></h5><br>
                         <p class="card-text">
-                            Balance : <br>Rp {{$user->balance}}<br>
+                            Balance : <br>Rp. {{$user->balance}}<br>
                             <br>
-                            Lifetime topup :<br> {{$user->lifetime_topup}}<br>
+                            Lifetime topup :<br>Rp. {{$user->lifetime_topup}}<br>
                         </p>
                     </div>
                 </div>
+                @forelse($recipes as $recipe)
                 <div class="card col-md-3 bg-light ml-5" {{--onclick="window.location.href = ''//Latest recipe page--}} style="width: 40rem;">
                     <div class="card-body"><h5><strong>Latest Recipe: </strong></h5></div>
                     <img class="card-image-top" src="{{asset('storage/'.$recipes->first()->image)}}"> 
@@ -217,14 +217,16 @@
                         Average rating  : <br>
                             {{$recipes->average_rating}} / 5.00 <br> from {{$recipes->review_count}} people <br><br>
                         <div class="container adm-btns">
-                            <button type="button" class="btn btn-primary" onclick="window.location.href='/edit-recipe/{{$recipes->id}}">Edit Recipe</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='/edit-recipe/{{$recipes->id}}'">Edit Recipe</button>
                         </div>
                     </div>
                 </div>
+                @empty
+                @endforelse
             </div>
             </div>
             @endif
-        @endguest
+        @endauth
         <br>
         <br>
         <div class="container">
@@ -232,14 +234,17 @@
             <br>
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                  <div class="carousel-item active">
+                  <div class="carousel-item active" onclick="window.location='/recipe/view-recipe/{{$best_recipes[0]->id}}'">
                     <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[0]->image)}}" alt="{{$best_recipes[0]->name}}">
+                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[0]->name}}</div>
                   </div>
-                  <div class="carousel-item">
+                  <div class="carousel-item" onclick="window.location='/recipe/view-recipe/{{$best_recipes[1]->id}}'">
                     <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[1]->image)}}" alt="{{$best_recipes[1]->name}}">
+                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[1]->name}}</div>
                   </div>
-                  <div class="carousel-item">
+                  <div class="carousel-item" onclick="window.location='/recipe/view-recipe/{{$best_recipes[2]->id}}'">
                     <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[2]->image)}}" alt="{{$best_recipes[2]->name}}">
+                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[2]->name}}</div>
                   </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
