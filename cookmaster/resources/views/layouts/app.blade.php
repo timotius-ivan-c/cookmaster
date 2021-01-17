@@ -141,6 +141,11 @@
             }
         }
         
+        .card>.card:hover{
+            transform: scale(1.002);
+            box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+        }
+
     </style>
     <script>
         function readURL(input) {
