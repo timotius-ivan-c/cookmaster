@@ -11,7 +11,7 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    @if(!empty($transaction))
+    @if(!empty($transactions))
     <table class="table col-lg-12">
         <thead>
             <tr class="table-active">
@@ -23,17 +23,16 @@
             </tr>
         </thead>
         @foreach($transactions as $transaction)
-        <tr>
-        <td>{{$transaction->id}}</td>
-        <td>{{$transaction->date}}</td> 
-        <td>{{$transaction->token}}</td>
-        <td>{{$transaction->amount}}</td> 
-        <td>{{$transaction->message}}</td>
-        </tr>
-          
-    @endforeach
+            <tr>
+            <td>{{$transaction->id}}</td>
+            <td>{{$transaction->date}}</td> 
+            <td>{{$transaction->token}}</td>
+            <td>{{$transaction->amount}}</td> 
+            <td>{{$transaction->message}}</td>
+            </tr>   
+        @endforeach
     @else
-    <div class="card-body" style="width: 25rem;"><center>You don't have any transaction.</center></div>
+        <div class="card-body" style="width: 25rem;"><center>You don't have any transaction.</center></div>
     @endif
     </table>
 </div>
