@@ -11,7 +11,7 @@
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    @if(!empty($transactions))
+    @if(count($transactions)>0)
     <table class="table col-lg-12">
         <thead>
             <tr class="table-active">
