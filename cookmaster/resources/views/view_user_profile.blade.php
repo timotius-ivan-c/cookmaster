@@ -43,7 +43,7 @@
                         </div>
                         <div class="card">
                             @forelse($usr->recipe as $recipe)
-                                <div class="card-body">{{ $recipe->name }}</div>
+                                <div class="card-body"><a href="/recipe/view-recipe/{{$recipe->id}}">{{ $recipe->name }}</a></div>
                             @empty
                                 <div class="card-body">{{ __('No recipe shared yet.') }}</div>
                             @endforelse
@@ -58,7 +58,7 @@
                             <div>People followed by {{ $usr->name }}:</div>
                             <div class="card">
                                 @forelse($usr->following as $fol)
-                                    <div class="card-body">{{ $fol->name }}</div>
+                                    <div class="card-body"><a href="/profile/{{$fol->id}}">{{ $fol->name }}</a></div>
                                 @empty
                                     <div class="card-body">{{ __('No followings yet.') }}</div>
                                 @endforelse
@@ -66,7 +66,7 @@
                             <div>People following {{ $usr->name }}:</div>
                             <div class="card">
                                 @forelse($usr->followers as $fol)
-                                    <div class="card-body">{{ $fol->name }}</div>
+                                    <div class="card-body"><a href="/profile/{{$fol->id}}">{{ $fol->name }}</a></div>
                                 @empty
                                     <div class="card-body">{{ __('No followers yet.') }}</div>
                                 @endforelse
