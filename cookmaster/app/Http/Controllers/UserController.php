@@ -203,8 +203,10 @@ class UserController extends Controller
     {
         $subscription = Subscription::where('chef_id', $id)->get();
         $count = count($subscription);
-        $total_earnings = Transaction::where('recipient_id', $id)->where('transaction_type_id', 2)->sum('amount');
-        return view('earning', ['subscription' => $subscription, 'total_earnings' => $total_earnings, 'count' => $count]);
+        $transactions = Transaction::where('recipient_id', $id)->where('transaction_type_id', 2); 
+        $total_earnings = $transactions->sum('amount');
+        $transaction_details = $transactions->get();
+        return view('earning', ['subscription' => $subscription,'transaction_details'=>$transaction_details, 'total_earnings' => $total_earnings, 'count' => $count]);
     }
 
     public function view_guest_chef()
