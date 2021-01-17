@@ -4,7 +4,7 @@ Webprog LEC project
 # Cara menjalankan
 - Clone repository ini ke dalam folder di local repository.
 - Lakukan pull untuk jaga-jaga agar semua file sinkron.
-- Lakukan cd ke dalam folder cookmaster (<code>cd ./cookmaster/</code>)
+- Lakukan cd ke dalam folder cookmaster yang terdalam (dimana terdapat folder vendor, storage, dan banyak folder lain) (<code>cd ./cookmaster/</code>)
 - Jalankan <code>composer install</code>
 - Jalankan XAMPP, start service Apache dan MySQL.
 - Buka phpmyadmin, buat database baru beernama 'laravel_cookmaster'.
