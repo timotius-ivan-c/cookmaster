@@ -108,20 +108,12 @@ class UserController extends Controller
 
         $following = [];
 
-
         $chef_id = $request->input('message');
-        // print_r($chef_id);
-        // die();
-        // DB::table('followings')->insert([
-        //     ['chef_id' => $chef_id,
-        //     'member_id' => $member_id,
-        //     'created_at' => Carbon::now()]
-        // ]);
+        
         $exist = (sizeof(DB::table('followings')->where(['member_id' => $member_id, 'chef_id' => $chef_id])->get()) > 0);
 
         if ($exist) {
             try {
-                //code...
                 $following = Following::where(['member_id' => $member_id, 'chef_id' => $chef_id])->delete();
                 if ($following > 0) $success = true;
             } catch (\Throwable $th) {
@@ -132,7 +124,6 @@ class UserController extends Controller
             }
         } else {
             try {
-                //code...
                 $newFollowing = new Following();
                 $newFollowing->chef_id = $chef_id;
                 $newFollowing->member_id = $member_id;
@@ -160,15 +151,6 @@ class UserController extends Controller
         }
 
         return response()->json($response);
-    }
-
-    public function test_follow($id)
-    {
-        $chef = User::where('id', $id)->get();
-        $member = Auth::user();
-
-        $following = Following::where(['member_id' => $member->id, 'chef_id' => $chef->first()->id])->get();
-        return View::make('test_follow')->with(['user' => $chef, 'following' => $following])->render();
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
 
