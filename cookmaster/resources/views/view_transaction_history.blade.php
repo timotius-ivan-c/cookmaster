@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.home_menu')
 @section('namapage')
     class="background-1"
 @endsection
-@section('content')
+@section('content-home')
 <div class="box-content">
     <h5><center>Transaction History</center></h5>
     <br>

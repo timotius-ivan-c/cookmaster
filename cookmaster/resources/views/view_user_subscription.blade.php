@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.home_menu')
 @section('namapage')
     class="background-1"
 @endsection
-@section('content')
+@section('content-home')
 <div class="container">
 <div class="row">
-    @foreach ($subscriptions as $subscription)
+    @forelse($subscriptions as $subscription)
         <div class="card col-md-3 bg-light ml-5" style="width: 24rem;">
             <div onclick="window.location='/recipe/view-recipe/{{$subscription->recipe->first()->id}}'">
                 <img class="img-thumbnail" src="{{asset('storage/'.$subscription->recipe->first()->image)}}">
@@ -22,8 +22,11 @@
             </div>
             </a>
         </div>
-        
-    @endforeach
+    @empty
+        <div class="card bg-light col-md-12">
+            <div class="card-body">You are not subscribed to any user.</div>
+        </div>
+    @endforelse
 </div>
 </div>
 @endsection

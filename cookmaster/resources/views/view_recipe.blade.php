@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.home_menu')
 @section('namapage')
     class="background-4"
 @endsection
-@section('content')
+@section('content-home')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

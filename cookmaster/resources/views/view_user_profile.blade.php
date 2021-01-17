@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.home_menu')
 @section('namapage')
     class="background-1"
 @endsection
-@section('content')
+@section('content-home')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="card mb-2">
-                        <div class="card-header">Recipes:</div>
+                        <div class="card-header" id="recipes">Recipes:</div>
                         @forelse($usr->recipe as $recipe)
                             <div class="card-body"><a href="/recipe/view-recipe/{{$recipe->id}}">{{ $recipe->name }}</a></div>
                         @empty
