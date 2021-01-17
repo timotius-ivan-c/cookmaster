@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <h1><strong>Financial Report:<br<br><strong></h1>
-<h5><br><br>Total Subscribers:<br>{{$subscription}} people</h5>
+<h5><br><br>Total Subscribers:<br>{{$count}} people</h5>
 <br>
 <br>
 <div class="box-content">
