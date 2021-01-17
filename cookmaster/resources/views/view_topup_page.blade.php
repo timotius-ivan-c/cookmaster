@@ -33,7 +33,7 @@
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary">Top Up</button>
-                    <button type="reset" class="btn btn-danger" onclick="window.location='/home'">Cancel</button>
+                    <button type="reset" class="btn btn-danger" onclick="history.back()">Cancel</button>
                 </form>
             </div>
         </div>

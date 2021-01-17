@@ -51,7 +51,7 @@
         <input type="hidden" name="step" value="0">
 
         <button type="submit" class="btn btn-primary">Next >></button>
-        <button type="reset" class="btn btn-danger" onclick="window.location='/home/'">Cancel</button>
+        <button type="reset" class="btn btn-danger" onclick="history.back()">Cancel</button>
     </form>
     @endif
 </div>

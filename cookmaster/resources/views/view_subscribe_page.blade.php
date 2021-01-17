@@ -52,6 +52,7 @@
                 @endif
             </div>
             <button type="submit" class="btn btn-primary">Subscribe</button>
+            <button onclick="history.back()" type="reset" class="btn btn-danger">Cancel</button>
         </form>
         </div>
     </div>

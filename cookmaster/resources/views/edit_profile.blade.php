@@ -28,6 +28,7 @@
             <input type="email" name="email" class="form-control" id="mail" placeholder="{{$user[0]->email}}">
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
+        <button type="reset" class="btn btn-danger" onclick="history.back()">Cancel</button>
     </form>
 </div>
 </div>
