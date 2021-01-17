@@ -51,7 +51,7 @@ Route::group(['middleware' => 'contributor_and_chef'], function () {
     Route::post('/edit-recipe/{recipe_id}', 'RecipeController@commit_edit_recipe')->name('recipe.edit');
     
     // User Controller
-    Route::get('/earning/{id}','UserController@earnings');
+    Route::get('/earning','UserController@earnings');
 });
 
 // Route::get('/home', 'HomeController@index')->name('home');
