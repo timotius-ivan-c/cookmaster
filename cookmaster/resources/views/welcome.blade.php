@@ -157,7 +157,7 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="container">
         <ul class="nav justify-content-center" style="background-color: #e3f2fd;">
             <li>
@@ -166,6 +166,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="/recipe/best-recipe">BEST RECIPE</a>
             </li>
+            <li>
+                <a class="nav-link" href="/top-chefs">TOP CHEFS</a>
+            </li>
+            <li>
+                <a class="nav-link" href="/top-contributors">TOP CONTRIBUTORS</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/guest-chef">GUEST CHEF</a>
             </li>
@@ -173,17 +179,45 @@
                 <a class="nav-link" href="/community">COMMUNITY</a>
             </li>
         </div>
+
+        <br>
+        <div class="container">
+        <div class="card">
+            <div class="card-header"><h5>Best Recipes: </h5></div>
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner bg-light">
+                <br>
+                  <div class="carousel-item active" onclick="window.location='/recipe/view-recipe/{{$best_recipes[0]->id}}'">
+                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[0]->image)}}" alt="{{$best_recipes[0]->name}}">
+                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[0]->name}}</div>
+                  </div>
+                  <div class="carousel-item" onclick="window.location='/recipe/view-recipe/{{$best_recipes[1]->id}}'">
+                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[1]->image)}}" alt="{{$best_recipes[1]->name}}">
+                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[1]->name}}</div>
+                  </div>
+                  <div class="carousel-item" onclick="window.location='/recipe/view-recipe/{{$best_recipes[2]->id}}'">
+                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[2]->image)}}" alt="{{$best_recipes[2]->name}}">
+                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[2]->name}}</div>
+                  </div>
+                </div>
+                <a class="carousel-control-prev bg-secondary" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only bg-dark">Previous</span>
+                </a>
+                <a class="carousel-control-next bg-dark" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+
         @auth   
             {{--Additional button for contributor and chefs --}}
             @if(\Auth::user()->role_id==2||\Auth::user()->role_id==3)
             <br>
-            <div class="container adm-btns">
-                <button type="button" class="btn btn-primary" onclick="window.location='/new-recipe/'">Add New Recipe</button>
-            </div>
-            <br>
             <div class="container">
             <div class="row">
-                <div class="card col-md-3 bg-light ml-5" onclick="window.location='/earning'" style="width: 40rem;">
+                <div class="card col-md-3 bg-light ml-5" style="width: 40rem;">
                     <div class="card-body"><h5><strong>Report:</strong></h5><br>
                         <p class="card-text">
                             Balance : <br>Rp {{$user->balance}}<br>
@@ -191,8 +225,14 @@
                             Earnings : <br>Rp {{$earnings}}<br>
                             <br>
                             Subscribers :<br> {{$total_subscriber}}<br>
-                            
                         </p>
+                        <br>
+                        <div class="container adm-btns">
+                            <button type="button" class="btn btn-primary" onclick="window.location='/new-recipe/'">Add New Recipe</button>
+                        </div>
+                        <div class="container adm-btns">
+                            <button type="button" class="btn btn-primary" onclick="window.location='/profile/{{$user->id}}#recipes'">View Your Recipes</button>
+                        </div>
                     </div>
                 </div>
                 <div class="card col-md-3 bg-light ml-5" onclick="window.location.href='/recipe/view-recipe/{{$my_recipes->first()->id}}'" style="width: 40rem;">
@@ -277,37 +317,6 @@
             @endif
         @endauth
         <br>
-        <br>
-        <div class="container">
-            <div class="card">
-            <div class="card-header"><h5>Best Recipes: </h5></div>
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner bg-light">
-                <br>
-                  <div class="carousel-item active" onclick="window.location='/recipe/view-recipe/{{$best_recipes[0]->id}}'">
-                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[0]->image)}}" alt="{{$best_recipes[0]->name}}">
-                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[0]->name}}</div>
-                  </div>
-                  <div class="carousel-item" onclick="window.location='/recipe/view-recipe/{{$best_recipes[1]->id}}'">
-                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[1]->image)}}" alt="{{$best_recipes[1]->name}}">
-                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[1]->name}}</div>
-                  </div>
-                  <div class="carousel-item" onclick="window.location='/recipe/view-recipe/{{$best_recipes[2]->id}}'">
-                    <img class="d-block w-200" src="{{asset('storage/'.$best_recipes[2]->image)}}" alt="{{$best_recipes[2]->name}}">
-                    <div class="d-block w-200 h4" style="text-align: center;">{{$best_recipes[2]->name}}</div>
-                  </div>
-                </div>
-                <a class="carousel-control-prev bg-secondary" href="#carouselExampleControls" role="button" data-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="sr-only bg-dark">Previous</span>
-                </a>
-                <a class="carousel-control-next bg-dark" href="#carouselExampleControls" role="button" data-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Next</span>
-                </a>
-            </div>
-        </div>
-        <br><br>
     </div>
 </body>
 </html>

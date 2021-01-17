@@ -220,6 +220,9 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/profile/{{Auth::user()->id}}">Profile</a>
+                                <a class="dropdown-item" href="/subscriptions">Your Subscriptions</a>
+                                <a class="dropdown-item" href="/transaction-history">Transaction History</a>
+                                <a class="dropdown-item" href="/top-up">Top Up</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
@@ -233,9 +236,9 @@
                         </li>
                         {{-- show extra buttons if the user is a member --}}
                         @if(\Auth::user()->role_id == 1)
-                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/subscribe/{{Auth::user()->id}}'">Subscription</button>
+                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location='/subscriptions'">Subscription</button>
                         @elseif(\Auth::user()->role_id==2||\Auth::user()->role_id==3)
-                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location.href='/earning'">Earnings</button>
+                            <button type="button" class="btn btn-primary mr-sm-2" onclick="window.location='/earning'">Earnings</button>
                         @endif
                     @endguest
                 </ul>
