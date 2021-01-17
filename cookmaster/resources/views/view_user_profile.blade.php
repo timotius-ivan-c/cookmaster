@@ -10,25 +10,24 @@
                 <div class="card-header">{{ __('Profile') }}</div>
 
                 <div class="card-body">
-                    <div class="alert alert-warning">{{ __('You are viewing profile page!') }}</div>
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
-
+                
                     @foreach($user as $usr)
-                    <div class="card">
+                    <div class="card mb-2">
                         <div class="card-body row">
                             <div class="col-md-8">
                                 <div>Name: {{ $usr->name }}</div>
                                 <div>Free recipes: {{ $usr->free_recipes_count }}</div>
-                                <div>Recipes:</div>
+                                <div>Paid recipes: {{ $usr->paid_recipes_count }}</div>
                             </div>
                             @if(Auth::user() && Auth::user()->id != $usr->id)
                             <div class="col-md-4 float-right p-2">
                                 <div class="float-right">
-                                    @if($usr->role->first()->name != "Member")
+                                    @if($usr->role->name != "Member")
                                     <button type="button" class="btn btn-primary btn-sm" onclick="window.location='{{ route('subscribe', $usr->id) }}';">Buy Subscription</button>
                                     @endif
                                     <input type="hidden" class = "user_id" name="user_id" value="{{$usr->id}}">
@@ -39,42 +38,46 @@
                                     @endif
                                 </div>
                             </div>
+                            @elseif(Auth::user() && Auth::user()->id == $usr->id)
+                            <div class="col-md-4 float-right p-2">
+                                <button class="btn btn-primary" onclick="window.location='/edit-profile/'">Edit Your Profile</button>
+                            </div>
                             @endif
                         </div>
-                        <div class="card">
-                            @forelse($usr->recipe as $recipe)
-                                <div class="card-body"><a href="/recipe/view-recipe/{{$recipe->id}}">{{ $recipe->name }}</a></div>
-                            @empty
-                                <div class="card-body">{{ __('No recipe shared yet.') }}</div>
-                            @endforelse
-                            <div>Subscriptions:</div>
-                            <div class="card">
-                                @forelse($usr->subscription as $sub)
-                                    <div class="card-body">{{ $sub->start }}</div>
-                                @empty
-                                    <div class="card-body">{{ __('No subscriptions yet.') }}</div>
-                                @endforelse
-                            </div>
-                            <div>People followed by {{ $usr->name }}:</div>
-                            <div class="card">
-                                @forelse($usr->following as $fol)
-                                    <div class="card-body"><a href="/profile/{{$fol->id}}">{{ $fol->name }}</a></div>
-                                @empty
-                                    <div class="card-body">{{ __('No followings yet.') }}</div>
-                                @endforelse
-                            </div>
-                            <div>People following {{ $usr->name }}:</div>
-                            <div class="card">
-                                @forelse($usr->followers as $fol)
-                                    <div class="card-body"><a href="/profile/{{$fol->id}}">{{ $fol->name }}</a></div>
-                                @empty
-                                    <div class="card-body">{{ __('No followers yet.') }}</div>
-                                @endforelse
-                            </div>
-                        </div>
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">Recipes:</div>
+                        @forelse($usr->recipe as $recipe)
+                            <div class="card-body"><a href="/recipe/view-recipe/{{$recipe->id}}">{{ $recipe->name }}</a></div>
+                        @empty
+                            <div class="card-body">{{ __('No recipe shared yet.') }}</div>
+                        @endforelse
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">Subscriptions:</div>
+                        @forelse($usr->subscription as $sub)
+                            <div class="card-body">{{ $sub->start }}</div>
+                        @empty
+                            <div class="card-body">{{ __('No subscriptions yet.') }}</div>
+                        @endforelse
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">People followed by {{ $usr->name }}:</div>
+                        @forelse($usr->following as $fol)
+                            <div class="card-body"><a href="/profile/{{$fol->id}}">{{ $fol->name }}</a></div>
+                        @empty
+                            <div class="card-body">{{ __('No followings yet.') }}</div>
+                        @endforelse
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">People following {{ $usr->name }}:</div>
+                        @forelse($usr->followers as $fol)
+                            <div class="card-body"><a href="/profile/{{$fol->id}}">{{ $fol->name }}</a></div>
+                        @empty
+                            <div class="card-body">{{ __('No followers yet.') }}</div>
+                        @endforelse
                     </div>
                     @endforeach
-                </div>
             </div>
         </div>
     </div>
