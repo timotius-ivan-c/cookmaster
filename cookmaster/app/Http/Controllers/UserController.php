@@ -185,7 +185,7 @@ class UserController extends Controller
             $user = User::find(Auth()->user()->id);
             //get following id
             $following_id = $user->following()->get()->pluck('id');
-            $recipes = Recipe::whereIn('author_id', $following_id)->get();
+            $recipes = Recipe::whereIn('author_id', $following_id)->orderBy('publish_date', 'desc')->get();
             return view('welcome', ['user' => $user, 'recipes' => $recipes, 'hot_recipes' => $hot_recipes, 'best_recipes' => $best_recipes]);
         } else if (Auth::user()->role_id == 2 || Auth::user()->role_id == 3) {
             $user = User::find(Auth()->user()->id);
